@@ -68,4 +68,29 @@ Vector3 operator*(const Vector3& v1, const float& f) {
     return *v2;
 }
 
+Vector3 operator*(const float& f, const Vector3& v1) {
+    Vector3* v2 = new Vector3(v1);
+    *v2 *=f;
+    return *v2;
+}
+
+Vector3 operator/(const Vector3& v1, const float& f) {
+    Vector3* v2 = new Vector3(v1);
+    *v2 /=f;
+    return *v2;
+}
+
+Vector3 operator/(const float& f, const Vector3& v1) {
+    Vector3* v2 = new Vector3(v1);
+    *v2 /=f;
+    return *v2;
+}
+
+Vector3 planeNormal(const Vector3& v1, const Vector3& v2, const Vector3& v3) {
+    Vector3 v4 = v2 - v1;
+    Vector3 v5 = v3 - v1;
+    Vector3 v6(v4.getY()*v5.getZ() - v4.getZ()*v5.getY(), v4.getZ()*v5.getX() - v4.getX()*v5.getZ(), v4.getX()*v5.getY() - v4.getY()*v5.getX());
+    return v6;
+}
+
 
