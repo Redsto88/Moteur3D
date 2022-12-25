@@ -6,6 +6,11 @@ Triangle::Triangle(Vector3 _a, Vector3 _b, Vector3 _c) {
     c = _c;
 }
 
+Triangle::Triangle(Triangle const& t) {
+    a = t.getA();
+    b = t.getB();
+    c = t.getC();
+}
 
 Vector3 Triangle::getA() const {
     return a;

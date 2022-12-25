@@ -6,13 +6,13 @@
 class Vector2 {
 
     private : 
-        double x;
-        double y;
+        int x;
+        int y;
     
     public :
-        Vector2(double x = 0, double y = 0);
-        double getX() const;
-        double getY() const;
+        Vector2(int x = 0, int y = 0);
+        int getX() const;
+        int getY() const;
 
         void operator+=(const Vector2& v);
         void operator-=(const Vector2& v);

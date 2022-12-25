@@ -1,20 +1,20 @@
 #include "vector3.hpp"
 
-Vector3::Vector3(double _x, double _y, double _z) {
+Vector3::Vector3(float _x, float _y, float _z) {
     x = _x;
     y = _y;
     z = _z;
 }
 
-double Vector3::getX() const {
+float Vector3::getX() const {
     return x;
 }
 
-double Vector3::getY() const {
+float Vector3::getY() const {
     return y;
 }
 
-double Vector3::getZ() const {
+float Vector3::getZ() const {
     return z;
 }
 

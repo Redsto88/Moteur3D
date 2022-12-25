@@ -6,15 +6,15 @@
 class Vector3 {
 
     private : 
-        double x;
-        double y;
-        double z;
+        float x;
+        float y;
+        float z;
     
     public :
-        Vector3(double x = 0, double y = 0, double z = 0);
-        double getX() const;
-        double getY() const;
-        double getZ() const;
+        Vector3(float x = 0, float y = 0, float z = 0);
+        float getX() const;
+        float getY() const;
+        float getZ() const;
 
         void operator+=(const Vector3& v);
         void operator-=(const Vector3& v);
