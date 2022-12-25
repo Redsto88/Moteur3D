@@ -5,14 +5,14 @@
 #include <cmath>
 
 
-class Triangle{
+class Triangle3D{
     private:
         Vector3 a;
         Vector3 b;
         Vector3 c;
     public:
-        Triangle(Vector3 a, Vector3 b, Vector3 c);
-        Triangle(Triangle const& t);
+        Triangle3D() = default;
+        Triangle3D(Vector3 a, Vector3 b, Vector3 c);
         Vector3 getA() const;
         Vector3 getB() const;
         Vector3 getC() const;
