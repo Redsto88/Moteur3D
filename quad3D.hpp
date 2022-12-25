@@ -2,6 +2,8 @@
 #define quad3D_HPP
 
 #include "triangle3D.hpp"
+#include <vector>
+#include "vector3.hpp"
 
 class Quad3D
 {
@@ -14,6 +16,7 @@ public:
     Quad3D(const Vector3& _a, const Vector3& _b, const Vector3& _c, const Vector3& _d);
     Triangle3D getT1() const;
     Triangle3D getT2() const;
+    std::vector<Vector3> getPoints() const;
 };
 
 

@@ -6,7 +6,7 @@ Pave3D::Pave3D(std::vector<Quad3D> _quads)
     quads = _quads;
 }
 
-Pave3D::Pave3D(const Pave3D& _pave)
+Pave3D::Pave3D(Pave3D& _pave)
 {
     quads = _pave.getQuads();
 }
@@ -47,7 +47,6 @@ Pave3D::Pave3D(const Quad3D& _quad, float height)
     Triangle3D t9(DownD, DownA, UpD);
     Triangle3D t10(UpA, DownA, UpD);
     Quad3D q5(t9,t10);
-
     quads = std::vector<Quad3D>();
     quads.push_back(_quad);
     quads.push_back(q1);
@@ -56,4 +55,13 @@ Pave3D::Pave3D(const Quad3D& _quad, float height)
     quads.push_back(q4);
     quads.push_back(q5);
 }
+
+std::vector<Quad3D> Pave3D::getQuads() 
+{
+    std::cout << "Pave3D::getQuads()" << std::endl;
+    std::cout << "quads.size() = " << quads.size() << std::endl;
+    return quads;
+}
+
+
 

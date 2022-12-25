@@ -5,19 +5,19 @@
 #include <vector>
 
 #include "quad3D.hpp"
+#include "volume3D.hpp"
 
-class Pave3D
+class Pave3D : public Volume3D
 {
     private:
         std::vector<Quad3D> quads;
 
     public:
 
-        Pave3D() = default;
         Pave3D(std::vector<Quad3D> _quads);
-        Pave3D(const Pave3D& _pave);
+        Pave3D(Pave3D& _pave);
         Pave3D(const Quad3D& _quad, float height);
-        std::vector<Quad3D> getQuads() const;
+        std::vector<Quad3D> getQuads() override;
 
 
 

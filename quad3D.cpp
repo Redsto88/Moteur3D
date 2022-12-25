@@ -25,5 +25,15 @@ Triangle3D Quad3D::getT2() const
     return t2;
 }
 
+std::vector<Vector3> Quad3D::getPoints() const
+{
+    std::vector<Vector3> points;
+    points.push_back(t1.getA());
+    points.push_back(t1.getB());
+    points.push_back(t1.getC());
+    points.push_back(t2.getA());
+    return points;
+}
+
 
 
