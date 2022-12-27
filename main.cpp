@@ -23,22 +23,31 @@ void process_input(Affichage& affichage) {
 int main(int argc, char const *argv[])
 {
     Scene scene;
-    Vector3 v1(0,0,0);
-    Vector3 v2(0,0,1);
-    Vector3 v3(0,1,0);
-    Vector3 v4(0,1,1);
+    Vector3 v1(300,200,50);
+    Vector3 v2(300,200,75);
+    Vector3 v3(350,200,75);
+    Vector3 v4(350,200,50);
     Quad3D q1(v1,v2,v3,v4);
     Pave3D* p1 = new Pave3D(q1, 2);
-    std::cout << typeid(p1).name() << std::endl;
+    //std::cout << typeid(p1).name() << std::endl;
     scene.addVolume(p1);
     Affichage affichage(scene, 800, 600);
-    while(affichage.isRunning()){
-        /**print isRunning*/
-        affichage.afficher();
-        // affichage.drawRect(0,0,100,100,0xFF0000FF);
-        affichage.render();
+    //std::cout << (affichage.isRunning()? "true" : "false") << std::endl;
+    
+    //affichage.afficher(); //fonctionne pas
+    //affichage.drawRect(10,10,100,100); //fonctionne
+    affichage.testFillTriangle(affichage.getRenderer()); //fonctionne à moitiée
+    affichage.render();
+
+    SDL_Event windowEvent;
+
+    while (affichage.isRunning())
+    {
         process_input(affichage);
     }
+
+    //nettoyage
     affichage.destroy_window();
+
     return 0;
 }
