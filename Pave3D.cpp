@@ -58,8 +58,8 @@ Pave3D::Pave3D(const Quad3D& _quad, float height)
 
 std::vector<Quad3D> Pave3D::getQuads() 
 {
-    std::cout << "Pave3D::getQuads()" << std::endl;
-    std::cout << "quads.size() = " << quads.size() << std::endl;
+    //std::cout << "Pave3D::getQuads()" << std::endl;
+    //std::cout << "quads.size() = " << quads.size() << std::endl;
     return quads;
 }
 

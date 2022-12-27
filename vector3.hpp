@@ -15,6 +15,9 @@ class Vector3 {
         float getX() const;
         float getY() const;
         float getZ() const;
+        void setX(const float x);
+        void setY(const float y);
+        void setZ(const float z);
 
         void operator+=(const Vector3& v);
         void operator-=(const Vector3& v);
