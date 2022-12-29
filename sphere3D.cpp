@@ -9,7 +9,7 @@ Sphere3D::Sphere3D(Sphere3D& _sphere)
   quads = _sphere.getQuads();
 }
 
-Sphere3D::Sphere3D(Vector3 _center, float _radius, int numSegments) {
+Sphere3D::Sphere3D(Vector3& _center, const float _radius, const int numSegments) {
   
   center = _center;
   radius = _radius;

@@ -13,7 +13,7 @@ class Sphere3D : public Volume3D
     public:
 
         Sphere3D(Sphere3D& _sphere);
-        Sphere3D(Vector3 _center, const float _radius, const int numSegments);
+        Sphere3D(Vector3& _center, const float _radius, const int numSegments);
         Vector3 getCenter();
         float getRadius();
         std::vector<Quad> getQuads() override;
