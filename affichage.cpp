@@ -6,18 +6,36 @@
 #include "vector2.hpp"
 #include "matrix4.hpp"
 
-Affichage::Affichage(Scene _scene, int _window_width, int _window_height){
+Affichage::Affichage(Scene _scene, const int _window_width, const int _window_height, const float _fov_factor){
+    std::cout << "initialisation affichage scene" << std::endl;
     scene = _scene;
+    std::cout << "initialisation affichage width" << std::endl;
     window_width = _window_width;
+    std::cout << "initialisation affichage height" << std::endl;
     window_height = _window_height;
+    std::cout << "initialisation affichage fov" << std::endl;
+    fov_factor = _fov_factor;
+    std::cout << "initialisation affichage color_buffer" << std::endl;
     color_buffer = new uint32_t[window_width * window_height];
+    std::cout << "initialisation affichage color_buffer_texture" << std::endl;
+    color_buffer_texture = SDL_CreateTexture(
+        renderer,
+        SDL_PIXELFORMAT_ARGB8888,
+        SDL_TEXTUREACCESS_STREAMING,
+        window_width,
+        window_height
+    );
+    std::cout << "c_b_t initialisé";
     running = true;
+    
+    std::cout << "initialisation SDL" << std::endl;
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         fprintf(stderr, "Error initializing SDL.\n");
         running = false;
         return;
     }
     // Create a SDL Window
+    std::cout << "creation fenetre" << std::endl;
     window = SDL_CreateWindow(
         "Projet",
         SDL_WINDOWPOS_UNDEFINED,
@@ -34,6 +52,7 @@ Affichage::Affichage(Scene _scene, int _window_width, int _window_height){
     }
     
     // Create a SDL renderer
+    std::cout << "creation renderer" << std::endl;
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (!renderer) {
         fprintf(stderr, "Error creating SDL renderer.\n");
@@ -47,53 +66,14 @@ void Affichage::Setrunning(bool _running){
     running = _running;
 }
 
-// Fonction qui rasterise un triangle avec l'algorithme de Bresenham
-void fillTriangle(SDL_Renderer* renderer, SDL_Point v1, SDL_Point v2, SDL_Point v3)
-{
-    //Couleur de remplissage
-    SDL_SetRenderDrawColor(renderer,255,0,0,SDL_ALPHA_OPAQUE); //Rouge
-
-    // Trier les sommets du triangle par ordre croissant de y
-    if (v1.y > v2.y) std::swap(v1, v2);
-    if (v1.y > v3.y) std::swap(v1, v3);
-    if (v2.y > v3.y) std::swap(v2, v3);
-
-    // Déterminer la zone de remplissage du triangle
-    int total_height = v3.y - v1.y;
-    for (int i = 0; i < total_height; i++)
-    {
-        bool second_half = i > v2.y - v1.y || v2.y == v1.y;
-        int segment_height = second_half ? v3.y - v2.y : v2.y - v1.y;
-        float alpha = (float) i / total_height;
-        float beta  = (float)(i - (second_half ? v2.y - v1.y : 0)) / segment_height;
-        SDL_Point A = {v1.x + (int)(alpha * (v3.x - v1.x)), v1.y + i};
-        SDL_Point B = {second_half ? v2.x + (int)(beta * (v3.x - v2.x)) : v1.x + (int)(beta * (v2.x - v1.x)), second_half ? v2.y + i : v1.y + i};
-        if (A.x > B.x) std::swap(A, B);
-        for (int j = A.x; j <= B.x; j++)
-        {
-            SDL_RenderDrawPoint(renderer, j, A.y);
-        }
-    }
-}
-
-/*
-SDL_Point Vector3ToSDL_Point(Vector3 v, Matrix4 m)
-{
-    // Appliquer la matrice de projection au Vector3
-    Vector3 projectedVector = v * m;
-
-    // Créer un SDL_Point avec les valeurs du Vector3 résultant
-    SDL_Point point;
-    point.x = projectedVector.getX();
-    point.y = projectedVector.getY();
-    
-    return point;
-}*/
-
-void Affichage::afficher(){
+void Affichage::render(){
     //SDL_DisplayMode DM;
     //SDL_GetCurrentDisplayMode(0, &DM);
     
+    render_color_buffer();
+    clear_color_buffer(0xFF000000);
+
+    drawRect(0,0,50,50,0xFFFFFF00);
 
     //On récupère les différentes volumes
     std::cout << "volumes" << std::endl;
@@ -229,8 +209,34 @@ void Affichage::afficher(){
         drawTriangle(triProjected.getA().getX(), triProjected.getA().getY(),
                     triProjected.getB().getX(), triProjected.getB().getY(),
                     triProjected.getC().getX(), triProjected.getC().getY(),
-                    0x0000);
+                    0xFFF542C2);
     }
+
+    SDL_RenderPresent(renderer);
+}
+
+void Affichage::render_color_buffer(void) {
+    SDL_UpdateTexture(
+        color_buffer_texture,
+        NULL,
+        color_buffer,
+        (int)(window_width * sizeof(uint64_t))
+    );
+    SDL_RenderCopy(renderer, color_buffer_texture, NULL, NULL);
+}
+
+void Affichage::clear_color_buffer(uint64_t color) {
+    //for (int y = 0; y < window_height; y++) {
+      //  for (int x = 0; x < window_width; x++) {
+        //    color_buffer[(window_width * y) + x] = color;
+       // }
+   // }
+
+   int x = 0;
+   while(x<window_width*window_height){
+       color_buffer[x] = color;
+       x++;
+   }
 }
 
 void Affichage::drawPixel(int x, int y, uint32_t color){
@@ -239,22 +245,11 @@ void Affichage::drawPixel(int x, int y, uint32_t color){
     }
 }
 
-void Affichage::drawRect(int x, int y, int width, int height/*, uint32_t color*/){
+void Affichage::drawRect(int x, int y, int width, int height, uint32_t color){
     //color_buffer[window_width*y + x] = color;
-    //Couleur de remplissage
-    SDL_SetRenderDrawColor(renderer,255,0,0,SDL_ALPHA_OPAQUE); //Rouge
     int rectX = x;
     int rectY = y;
-
-    SDL_Rect rect;
-    rect.x = x;
-    rect.y = y;
-    rect.h = height;
-    rect.w = width;
-
-    SDL_RenderDrawRect(renderer, &rect);
-    
-    /*while(rectY<=y+height){
+    while(rectY<=y+height){
         rectX = x;
         while(rectX<=x+width){
             //color_buffer[(window_width * rectY) + rectX] = color;
@@ -262,7 +257,7 @@ void Affichage::drawRect(int x, int y, int width, int height/*, uint32_t color*/
             rectX++;
         }
         rectY++;
-    }*/
+    }
 }
 
 void Affichage::drawLine(int x0, int y0, int x1, int y1, uint32_t color){
@@ -302,6 +297,16 @@ void Affichage::drawTriangle(Triangle tri){
     SDL_RenderDrawLine(renderer, tri.getC().getX(), tri.getC().getY(), tri.getB().getX(), tri.getB().getY());
 }
 
+Vector2 Affichage::project(Vector3 point){
+    Vector2 projected_point = {
+       (int) (fov_factor * point.getX() / point.getZ()),
+       (int) (fov_factor * point.getY() / point.getZ())
+    };
+
+    return projected_point;
+}
+
+/*
 void Affichage::render(){
     SDL_UpdateTexture(
         SDL_CreateTextureFromSurface(renderer, SDL_CreateRGBSurfaceWithFormatFrom(color_buffer, window_width, window_height, 32, window_width * sizeof(uint32_t), SDL_PIXELFORMAT_RGBA32)),
@@ -312,7 +317,7 @@ void Affichage::render(){
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, SDL_CreateTextureFromSurface(renderer, SDL_CreateRGBSurfaceWithFormatFrom(color_buffer, window_width, window_height, 32, window_width * sizeof(uint32_t), SDL_PIXELFORMAT_RGBA32)), NULL, NULL);
     SDL_RenderPresent(renderer);
-}
+}*/ 
 
 bool Affichage::isRunning(){
     return running;
@@ -330,6 +335,36 @@ void Affichage::destroy_window(){
 
 
 ////// FONCTIONS DE TESTS /////
+
+
+// Fonction qui rasterise un triangle avec l'algorithme de Bresenham
+void fillTriangle(SDL_Renderer* renderer, SDL_Point v1, SDL_Point v2, SDL_Point v3)
+{
+    //Couleur de remplissage
+    SDL_SetRenderDrawColor(renderer,255,0,0,SDL_ALPHA_OPAQUE); //Rouge
+
+    // Trier les sommets du triangle par ordre croissant de y
+    if (v1.y > v2.y) std::swap(v1, v2);
+    if (v1.y > v3.y) std::swap(v1, v3);
+    if (v2.y > v3.y) std::swap(v2, v3);
+
+    // Déterminer la zone de remplissage du triangle
+    int total_height = v3.y - v1.y;
+    for (int i = 0; i < total_height; i++)
+    {
+        bool second_half = i > v2.y - v1.y || v2.y == v1.y;
+        int segment_height = second_half ? v3.y - v2.y : v2.y - v1.y;
+        float alpha = (float) i / total_height;
+        float beta  = (float)(i - (second_half ? v2.y - v1.y : 0)) / segment_height;
+        SDL_Point A = {v1.x + (int)(alpha * (v3.x - v1.x)), v1.y + i};
+        SDL_Point B = {second_half ? v2.x + (int)(beta * (v3.x - v2.x)) : v1.x + (int)(beta * (v2.x - v1.x)), second_half ? v2.y + i : v1.y + i};
+        if (A.x > B.x) std::swap(A, B);
+        for (int j = A.x; j <= B.x; j++)
+        {
+            SDL_RenderDrawPoint(renderer, j, A.y);
+        }
+    }
+}
 
 SDL_Renderer* Affichage::getRenderer(){
     return renderer;
@@ -355,6 +390,21 @@ void Affichage::testFillTriangle(SDL_Renderer* renderer)
         SDL_RenderDrawLine(renderer, v2.x + i, v2.y, v3.x + i, v3.y);
         SDL_RenderDrawLine(renderer, v3.x + i, v3.y, v1.x + i, v1.y);
     }
+}
+
+void Affichage::drawSDL_Rect(int x, int y, int width, int height){
+    //Couleur de remplissage
+    int rectX = x;
+    int rectY = y;
+
+    SDL_SetRenderDrawColor(renderer,255,0,0,SDL_ALPHA_OPAQUE); //Rouge
+    SDL_Rect rect;
+    rect.x = x;
+    rect.y = y;
+    rect.h = height;
+    rect.w = width;
+
+    SDL_RenderDrawRect(renderer, &rect);
 }
 
 

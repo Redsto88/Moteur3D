@@ -22,6 +22,7 @@ void process_input(Affichage& affichage) {
 
 int main(int argc, char const *argv[])
 {
+    std::cout << "creation scene" << std::endl;
     Scene scene;
     
     /*Vector3 v1(300,200,50); //Test avec le constructeur qui prend une face
@@ -31,6 +32,7 @@ int main(int argc, char const *argv[])
     Quad q1(v1,v2,v3,v4);
     Pave3D* p1 = new Pave3D(q1, 2);*/
     
+    std::cout << "creation pave" << std::endl;
     Vector3 v1(-1,-1,-1); //Test avec le constructeur qui prend 8 vector3
     Vector3 v2(-1,1,-1);
     Vector3 v3(1,1,-1);
@@ -41,21 +43,24 @@ int main(int argc, char const *argv[])
     Vector3 v8(-1,-1,1);
     Pave3D* p1 = new Pave3D(v1,v2,v3,v4,v5,v6,v7,v8);
     
-    //std::cout << typeid(p1).name() << std::endl;
+    std::cout << "ajout du pave a la scene" << std::endl;
     scene.addVolume(p1);
-    Affichage affichage(scene, 800, 600);
+    //std::cout << typeid(p1).name() << std::endl;
+
+    std::cout << "creation affichage" << std::endl;
+    Affichage affichage(scene,800,600,640.0f);
     //std::cout << (affichage.isRunning()? "true" : "false") << std::endl;
     
-    affichage.afficher(); //fonctionne pas
-    //affichage.drawRect(10,10,100,100); //fonctionne
+    //affichage.render(); //fonctionne pas
+    //affichage.drawSDL_Rect(10,10,100,100); //fonctionne
     //affichage.testFillTriangle(affichage.getRenderer()); //fonctionne à moitiée
-    affichage.render();
 
     SDL_Event windowEvent;
 
     while (affichage.isRunning())
     {
         process_input(affichage);
+        affichage.render(); //fonctionne pas
     }
 
     //nettoyage
