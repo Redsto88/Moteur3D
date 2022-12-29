@@ -19,6 +19,8 @@ class Triangle{
         void setA(Vector3 _a);
         void setB(Vector3 _b);
         void setC(Vector3 _c);
+        bool isVisible(); //true si la normale du triangle pointe vers "l'oeil". Dans ce cas il doit être affiché 
+                          // ne sert qu'une fois le triangle projeté sur l'écran
 };
 
 std::ostream& operator<<(std::ostream& st, Triangle& tri);

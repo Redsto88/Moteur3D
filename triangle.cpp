@@ -20,6 +20,7 @@ Vector3 Triangle::getC() const {
     return c;
 }
 
+
 void Triangle::setA(Vector3 _a){
     a = _a;
 }
@@ -30,6 +31,22 @@ void Triangle::setB(Vector3 _b){
        
 void Triangle::setC(Vector3 _c){
     c = _c;
+}
+
+//La normale du triangle pointe vers "l'oeil" si on le lit A->B->C dans le sens des aiguilles d'une montre
+bool Triangle::isVisible(){
+    if(c.getX() < b.getX() 
+            && a.getY() < b.getY())
+    {
+        return false;
+    }
+    else if(c.getX() > b.getX()
+            && a.getY() > b.getY())
+    {
+        return false;
+    }
+
+    return true;
 }
 
 

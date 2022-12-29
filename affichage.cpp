@@ -75,7 +75,7 @@ void Affichage::test(){
 }
 
 
-void Affichage::render(float time){
+void Affichage::render(float time, bool isAnimated){
     //SDL_DisplayMode DM;
     //SDL_GetCurrentDisplayMode(0, &DM);
     
@@ -184,7 +184,7 @@ void Affichage::render(float time){
 
     //matrices de rotation
     Matrix4 matRotZ, matRotX;
-    float fTheta = time;
+    float fTheta = isAnimated? time : 1.0f; //on laisse 0 si on ne veut pas de l'animation
 
     matRotZ[{0,0}] = cosf(fTheta);
     matRotZ[{0,1}] = sinf(fTheta);
@@ -248,11 +248,16 @@ void Affichage::render(float time){
         std::cout << i << " :APRES  triangle3D = " << triangles[i] << "   | triangle projeté = " << triProjected << std::endl << std::endl; 
 
 
-        //drawTriangle(triProjected);
-        drawTriangle(triProjected.getA().getX(), triProjected.getA().getY(),
+        //drawTriangle(triProjected) si sa normale pointe vers "l'oeil";
+        std::cout << i << " isVisible : " << triProjected.isVisible() << std::endl << std::endl;
+        if (triProjected.isVisible())
+        {
+            drawTriangle(triProjected.getA().getX(), triProjected.getA().getY(),
                     triProjected.getB().getX(), triProjected.getB().getY(),
                     triProjected.getC().getX(), triProjected.getC().getY(),
                     0xFFF542C2);
+        }
+        
         // SDL_Point A = {triProjected.getA().getX(), triProjected.getA().getY()};
         // SDL_Point B = {triProjected.getB().getX(), triProjected.getB().getY()};
         // SDL_Point C = {triProjected.getC().getX(), triProjected.getC().getY()};
