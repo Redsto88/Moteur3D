@@ -66,7 +66,7 @@ void Vector3::operator/=(const float& f) {
     z /= f;
 }
 
-Vector3 Vector3::multiplyVector3ByMatrix4(Vector3& vOutput, const Matrix4& m) 
+Vector3 Vector3::multiplyVector3ByMatrix4(Vector3 vOutput, const Matrix4& m) 
 {
     vOutput.setX(x * m[{0,0}] + y * m[{1,0}] + z * m[{2,0}] + m[{3,0}]);
     vOutput.setY(x * m[{0,1}] + y * m[{1,1}] + z * m[{2,1}] + m[{3,1}]);

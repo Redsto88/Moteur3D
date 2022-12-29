@@ -75,14 +75,13 @@ void Affichage::test(){
 }
 
 
-void Affichage::render(){
+void Affichage::render(float time){
     //SDL_DisplayMode DM;
     //SDL_GetCurrentDisplayMode(0, &DM);
     
     render_color_buffer();
     clear_color_buffer(0xFF000000);
 
-    drawRect(0,0,50,50,0xFFFFFF00);
 
     //On récupère les différentes volumes
     std::cout << "volumes" << std::endl;
@@ -164,11 +163,11 @@ void Affichage::render(){
 
 
     //matrice de projection V2
-    float fNear = 0.1f;
-    float fFar = 1000.0f;
-    float fFov = 90;
+    float fNear = 10000.0f;
+    float fFar = 1000000000000000000000000.0f;
+    float fFov = 90.0f;
     float fAspectRatio = (float)window_height / (float)window_width;
-    float fFovRad = 1.0f / tanf(fFov * 0.5f / 180.0f * M_PI);
+    float fFovRad = 1.0f / tanf(fFov * 0.5f / 180.0f * 3.14159f);
 
     //Défintion de la matrice (est normalisée donc renvoie toujours un résultat entre -1 et 1)
     Matrix4 matProj;
@@ -177,10 +176,31 @@ void Affichage::render(){
     matProj[{0,0}] = fAspectRatio * fFovRad;
     matProj[{1,1}] = fFovRad;
     matProj[{2,2}] = fFar / (fFar - fNear);
-    matProj[{3,3}] = (-fFar * fNear) / (fFar - fNear);
+    matProj[{3,2}] = (-fFar * fNear) / (fFar - fNear);
     matProj[{2,3}] = 1.0f;
     
     std::cout << "matrice initialisée" << std::endl << matProj << std::endl << std::endl;
+
+
+    //matrices de rotation
+    Matrix4 matRotZ, matRotX;
+    float fTheta = time;
+
+    matRotZ[{0,0}] = cosf(fTheta);
+    matRotZ[{0,1}] = sinf(fTheta);
+    matRotZ[{1,0}] = -sinf(fTheta);
+    matRotZ[{1,1}] = cosf(fTheta);
+    matRotZ[{2,2}] = 1;
+    matRotZ[{3,3}] = 1;
+
+    matRotX[{0,0}] = 1;
+    matRotX[{1,1}] = cosf(fTheta * 0.5f);
+    matRotX[{1,2}] = sinf(fTheta * 0.5f);
+    matRotX[{2,1}] = -sinf(fTheta * 0.5f);
+    matRotX[{2,2}] = cosf(fTheta * 0.5f);
+    matRotX[{3,3}] = 1;
+
+
 
     //On dessine les triangles
     for (int i = 0; i < triangles.size(); i++)
@@ -188,18 +208,26 @@ void Affichage::render(){
         Triangle triProjected;
         Triangle triTranslated = Triangle(triangles[i]); //triangle projeté et translaté pour la perspective
 
-        triTranslated.getA().setZ(triangles[i].getA().getZ() + 3.0f);
-        triTranslated.getB().setZ(triangles[i].getB().getZ() + 3.0f);
-        triTranslated.getC().setZ(triangles[i].getC().getZ() + 3.0f);
         
-        Vector3 A = triProjected.getA();
-        Vector3 B = triProjected.getB();
-        Vector3 C = triProjected.getC();
+        triTranslated.setA(triTranslated.getA().multiplyVector3ByMatrix4(triTranslated.getA(), matRotZ));
+        triTranslated.setB(triTranslated.getB().multiplyVector3ByMatrix4(triTranslated.getB(), matRotZ));
+        triTranslated.setC(triTranslated.getC().multiplyVector3ByMatrix4(triTranslated.getC(), matRotZ));
+
+        triTranslated.setA(triTranslated.getA().multiplyVector3ByMatrix4(triTranslated.getA(), matRotX));
+        triTranslated.setB(triTranslated.getB().multiplyVector3ByMatrix4(triTranslated.getB(), matRotX));
+        triTranslated.setC(triTranslated.getC().multiplyVector3ByMatrix4(triTranslated.getC(), matRotX));
+
+
+
+        triTranslated.setA(triTranslated.getA().setZ(triTranslated.getA().getZ() + 3.0f));
+        triTranslated.setB(triTranslated.getB().setZ(triTranslated.getB().getZ() + 3.0f));
+        triTranslated.setC(triTranslated.getC().setZ(triTranslated.getC().getZ() + 3.0f));
+        
 
         std::cout << i << " :AVANT PROJECTION  triangle3D = " << triangles[i] << "   | triangle projeté = " << triProjected << std::endl << std::endl; 
-        triProjected.setA(triTranslated.getA().multiplyVector3ByMatrix4(A, matProj));
-        triProjected.setB(triTranslated.getB().multiplyVector3ByMatrix4(B, matProj));
-        triProjected.setC(triTranslated.getC().multiplyVector3ByMatrix4(C, matProj));
+        triProjected.setA(triTranslated.getA().multiplyVector3ByMatrix4(triTranslated.getA(), matProj));
+        triProjected.setB(triTranslated.getB().multiplyVector3ByMatrix4(triTranslated.getB(), matProj));
+        triProjected.setC(triTranslated.getC().multiplyVector3ByMatrix4(triTranslated.getC(), matProj));
         std::cout << i << " :APRES PROJECTION  triangle3D = " << triangles[i] << "   | triangle projeté = " << triProjected << std::endl << std::endl;
 
         //met à l'échelle de la vue
@@ -226,7 +254,6 @@ void Affichage::render(){
                     triProjected.getC().getX(), triProjected.getC().getY(),
                     0xFFF542C2);
     }
-    drawTriangle(10, 10, 100, 100, 200, 200, 0xFFF542C2);
     SDL_RenderPresent(renderer);
 }
 
@@ -280,11 +307,11 @@ void Affichage::drawLine(int x0, int y0, int x1, int y1, uint32_t color){
     int delta_y = y1 - y0;
     int longest_side;
 
-    if(delta_x > delta_y){
-        longest_side = delta_x;
+    if(abs(delta_x) > abs(delta_y)){
+        longest_side = abs(delta_x);
     }
     else{
-        longest_side = delta_y;
+        longest_side = abs(delta_y);
     }
 
     float x_increment = delta_x / (float)longest_side;
