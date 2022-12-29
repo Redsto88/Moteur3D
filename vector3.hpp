@@ -15,9 +15,9 @@ class Vector3 {
         float getX() const;
         float getY() const;
         float getZ() const;
-        void setX(const float x);
-        void setY(const float y);
-        void setZ(const float z);
+        Vector3 setX(const float x);
+        Vector3 setY(const float y);
+        Vector3 setZ(const float z);
 
         void operator+=(const Vector3& v);
         void operator-=(const Vector3& v);
@@ -29,7 +29,7 @@ class Vector3 {
         friend Vector3 operator*(const Vector3& v1, const float& f);
         friend Vector3 operator*(const float& f, const Vector3& v1);
 
-        Vector3 multiplyVector3ByMatrix4(Vector3 vOutput, const Matrix4& m);
+        Vector3 multiplyVector3ByMatrix4(Vector3& vOutput, const Matrix4& m);
 };
 
 std::ostream& operator<<(std::ostream& st, Vector3 v);

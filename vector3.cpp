@@ -21,19 +21,22 @@ float Vector3::getZ() const {
     return z;
 }
 
-void Vector3::setX(const float _x)
+Vector3 Vector3::setX(const float _x)
 {
     x=_x;
+    return *this;
 }
         
-void Vector3::setY(const float _y)
+Vector3 Vector3::setY(const float _y)
 {
     y=_y;
+    return *this;
 }
         
-void Vector3::setZ(const float _z)
+Vector3 Vector3::setZ(const float _z)
 {
     z=_z;
+    return *this;
 }
 
 void Vector3::operator+=(const Vector3& v) {
@@ -63,7 +66,7 @@ void Vector3::operator/=(const float& f) {
     z /= f;
 }
 
-Vector3 Vector3::multiplyVector3ByMatrix4(Vector3 vOutput, const Matrix4& m) 
+Vector3 Vector3::multiplyVector3ByMatrix4(Vector3& vOutput, const Matrix4& m) 
 {
     vOutput.setX(x * m[{0,0}] + y * m[{1,0}] + z * m[{2,0}] + m[{3,0}]);
     vOutput.setY(x * m[{0,1}] + y * m[{1,1}] + z * m[{2,1}] + m[{3,1}]);
@@ -72,9 +75,7 @@ Vector3 Vector3::multiplyVector3ByMatrix4(Vector3 vOutput, const Matrix4& m)
     
     if (w != 0.0f)
     {
-        vOutput.setX(vOutput.getX() / w);
-        vOutput.setY(vOutput.getY() / w);
-        vOutput.setZ(vOutput.getZ() / w);
+        vOutput /= w;
     }
 
     return vOutput;

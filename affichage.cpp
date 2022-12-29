@@ -6,7 +6,7 @@
 #include "vector2.hpp"
 #include "matrix4.hpp"
 
-Affichage::Affichage(Scene _scene, const int _window_width, const int _window_height, const float _fov_factor){
+Affichage::Affichage(Scene& _scene, const int _window_width, const int _window_height, const float _fov_factor){
     std::cout << "initialisation affichage scene" << std::endl;
     scene = _scene;
     std::cout << "initialisation affichage width" << std::endl;
@@ -16,15 +16,8 @@ Affichage::Affichage(Scene _scene, const int _window_width, const int _window_he
     std::cout << "initialisation affichage fov" << std::endl;
     fov_factor = _fov_factor;
     std::cout << "initialisation affichage color_buffer" << std::endl;
-    color_buffer = new uint32_t[window_width * window_height];
+    color_buffer = (uint32_t*)malloc(sizeof(uint32_t) * window_width * window_height);
     std::cout << "initialisation affichage color_buffer_texture" << std::endl;
-    color_buffer_texture = SDL_CreateTexture(
-        renderer,
-        SDL_PIXELFORMAT_ARGB8888,
-        SDL_TEXTUREACCESS_STREAMING,
-        window_width,
-        window_height
-    );
     std::cout << "c_b_t initialisé";
     running = true;
     
@@ -53,18 +46,34 @@ Affichage::Affichage(Scene _scene, const int _window_width, const int _window_he
     
     // Create a SDL renderer
     std::cout << "creation renderer" << std::endl;
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    renderer = SDL_CreateRenderer(window, -1, 0);
     if (!renderer) {
         fprintf(stderr, "Error creating SDL renderer.\n");
         running = false;
         return;
     }
+    color_buffer_texture = SDL_CreateTexture(
+        renderer,
+        SDL_PIXELFORMAT_ARGB8888,
+        SDL_TEXTUREACCESS_STREAMING,
+        window_width,
+        window_height
+    );
 }
 
 void Affichage::Setrunning(bool _running){
     std::cout << "setRunning" << std::endl;
     running = _running;
 }
+
+void Affichage::test(){
+    render_color_buffer();
+    clear_color_buffer(0xFF000000);
+    drawRect(0,0,50,50,0xFFFFFF00);
+    drawLine(0,0,800,600,0xFF00FF00);
+    SDL_RenderPresent(renderer);
+}
+
 
 void Affichage::render(){
     //SDL_DisplayMode DM;
@@ -182,27 +191,33 @@ void Affichage::render(){
         triTranslated.getA().setZ(triangles[i].getA().getZ() + 3.0f);
         triTranslated.getB().setZ(triangles[i].getB().getZ() + 3.0f);
         triTranslated.getC().setZ(triangles[i].getC().getZ() + 3.0f);
-
-        triProjected.setA(triTranslated.getA().multiplyVector3ByMatrix4(triProjected.getA(), matProj));
-        triProjected.setB(triTranslated.getB().multiplyVector3ByMatrix4(triProjected.getB(), matProj));
-        triProjected.setC(triTranslated.getC().multiplyVector3ByMatrix4(triProjected.getC(), matProj));
         
+        Vector3 A = triProjected.getA();
+        Vector3 B = triProjected.getB();
+        Vector3 C = triProjected.getC();
+
+        std::cout << i << " :AVANT PROJECTION  triangle3D = " << triangles[i] << "   | triangle projeté = " << triProjected << std::endl << std::endl; 
+        triProjected.setA(triTranslated.getA().multiplyVector3ByMatrix4(A, matProj));
+        triProjected.setB(triTranslated.getB().multiplyVector3ByMatrix4(B, matProj));
+        triProjected.setC(triTranslated.getC().multiplyVector3ByMatrix4(C, matProj));
+        std::cout << i << " :APRES PROJECTION  triangle3D = " << triangles[i] << "   | triangle projeté = " << triProjected << std::endl << std::endl;
+
         //met à l'échelle de la vue
-        triProjected.getA().setX(triProjected.getA().getX() + 1.0f);
-        triProjected.getA().setY(triProjected.getA().getY() + 1.0f);
-        triProjected.getB().setX(triProjected.getB().getX() + 1.0f);
-        triProjected.getB().setY(triProjected.getB().getY() + 1.0f);
-        triProjected.getC().setX(triProjected.getC().getX() + 1.0f);
-        triProjected.getC().setY(triProjected.getC().getY() + 1.0f);
+        triProjected.setA(triProjected.getA().setX(triProjected.getA().getX() + 1.0f));
+        triProjected.setA(triProjected.getA().setY(triProjected.getA().getY() + 1.0f));
+        triProjected.setB(triProjected.getB().setX(triProjected.getB().getX() + 1.0f));
+        triProjected.setB(triProjected.getB().setY(triProjected.getB().getY() + 1.0f));
+        triProjected.setC(triProjected.getC().setX(triProjected.getC().getX() + 1.0f));
+        triProjected.setC(triProjected.getC().setY(triProjected.getC().getY() + 1.0f));
 
-        triProjected.getA().setX(triProjected.getA().getX() * 0.5f * (float) window_width);
-        triProjected.getA().setY(triProjected.getA().getY() * 0.5f * (float) window_height);
-        triProjected.getB().setX(triProjected.getB().getX() * 0.5f * (float) window_width);
-        triProjected.getB().setY(triProjected.getB().getY() * 0.5f * (float) window_height);
-        triProjected.getC().setX(triProjected.getC().getX() * 0.5f * (float) window_width);
-        triProjected.getC().setY(triProjected.getC().getY() * 0.5f * (float) window_height);
+        triProjected.setA(triProjected.getA().setX(triProjected.getA().getX() * 0.5f * (float) window_width));
+        triProjected.setA(triProjected.getA().setY(triProjected.getA().getY() * 0.5f * (float) window_height));
+        triProjected.setB(triProjected.getB().setX(triProjected.getB().getX() * 0.5f * (float) window_width));
+        triProjected.setB(triProjected.getB().setY(triProjected.getB().getY() * 0.5f * (float) window_height));
+        triProjected.setC(triProjected.getC().setX(triProjected.getC().getX() * 0.5f * (float) window_width));
+        triProjected.setC(triProjected.getC().setY(triProjected.getC().getY() * 0.5f * (float) window_height));
 
-        std::cout << i << " : triangle3D = " << triangles[i] << "   | triangle projeté = " << triProjected << std::endl << std::endl; 
+        std::cout << i << " :APRES  triangle3D = " << triangles[i] << "   | triangle projeté = " << triProjected << std::endl << std::endl; 
 
 
         //drawTriangle(triProjected);
@@ -211,7 +226,7 @@ void Affichage::render(){
                     triProjected.getC().getX(), triProjected.getC().getY(),
                     0xFFF542C2);
     }
-
+    drawTriangle(10, 10, 100, 100, 200, 200, 0xFFF542C2);
     SDL_RenderPresent(renderer);
 }
 
@@ -220,12 +235,12 @@ void Affichage::render_color_buffer(void) {
         color_buffer_texture,
         NULL,
         color_buffer,
-        (int)(window_width * sizeof(uint64_t))
+        (int)(window_width * sizeof(uint32_t))
     );
     SDL_RenderCopy(renderer, color_buffer_texture, NULL, NULL);
 }
 
-void Affichage::clear_color_buffer(uint64_t color) {
+void Affichage::clear_color_buffer(uint32_t color) {
     //for (int y = 0; y < window_height; y++) {
       //  for (int x = 0; x < window_width; x++) {
         //    color_buffer[(window_width * y) + x] = color;

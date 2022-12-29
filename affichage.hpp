@@ -18,11 +18,11 @@ class Affichage{
         bool running;
         
     public:
-        Affichage(Scene _scene, const int _window_width, const int _window_height, const float _fov_factor);
+        Affichage(Scene& _scene, const int _window_width, const int _window_height, const float _fov_factor);
         void Setrunning(bool _running);
         void render();
         void render_color_buffer(void);
-        void clear_color_buffer(uint64_t color);
+        void clear_color_buffer(uint32_t color);
         void drawPixel(int x, int y, uint32_t color);
         void drawRect(int x, int y, int width, int height, uint32_t color);
         void drawLine(int x0, int y0, int x1, int y1, uint32_t color);
@@ -35,6 +35,7 @@ class Affichage{
         SDL_Renderer* getRenderer();
         void testFillTriangle(SDL_Renderer* renderer);
         void drawSDL_Rect(int x, int y, int width, int height);
+        void test();
 };
 
 

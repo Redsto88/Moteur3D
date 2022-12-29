@@ -4,6 +4,8 @@
 #include "quad.hpp"
 #include "pave3D.hpp"
 
+#include <SDL2/SDL.h>
+
 void process_input(Affichage& affichage) {
     SDL_Event event;
     SDL_PollEvent(&event);
