@@ -20,7 +20,7 @@ void Scene::addVolume(Volume3D* _volume) {
 std::vector<Vector3> Scene::getPoints() {
     std::vector<Vector3> points;
     for (int i = 0; i < volumes.size(); i++) {
-        std::vector<Quad3D> quads = volumes[i]->getQuads();
+        std::vector<Quad> quads = volumes[i]->getQuads();
         for (int j = 0; j < quads.size(); j++) {
             std::vector<Vector3> quadPoints = quads[j].getPoints();
             for (int k = 0; k < quadPoints.size(); k++) {

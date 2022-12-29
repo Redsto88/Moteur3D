@@ -103,7 +103,7 @@ void Affichage::afficher(){
 
     //On récupère les faces de chaque volume
     std::cout << "faces" << std::endl;
-    std::vector<std::vector<Quad3D>> faces ;
+    std::vector<std::vector<Quad>> faces ;
     for (int i=0; i<volumes.size(); i++){
         faces.push_back(volumes[i]->getQuads());
         std::cout << "faces.size() du volume " << i << " = " << faces[i].size() << std::endl;

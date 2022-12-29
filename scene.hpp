@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "volume3D.hpp"
-#include "Pave3D.hpp"
+#include "pave3D.hpp"
 
 class Scene
 {

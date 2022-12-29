@@ -1,7 +1,7 @@
-#include "Pave3D.hpp"
+#include "pave3D.hpp"
 #include "vector3.hpp"
 
-Pave3D::Pave3D(std::vector<Quad3D> _quads)
+Pave3D::Pave3D(std::vector<Quad> _quads)
 {
     quads = _quads;
 }
@@ -11,7 +11,7 @@ Pave3D::Pave3D(Pave3D& _pave)
     quads = _pave.getQuads();
 }
 
-Pave3D::Pave3D(const Quad3D& _quad, float height)
+Pave3D::Pave3D(const Quad& _quad, float height)
 {
     /*Les quatres points de la base du quadrilatère*/
     Vector3 DownA = _quad.getT1().getA();
@@ -29,25 +29,25 @@ Pave3D::Pave3D(const Quad3D& _quad, float height)
     /*les triangles du haut*/
     Triangle t1(UpA, UpB, UpC);
     Triangle t2(UpD, UpB, UpC);
-    Quad3D q1(t1,t2);
+    Quad q1(t1,t2);
 
     /*Les triangles des côtés*/
     Triangle t3(DownA, DownB, UpA);
     Triangle t4(UpB, DownB, UpA);
-    Quad3D q2(t3,t4);
+    Quad q2(t3,t4);
 
     Triangle t5(DownB, DownC, UpB);
     Triangle t6(UpC, DownC, UpB);
-    Quad3D q3(t5,t6);
+    Quad q3(t5,t6);
 
     Triangle t7(DownC, DownD, UpC);
     Triangle t8(UpD, DownD, UpC);
-    Quad3D q4(t7,t8);
+    Quad q4(t7,t8);
 
     Triangle t9(DownD, DownA, UpD);
     Triangle t10(UpA, DownA, UpD);
-    Quad3D q5(t9,t10);
-    quads = std::vector<Quad3D>();
+    Quad q5(t9,t10);
+    quads = std::vector<Quad>();
     quads.push_back(_quad);
     quads.push_back(q1);
     quads.push_back(q2);
@@ -56,7 +56,45 @@ Pave3D::Pave3D(const Quad3D& _quad, float height)
     quads.push_back(q5);
 }
 
-std::vector<Quad3D> Pave3D::getQuads() 
+Pave3D::Pave3D(const Vector3& leftBotomFront,
+                const Vector3& leftTopFront,
+                const Vector3& rightTopFront,
+                const Vector3& rightBotomFront,
+                const Vector3& rightTopBack,
+                const Vector3& rightBotomBack,
+                const Vector3& leftTopBack,
+                const Vector3& leftBotomBack)
+{
+    Triangle triFront1(leftBotomFront,leftTopFront,rightTopFront);
+    Triangle triFront2(leftBotomFront,rightTopFront,rightBotomFront);
+    Triangle triRight1(rightBotomFront,rightTopFront,rightTopBack);
+    Triangle triRight2(rightBotomFront,rightTopBack,rightBotomBack);
+    Triangle triBack1(rightBotomBack,rightTopBack,leftTopBack);
+    Triangle triBack2(rightBotomBack,leftTopBack,leftBotomBack);
+    Triangle triLeft1(leftBotomBack,leftTopBack,leftTopFront);
+    Triangle triLeft2(leftBotomBack,leftTopFront,leftBotomFront);
+    Triangle triTop1(leftTopFront,leftTopBack,rightTopBack);
+    Triangle triTop2(leftTopFront,rightTopBack,rightTopFront);
+    Triangle triBotom1(rightBotomBack, leftBotomBack,leftBotomFront);
+    Triangle triBotom2(rightBotomBack,leftBotomFront, rightBotomFront);
+
+    Quad front(triFront1,triFront2);
+    Quad rigth(triRight1,triRight2);
+    Quad back(triBack1,triBack2);
+    Quad left(triLeft1,triLeft2);
+    Quad top(triTop1,triTop2);
+    Quad botom(triBotom1,triBotom2);
+
+    quads = std::vector<Quad>();
+    quads.push_back(front);
+    quads.push_back(rigth);
+    quads.push_back(back);
+    quads.push_back(left);
+    quads.push_back(top);
+    quads.push_back(botom);
+}
+
+std::vector<Quad> Pave3D::getQuads() 
 {
     //std::cout << "Pave3D::getQuads()" << std::endl;
     //std::cout << "quads.size() = " << quads.size() << std::endl;

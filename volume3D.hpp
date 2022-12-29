@@ -4,18 +4,18 @@
 #include <vector>
 #include <iostream>
 
-#include "quad3D.hpp"
+#include "Quad.hpp"
 
 class Volume3D
 {
     private:
-        std::vector<Quad3D> quads;
+        std::vector<Quad> quads;
 
     public:
         Volume3D() = default;
         ~Volume3D() = default;
 
-        virtual std::vector<Quad3D> getQuads()
+        virtual std::vector<Quad> getQuads()
         {
             std::cout << "WRONG" << std::endl;
             std::cout << "quads.size() = " << quads.size() << std::endl;
