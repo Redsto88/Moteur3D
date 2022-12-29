@@ -27,12 +27,12 @@ int main(int argc, char const *argv[])
     std::cout << "creation scene" << std::endl;
     Scene scene;
     
-    /*Vector3 v1(300,200,50); //Test avec le constructeur qui prend une face
-    Vector3 v2(300,200,75);
-    Vector3 v3(350,200,75);
-    Vector3 v4(350,200,50);
-    Quad q1(v1,v2,v3,v4);
-    Pave3D* p1 = new Pave3D(q1, 2);*/
+    // Vector3 v1(-1,-1,-1); //Test avec le constructeur qui prend une face
+    // Vector3 v2(-1,-1,1);
+    // Vector3 v3(1,-1,-1);
+    // Vector3 v4(1,-1,1);
+    // Quad q1(v1,v2,v3,v4);
+    // Pave3D* p1 = new Pave3D(q1, 2);
     
     std::cout << "creation pave" << std::endl;
     Vector3 v1(-1,-1,-1); //Test avec le constructeur qui prend 8 vector3
@@ -58,11 +58,12 @@ int main(int argc, char const *argv[])
     //affichage.testFillTriangle(affichage.getRenderer()); //fonctionne à moitiée
 
     SDL_Event windowEvent;
-
+    float t = 0.0f;
     while (affichage.isRunning())
     {
         process_input(affichage);
-        affichage.render(); //fonctionne pas
+        affichage.render(t);
+        t = (float)SDL_GetTicks()/1000.0f;
     }
 
     //nettoyage

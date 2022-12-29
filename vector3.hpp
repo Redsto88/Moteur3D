@@ -29,7 +29,7 @@ class Vector3 {
         friend Vector3 operator*(const Vector3& v1, const float& f);
         friend Vector3 operator*(const float& f, const Vector3& v1);
 
-        Vector3 multiplyVector3ByMatrix4(Vector3& vOutput, const Matrix4& m);
+        Vector3 multiplyVector3ByMatrix4(Vector3 vOutput, const Matrix4& m);
 };
 
 std::ostream& operator<<(std::ostream& st, Vector3 v);
