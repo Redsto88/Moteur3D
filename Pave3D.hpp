@@ -18,11 +18,9 @@ class Pave3D : public Volume3D
         Pave3D(Pave3D& _pave);
         Pave3D(const Quad3D& _quad, float height);
         std::vector<Quad3D> getQuads() override;
-
-
-
-
 };
+
+
 
 
 

@@ -34,9 +34,9 @@ int main(int argc, char const *argv[])
     Affichage affichage(scene, 800, 600);
     //std::cout << (affichage.isRunning()? "true" : "false") << std::endl;
     
-    //affichage.afficher(); //fonctionne pas
+    affichage.afficher(); //fonctionne pas
     //affichage.drawRect(10,10,100,100); //fonctionne
-    affichage.testFillTriangle(affichage.getRenderer()); //fonctionne à moitiée
+    //affichage.testFillTriangle(affichage.getRenderer()); //fonctionne à moitiée
     affichage.render();
 
     SDL_Event windowEvent;

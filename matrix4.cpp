@@ -22,23 +22,38 @@ Matrix4::Matrix4(float m00, float m01, float m02, float m03,
     m[3][0] = m30; m[3][1] = m31; m[3][2] = m32; m[3][3] = m33;
 }
 
-float* Matrix4::operator[](int index)
+float& Matrix4::operator[](std::pair<int, int> index)
 {
-    return m[index];
+    return m[index.first][index.second];
 }
 
-Vector3 Matrix4::operator*(const Vector3& v) const
+const float& Matrix4::operator[](std::pair<int, int> index) const
+{
+    return m[index.first][index.second];
+}
+
+/*Vector3& Matrix4::operator*(const Vector3& v) 
 {
     Vector3 result;
-    result.setX(m[0][0] * v.getX() + m[0][1] * v.getY() + m[0][2] * v.getZ() + m[0][3]);
-    result.setY(m[1][0] * v.getX() + m[1][1] * v.getY() + m[1][2] * v.getZ() + m[1][3]);
-    result.setZ(m[2][0] * v.getX() + m[2][1] * v.getY() + m[2][2] * v.getZ() + m[2][3]);
-    float w = m[3][0] * v.getX() + m[3][1] * v.getY() + m[3][2] * v.getZ() + m[3][3];
-    if (w != 1.0f)
+    result.setX(v.getX() * m[{0,0}] + v.getY() * m[{1,0}] + v.getZ() * m[{2,0}] + m[{3,0}]);
+    result.setY(v.getX() * m[{0,1}] + v.getY() * m[{1,1}] + v.getZ() * m[{2,1}] + m[{3,1}]);
+    result.setZ(v.getX() * m[{0,2}] + v.getY() * m[{1,2}] + v.getZ() * m[{2,2}] + m[{3,2}]);
+    float w = v.getX() * m[{0,3}] + v.getY() * m[{1,3}] + v.getZ() * m[{2,3}] + m[{3,3}];
+    
+    if (w != 0.0f)
     {
         result.setX(result.getX() / w);
         result.setY(result.getY() / w);
         result.setZ(result.getZ() / w);
     }
     return result;
+}*/
+
+std::ostream& operator<<(std::ostream& st, Matrix4& m)
+{
+    st << m[{0,0}] << "; " << m[{0,1}] << "; " << m[{0,2}] << "; " << m[{0,3}] << std::endl
+    << m[{1,0}] << "; " << m[{1,1}] << "; " << m[{1,2}] << "; " << m[{1,3}] << std::endl
+    << m[{2,0}] << "; " << m[{2,1}] << "; " << m[{2,2}] << "; " << m[{2,3}] << std::endl
+    << m[{3,0}] << "; " << m[{3,1}] << "; " << m[{3,2}] << "; " << m[{3,3}] << std::endl << std::endl;
+    return st;
 }

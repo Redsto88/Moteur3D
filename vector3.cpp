@@ -63,6 +63,26 @@ void Vector3::operator/=(const float& f) {
     z /= f;
 }
 
+void Vector3::multiplyVector3ByMatrix4(const Vector3& vInput, const Matrix4& m) 
+{
+    setX(vInput.getX() * m[{0,0}] + vInput.getY() * m[{1,0}] + vInput.getZ() * m[{2,0}] + m[{3,0}]);
+    setY(vInput.getX() * m[{0,1}] + vInput.getY() * m[{1,1}] + vInput.getZ() * m[{2,1}] + m[{3,1}]);
+    setZ(vInput.getX() * m[{0,2}] + vInput.getY() * m[{1,2}] + vInput.getZ() * m[{2,2}] + m[{3,2}]);
+    float w = vInput.getX() * m[{0,3}] + vInput.getY() * m[{1,3}] + vInput.getZ() * m[{2,3}] + m[{3,3}];
+    
+    if (w != 0.0f)
+    {
+        setX(getX() / w);
+        setY(getY() / w);
+        setZ(getZ() / w);
+    }
+}
+
+std::ostream& operator<<(std::ostream& st, Vector3 v){
+    st << "(" << v.getX() << "; " << v.getY() << "; " << v.getZ() << ")" << std::endl;
+    return st;
+}
+
 Vector3 operator+(const Vector3& v1, const Vector3& v2) {
     Vector3 v3(0, 0, 0);
     v3+=v1;

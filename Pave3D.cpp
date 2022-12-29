@@ -27,25 +27,25 @@ Pave3D::Pave3D(const Quad3D& _quad, float height)
     Vector3 UpD = DownD + normal * height;
 
     /*les triangles du haut*/
-    Triangle3D t1(UpA, UpB, UpC);
-    Triangle3D t2(UpD, UpB, UpC);
+    Triangle t1(UpA, UpB, UpC);
+    Triangle t2(UpD, UpB, UpC);
     Quad3D q1(t1,t2);
 
     /*Les triangles des côtés*/
-    Triangle3D t3(DownA, DownB, UpA);
-    Triangle3D t4(UpB, DownB, UpA);
+    Triangle t3(DownA, DownB, UpA);
+    Triangle t4(UpB, DownB, UpA);
     Quad3D q2(t3,t4);
 
-    Triangle3D t5(DownB, DownC, UpB);
-    Triangle3D t6(UpC, DownC, UpB);
+    Triangle t5(DownB, DownC, UpB);
+    Triangle t6(UpC, DownC, UpB);
     Quad3D q3(t5,t6);
 
-    Triangle3D t7(DownC, DownD, UpC);
-    Triangle3D t8(UpD, DownD, UpC);
+    Triangle t7(DownC, DownD, UpC);
+    Triangle t8(UpD, DownD, UpC);
     Quad3D q4(t7,t8);
 
-    Triangle3D t9(DownD, DownA, UpD);
-    Triangle3D t10(UpA, DownA, UpD);
+    Triangle t9(DownD, DownA, UpD);
+    Triangle t10(UpA, DownA, UpD);
     Quad3D q5(t9,t10);
     quads = std::vector<Quad3D>();
     quads.push_back(_quad);
@@ -62,6 +62,8 @@ std::vector<Quad3D> Pave3D::getQuads()
     //std::cout << "quads.size() = " << quads.size() << std::endl;
     return quads;
 }
+
+
 
 
 

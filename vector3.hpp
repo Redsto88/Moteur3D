@@ -1,7 +1,7 @@
 #ifndef VECTOR3_HPP
 #define VECTOR3_HPP
 
-
+#include "matrix4.hpp"
 
 class Vector3 {
 
@@ -28,7 +28,12 @@ class Vector3 {
         friend Vector3 operator-(const Vector3& v1, const Vector3& v2);
         friend Vector3 operator*(const Vector3& v1, const float& f);
         friend Vector3 operator*(const float& f, const Vector3& v1);
+
+        void multiplyVector3ByMatrix4(const Vector3& vInput, const Matrix4& m);
 };
+
+std::ostream& operator<<(std::ostream& st, Vector3 v);
+
 
 Vector3 operator+(const Vector3& v1, const Vector3& v2);
 Vector3 operator-(const Vector3& v1, const Vector3& v2);
