@@ -1,5 +1,4 @@
 #include "pave3D.hpp"
-#include "vector3.hpp"
 
 Pave3D::Pave3D(std::vector<Quad> _quads)
 {

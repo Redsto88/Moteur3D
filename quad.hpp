@@ -13,7 +13,12 @@ private:
 public:
     Quad() = default;
     Quad(const Triangle& _t1,const Triangle& _t2);
-    Quad(const Vector3& _a, const Vector3& _b, const Vector3& _c, const Vector3& _d);
+    //les vecteurs doivent être donné dans le sens suivant lorsque la normale du quad pointe vers nous
+        //bas_gauche
+        //haut_gauche
+        //haut_droite
+        //bas_droite
+    Quad(const Vector3& _a, const Vector3& _b, const Vector3& _c, const Vector3& _d); 
     Triangle getT1() const;
     Triangle getT2() const;
     std::vector<Vector3> getPoints() const;

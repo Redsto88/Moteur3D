@@ -1,10 +1,6 @@
 #ifndef PAVE3D_HPP
 #define PAVE3D_HPP
 
-#include <iostream>
-#include <vector>
-
-#include "quad.hpp"
 #include "volume3D.hpp"
 
 class Pave3D : public Volume3D
