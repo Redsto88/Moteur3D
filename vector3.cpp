@@ -63,19 +63,21 @@ void Vector3::operator/=(const float& f) {
     z /= f;
 }
 
-void Vector3::multiplyVector3ByMatrix4(const Vector3& vInput, const Matrix4& m) 
+Vector3 Vector3::multiplyVector3ByMatrix4(Vector3 vOutput, const Matrix4& m) 
 {
-    setX(vInput.getX() * m[{0,0}] + vInput.getY() * m[{1,0}] + vInput.getZ() * m[{2,0}] + m[{3,0}]);
-    setY(vInput.getX() * m[{0,1}] + vInput.getY() * m[{1,1}] + vInput.getZ() * m[{2,1}] + m[{3,1}]);
-    setZ(vInput.getX() * m[{0,2}] + vInput.getY() * m[{1,2}] + vInput.getZ() * m[{2,2}] + m[{3,2}]);
-    float w = vInput.getX() * m[{0,3}] + vInput.getY() * m[{1,3}] + vInput.getZ() * m[{2,3}] + m[{3,3}];
+    vOutput.setX(x * m[{0,0}] + y * m[{1,0}] + z * m[{2,0}] + m[{3,0}]);
+    vOutput.setY(x * m[{0,1}] + y * m[{1,1}] + z * m[{2,1}] + m[{3,1}]);
+    vOutput.setZ(x * m[{0,2}] + y * m[{1,2}] + z * m[{2,2}] + m[{3,2}]);
+    float w = x * m[{0,3}] + y * m[{1,3}] + z * m[{2,3}] + m[{3,3}];
     
     if (w != 0.0f)
     {
-        setX(getX() / w);
-        setY(getY() / w);
-        setZ(getZ() / w);
+        vOutput.setX(vOutput.getX() / w);
+        vOutput.setY(vOutput.getY() / w);
+        vOutput.setZ(vOutput.getZ() / w);
     }
+
+    return vOutput;
 }
 
 std::ostream& operator<<(std::ostream& st, Vector3 v){

@@ -196,16 +196,16 @@ void Affichage::afficher(){
     //On dessine les triangles
     for (int i = 0; i < triangles.size(); i++)
     {
-        Triangle triProjected, triTranslated; //triangle projeté et translaté pour la perspective
+        Triangle triProjected;
+        Triangle triTranslated = Triangle(triangles[i]); //triangle projeté et translaté pour la perspective
 
-        triTranslated = triangles[i];
         triTranslated.getA().setZ(triangles[i].getA().getZ() + 3.0f);
         triTranslated.getB().setZ(triangles[i].getB().getZ() + 3.0f);
         triTranslated.getC().setZ(triangles[i].getC().getZ() + 3.0f);
 
-        triProjected.getA().multiplyVector3ByMatrix4(triTranslated.getA(), matProj);
-        triProjected.getB().multiplyVector3ByMatrix4(triTranslated.getB(), matProj);
-        triProjected.getC().multiplyVector3ByMatrix4(triTranslated.getC(), matProj);
+        triProjected.setA(triTranslated.getA().multiplyVector3ByMatrix4(triProjected.getA(), matProj));
+        triProjected.setB(triTranslated.getB().multiplyVector3ByMatrix4(triProjected.getB(), matProj));
+        triProjected.setC(triTranslated.getC().multiplyVector3ByMatrix4(triProjected.getC(), matProj));
         
         //met à l'échelle de la vue
         triProjected.getA().setX(triProjected.getA().getX() + 1.0f);
