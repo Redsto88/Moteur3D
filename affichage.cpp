@@ -253,6 +253,11 @@ void Affichage::render(float time){
                     triProjected.getB().getX(), triProjected.getB().getY(),
                     triProjected.getC().getX(), triProjected.getC().getY(),
                     0xFFF542C2);
+        // SDL_Point A = {triProjected.getA().getX(), triProjected.getA().getY()};
+        // SDL_Point B = {triProjected.getB().getX(), triProjected.getB().getY()};
+        // SDL_Point C = {triProjected.getC().getX(), triProjected.getC().getY()};
+        
+        // testFillTriangle(renderer, A, B, C);
     }
     SDL_RenderPresent(renderer);
 }
@@ -411,12 +416,8 @@ void fillTriangle(SDL_Renderer* renderer, SDL_Point v1, SDL_Point v2, SDL_Point 
 SDL_Renderer* Affichage::getRenderer(){
     return renderer;
 }
-void Affichage::testFillTriangle(SDL_Renderer* renderer)
+void Affichage::testFillTriangle(SDL_Renderer* renderer,SDL_Point v1, SDL_Point v2, SDL_Point v3)
 {
-    SDL_Point v1 = {100,100};
-    SDL_Point v2 = {500,350};
-    SDL_Point v3 = {230,300};
-
     fillTriangle(renderer,v1,v2,v3);
 
     //Lignes 
