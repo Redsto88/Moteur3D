@@ -1,7 +1,7 @@
 all : clean main
 
-main : main.o Pave3D.o quad.o scene.o triangle.o vector2.o vector3.o affichage.o matrix4.o
-	g++ -o main main.o Pave3D.o quad.o scene.o triangle.o vector2.o vector3.o affichage.o matrix4.o -lSDL2
+main : main.o Pave3D.o quad.o scene.o triangle.o vector2.o vector3.o affichage.o matrix4.o sphere3D.o
+	g++ -o main main.o Pave3D.o quad.o scene.o triangle.o vector2.o vector3.o affichage.o matrix4.o sphere3D.o -lSDL2
 
 main.o : main.cpp
 	g++ -c main.cpp
@@ -29,6 +29,9 @@ affichage.o : affichage.cpp
 
 matrix4.o : matrix4.cpp
 	g++ -c matrix4.cpp
+
+sphere3D.o : sphere3D.cpp
+	g++ -c sphere3D.cpp
 
 clean :
 	touch a.o

@@ -69,8 +69,11 @@ void Affichage::Setrunning(bool _running){
 void Affichage::test(){
     render_color_buffer();
     clear_color_buffer(0xFF000000);
-    drawRect(0,0,50,50,0xFFFFFF00);
-    drawLine(0,0,800,600,0xFF00FF00);
+    SDL_Point v1 = {100, 200};
+    SDL_Point v2 = {-200, -100};
+    SDL_Point v3 = {0, 300};
+    testFillTriangle(renderer, v1, v2, v3);
+    drawTriangle(v1.x,v1.y, v2.x,v2.y, v3.x,v3.y, 0xFF0000FF);
     SDL_RenderPresent(renderer);
 }
 
@@ -94,9 +97,9 @@ void Affichage::render(float time, bool isAnimated){
     std::vector<std::vector<Quad>> faces ;
     for (int i=0; i<volumes.size(); i++){
         faces.push_back(volumes[i]->getQuads());
-        std::cout << "faces.size() du volume " << i << " = " << faces[i].size() << std::endl;
+        // std::cout << "faces.size() du volume " << i << " = " << faces[i].size() << std::endl;
     }
-    std::cout << "faces.size() = " << faces.size() << std::endl << std::endl;
+    // std::cout << "faces.size() = " << faces.size() << std::endl << std::endl;
 
     //On récupère les triangles de chaque face
     std::cout << "triangles" << std::endl;
@@ -104,7 +107,7 @@ void Affichage::render(float time, bool isAnimated){
     
     for (int i=0; i<faces.size(); i++)
     {
-        std::cout << i << std::endl;
+        // std::cout << i << std::endl;
         for (int j=0; j<faces[i].size(); j++)
         {
             //std::cout << j << std::endl;
@@ -171,7 +174,7 @@ void Affichage::render(float time, bool isAnimated){
 
     //Défintion de la matrice (est normalisée donc renvoie toujours un résultat entre -1 et 1)
     Matrix4 matProj;
-    std::cout << "matrice avant initialisation (nulle)" << std::endl << matProj << std::endl << std::endl;
+    // std::cout << "matrice avant initialisation (nulle)" << std::endl << matProj << std::endl << std::endl;
     
     matProj[{0,0}] = fAspectRatio * fFovRad;
     matProj[{1,1}] = fFovRad;
@@ -179,7 +182,7 @@ void Affichage::render(float time, bool isAnimated){
     matProj[{3,2}] = (-fFar * fNear) / (fFar - fNear);
     matProj[{2,3}] = 1.0f;
     
-    std::cout << "matrice initialisée" << std::endl << matProj << std::endl << std::endl;
+    // std::cout << "matrice initialisée" << std::endl << matProj << std::endl << std::endl;
 
 
     //matrices de rotation
@@ -223,12 +226,11 @@ void Affichage::render(float time, bool isAnimated){
         triTranslated.setB(triTranslated.getB().setZ(triTranslated.getB().getZ() + 3.0f));
         triTranslated.setC(triTranslated.getC().setZ(triTranslated.getC().getZ() + 3.0f));
         
-
-        std::cout << i << " :AVANT PROJECTION  triangle3D = " << triangles[i] << "   | triangle projeté = " << triProjected << std::endl << std::endl; 
+ 
         triProjected.setA(triTranslated.getA().multiplyVector3ByMatrix4(triTranslated.getA(), matProj));
         triProjected.setB(triTranslated.getB().multiplyVector3ByMatrix4(triTranslated.getB(), matProj));
         triProjected.setC(triTranslated.getC().multiplyVector3ByMatrix4(triTranslated.getC(), matProj));
-        std::cout << i << " :APRES PROJECTION  triangle3D = " << triangles[i] << "   | triangle projeté = " << triProjected << std::endl << std::endl;
+       
 
         //met à l'échelle de la vue
         triProjected.setA(triProjected.getA().setX(triProjected.getA().getX() + 1.0f));
@@ -245,11 +247,10 @@ void Affichage::render(float time, bool isAnimated){
         triProjected.setC(triProjected.getC().setX(triProjected.getC().getX() * 0.5f * (float) window_width));
         triProjected.setC(triProjected.getC().setY(triProjected.getC().getY() * 0.5f * (float) window_height));
 
-        std::cout << i << " :APRES  triangle3D = " << triangles[i] << "   | triangle projeté = " << triProjected << std::endl << std::endl; 
 
 
         //drawTriangle(triProjected) si sa normale pointe vers "l'oeil";
-        std::cout << i << " isVisible : " << triProjected.isVisible() << std::endl << std::endl;
+        // std::cout << i << " isVisible : " << triProjected.isVisible() << std::endl << std::endl;
         if (triProjected.isVisible())
         {
             drawTriangle(triProjected.getA().getX(), triProjected.getA().getY(),
@@ -258,11 +259,11 @@ void Affichage::render(float time, bool isAnimated){
                     0xFFF542C2);
         }
         
-        // SDL_Point A = {triProjected.getA().getX(), triProjected.getA().getY()};
-        // SDL_Point B = {triProjected.getB().getX(), triProjected.getB().getY()};
-        // SDL_Point C = {triProjected.getC().getX(), triProjected.getC().getY()};
+        SDL_Point A = {triProjected.getA().getX(), triProjected.getA().getY()};
+        SDL_Point B = {triProjected.getB().getX(), triProjected.getB().getY()};
+        SDL_Point C = {triProjected.getC().getX(), triProjected.getC().getY()};
         
-        // testFillTriangle(renderer, A, B, C);
+        testFillTriangle(renderer, A, B, C);
     }
     SDL_RenderPresent(renderer);
 }
@@ -402,6 +403,7 @@ void fillTriangle(SDL_Renderer* renderer, SDL_Point v1, SDL_Point v2, SDL_Point 
 
     // Déterminer la zone de remplissage du triangle
     int total_height = v3.y - v1.y;
+    // std::cout << "total_height = " << total_height << std::endl;
     for (int i = 0; i < total_height; i++)
     {
         bool second_half = i > v2.y - v1.y || v2.y == v1.y;
@@ -409,10 +411,11 @@ void fillTriangle(SDL_Renderer* renderer, SDL_Point v1, SDL_Point v2, SDL_Point 
         float alpha = (float) i / total_height;
         float beta  = (float)(i - (second_half ? v2.y - v1.y : 0)) / segment_height;
         SDL_Point A = {v1.x + (int)(alpha * (v3.x - v1.x)), v1.y + i};
-        SDL_Point B = {second_half ? v2.x + (int)(beta * (v3.x - v2.x)) : v1.x + (int)(beta * (v2.x - v1.x)), second_half ? v2.y + i : v1.y + i};
+        SDL_Point B = {second_half ? v2.x + (int)(beta * (v3.x - v2.x)) : v1.x + (int)(beta * (v2.x - v1.x)), v1.y+i};
         if (A.x > B.x) std::swap(A, B);
         for (int j = A.x; j <= B.x; j++)
         {
+            // std::cout << "j = " << j << std::endl;
             SDL_RenderDrawPoint(renderer, j, A.y);
         }
     }

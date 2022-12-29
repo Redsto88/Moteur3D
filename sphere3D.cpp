@@ -13,19 +13,21 @@ Sphere3D::Sphere3D(Vector3& _center, const float _radius, const int numSegments)
   
   center = _center;
   radius = _radius;
-
   // Calcul des points de la sphère
   std::vector<Vector3> points;
+  int k = 0;
   for (int i = 0; i <= numSegments; i++) {
-    float lat = -M_PI/2 + M_PI * (float)i / numSegments;
-    for (int j = 0; j < numSegments; j++) {
-      float lng = 2 * M_PI * (float)j / numSegments;
+    float lat = -M_PI/2 + M_PI * ((float)i) / numSegments;
+    for (int j = 0; j <= numSegments; j++) {
+      float lng = 2 * M_PI * ((float)j) / numSegments;
       float x = radius * cos(lat) * cos(lng) + center.getX(); 
       float y = radius * cos(lat) * sin(lng) + center.getY();
       float z = radius * sin(lat) + center.getZ();
       points.push_back({x, y, z});
+      k++;
     }
   }
+
 
   // Calcul des faces de la sphère
   for (int i = 0; i < numSegments; i++) {
@@ -34,7 +36,6 @@ Sphere3D::Sphere3D(Vector3& _center, const float _radius, const int numSegments)
       int b = (i+1) * (numSegments+1) + j;
       int c = (i+1) * (numSegments+1) + j + 1;
       int d = i * (numSegments+1) + j + 1;
-
       //face quadrilatère
       Quad quad(points[a], points[b], points[c],points[d]);
       quads.push_back(quad);
