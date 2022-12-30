@@ -10,6 +10,7 @@ class Scene
 {
     private:
         std::vector<Volume3D*> volumes;
+
     public:
         Scene();
         Scene(std::vector<Volume3D*> _volumes);

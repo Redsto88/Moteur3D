@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 
 #include "affichage.hpp"
 #include "scene.hpp"
@@ -79,6 +80,7 @@ void Affichage::test(){
 
 
 void Affichage::render(float time, bool isAnimated){
+    Vector3 camera;
     //SDL_DisplayMode DM;
     //SDL_GetCurrentDisplayMode(0, &DM);
     
@@ -203,8 +205,8 @@ void Affichage::render(float time, bool isAnimated){
     matRotX[{2,2}] = cosf(fTheta * 0.5f);
     matRotX[{3,3}] = 1;
 
-
-
+    //stockage pour les triangles projetés
+    std::vector<Triangle> trianglesToRaster;
     //On dessine les triangles
     for (int i = 0; i < triangles.size(); i++)
     {
@@ -225,47 +227,67 @@ void Affichage::render(float time, bool isAnimated){
         triTranslated.setA(triTranslated.getA().setZ(triTranslated.getA().getZ() + 3.0f));
         triTranslated.setB(triTranslated.getB().setZ(triTranslated.getB().getZ() + 3.0f));
         triTranslated.setC(triTranslated.getC().setZ(triTranslated.getC().getZ() + 3.0f));
+
+
+        Vector3 normal, ligne1, ligne2;
+        ligne1 = triTranslated.getB()-triTranslated.getA();
+        ligne2 = triTranslated.getC()-triTranslated.getA();
+        normal.setX(ligne1.getY()*ligne2.getZ() - ligne1.getZ()*ligne2.getY());
+        normal.setY(ligne1.getZ()*ligne2.getX() - ligne1.getX()*ligne2.getZ());
+        normal.setZ(ligne1.getX()*ligne2.getY() - ligne1.getY()*ligne2.getX());
+
+        float l = sqrt(normal.getX()*normal.getX() + normal.getY()*normal.getY() + normal.getZ()*normal.getZ());
+        normal.setX(normal.getX()/l);
+        normal.setY(normal.getY()/l);
+        normal.setZ(normal.getZ()/l);
         
- 
-        triProjected.setA(triTranslated.getA().multiplyVector3ByMatrix4(triTranslated.getA(), matProj));
-        triProjected.setB(triTranslated.getB().multiplyVector3ByMatrix4(triTranslated.getB(), matProj));
-        triProjected.setC(triTranslated.getC().multiplyVector3ByMatrix4(triTranslated.getC(), matProj));
-       
-
-        //met à l'échelle de la vue
-        triProjected.setA(triProjected.getA().setX(triProjected.getA().getX() + 1.0f));
-        triProjected.setA(triProjected.getA().setY(triProjected.getA().getY() + 1.0f));
-        triProjected.setB(triProjected.getB().setX(triProjected.getB().getX() + 1.0f));
-        triProjected.setB(triProjected.getB().setY(triProjected.getB().getY() + 1.0f));
-        triProjected.setC(triProjected.getC().setX(triProjected.getC().getX() + 1.0f));
-        triProjected.setC(triProjected.getC().setY(triProjected.getC().getY() + 1.0f));
-
-        triProjected.setA(triProjected.getA().setX(triProjected.getA().getX() * 0.5f * (float) window_width));
-        triProjected.setA(triProjected.getA().setY(triProjected.getA().getY() * 0.5f * (float) window_height));
-        triProjected.setB(triProjected.getB().setX(triProjected.getB().getX() * 0.5f * (float) window_width));
-        triProjected.setB(triProjected.getB().setY(triProjected.getB().getY() * 0.5f * (float) window_height));
-        triProjected.setC(triProjected.getC().setX(triProjected.getC().getX() * 0.5f * (float) window_width));
-        triProjected.setC(triProjected.getC().setY(triProjected.getC().getY() * 0.5f * (float) window_height));
-
-
-
-        //drawTriangle(triProjected) si sa normale pointe vers "l'oeil";
-        // std::cout << i << " isVisible : " << triProjected.isVisible() << std::endl << std::endl;
-        if (triProjected.isVisible())
+        Vector3 cameraRay = triTranslated.getA() - camera;
+        float dot = normal.getX()*cameraRay.getX() + normal.getY()*cameraRay.getY() + normal.getZ()*cameraRay.getZ();
+        if (dot <= 0.0f)
         {
-            drawTriangle(triProjected.getA().getX(), triProjected.getA().getY(),
-                    triProjected.getB().getX(), triProjected.getB().getY(),
-                    triProjected.getC().getX(), triProjected.getC().getY(),
-                    0xFFF542C2);
+            //on projette le triangle
+            triProjected.setA(triTranslated.getA().multiplyVector3ByMatrix4(triTranslated.getA(), matProj));
+            triProjected.setB(triTranslated.getB().multiplyVector3ByMatrix4(triTranslated.getB(), matProj));
+            triProjected.setC(triTranslated.getC().multiplyVector3ByMatrix4(triTranslated.getC(), matProj));
+        
+
+            //met à l'échelle de la vue
+            triProjected.setA(triProjected.getA().setX(triProjected.getA().getX() + 1.0f));
+            triProjected.setA(triProjected.getA().setY(triProjected.getA().getY() + 1.0f));
+            triProjected.setB(triProjected.getB().setX(triProjected.getB().getX() + 1.0f));
+            triProjected.setB(triProjected.getB().setY(triProjected.getB().getY() + 1.0f));
+            triProjected.setC(triProjected.getC().setX(triProjected.getC().getX() + 1.0f));
+            triProjected.setC(triProjected.getC().setY(triProjected.getC().getY() + 1.0f));
+
+            triProjected.setA(triProjected.getA().setX(triProjected.getA().getX() * 0.5f * (float) window_width));
+            triProjected.setA(triProjected.getA().setY(triProjected.getA().getY() * 0.5f * (float) window_height));
+            triProjected.setB(triProjected.getB().setX(triProjected.getB().getX() * 0.5f * (float) window_width));
+            triProjected.setB(triProjected.getB().setY(triProjected.getB().getY() * 0.5f * (float) window_height));
+            triProjected.setC(triProjected.getC().setX(triProjected.getC().getX() * 0.5f * (float) window_width));
+            triProjected.setC(triProjected.getC().setY(triProjected.getC().getY() * 0.5f * (float) window_height));
+
+            //stockage
+            trianglesToRaster.push_back(triProjected);
         }
-        
-        SDL_Point A = {triProjected.getA().getX(), triProjected.getA().getY()};
-        SDL_Point B = {triProjected.getB().getX(), triProjected.getB().getY()};
-        SDL_Point C = {triProjected.getC().getX(), triProjected.getC().getY()};
-        
-        testFillTriangle(renderer, A, B, C);
     }
+        //triage des triangles par profondeur
+        std::sort(trianglesToRaster.begin(), trianglesToRaster.end(), [](Triangle &t1, Triangle &t2){
+            float z1 = (t1.getA().getZ() + t1.getB().getZ() + t1.getC().getZ()) / 3.0f;
+            float z2 = (t2.getA().getZ() + t2.getB().getZ() + t2.getC().getZ()) / 3.0f;
+            return z1 > z2;
+        });
+        for (auto &triProjected : trianglesToRaster){
+            //drawTriangle(triProjected) si sa normale pointe vers "l'oeil";
+            // std::cout << i << " isVisible : " << triProjected.isVisible() << std::endl << std::endl;
+            SDL_Point A = {(int) triProjected.getA().getX(),(int) triProjected.getA().getY()};
+            SDL_Point B = {(int) triProjected.getB().getX(),(int) triProjected.getB().getY()};
+            SDL_Point C = {(int) triProjected.getC().getX(),(int) triProjected.getC().getY()};
+            
+            testFillTriangle(renderer, A, B, C);
+        }
+
     SDL_RenderPresent(renderer);
+
 }
 
 void Affichage::render_color_buffer(void) {

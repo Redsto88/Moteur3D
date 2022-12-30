@@ -64,18 +64,18 @@ Pave3D::Pave3D(const Vector3& leftBotomFront,
                 const Vector3& leftTopBack,
                 const Vector3& leftBotomBack)
 {
-    Triangle triFront1(leftBotomFront,leftTopFront,rightTopFront);
-    Triangle triFront2(leftBotomFront,rightTopFront,rightBotomFront);
-    Triangle triRight1(rightBotomFront,rightTopFront,rightTopBack);
-    Triangle triRight2(rightBotomFront,rightTopBack,rightBotomBack);
-    Triangle triBack1(rightBotomBack,rightTopBack,leftTopBack);
-    Triangle triBack2(rightBotomBack,leftTopBack,leftBotomBack);
-    Triangle triLeft1(leftBotomBack,leftTopBack,leftTopFront);
-    Triangle triLeft2(leftBotomBack,leftTopFront,leftBotomFront);
-    Triangle triTop1(leftTopFront,leftTopBack,rightTopBack);
-    Triangle triTop2(leftTopFront,rightTopBack,rightTopFront);
-    Triangle triBotom1(rightBotomBack, leftBotomBack,leftBotomFront);
-    Triangle triBotom2(rightBotomBack,leftBotomFront, rightBotomFront);
+    Triangle triFront1(leftBotomFront,rightTopFront,leftTopFront);
+    Triangle triFront2(leftBotomFront,rightBotomFront,rightTopFront);
+    Triangle triRight1(rightBotomFront,rightTopBack,rightTopFront);
+    Triangle triRight2(rightBotomFront,rightBotomBack,rightTopBack);
+    Triangle triBack1(rightBotomBack,leftTopBack,rightTopBack);
+    Triangle triBack2(rightBotomBack,leftBotomBack,leftTopBack);
+    Triangle triLeft1(leftBotomBack,leftTopFront,leftTopBack);
+    Triangle triLeft2(leftBotomBack,leftBotomFront,leftTopFront);
+    Triangle triTop1(leftTopFront,rightTopBack,leftTopBack);
+    Triangle triTop2(leftTopFront,rightTopFront,rightTopBack);
+    Triangle triBotom1(rightBotomBack,leftBotomFront, leftBotomBack);
+    Triangle triBotom2(rightBotomBack, rightBotomFront,leftBotomFront);
 
     Quad front(triFront1,triFront2);
     Quad rigth(triRight1,triRight2);

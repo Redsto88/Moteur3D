@@ -1,7 +1,7 @@
 #ifndef MATRIX4_HPP
 #define MATRIX4_HPP
 
-//#include "vector3.hpp"
+#include "vector3.hpp"
 #include <iostream>
 
 class Matrix4
@@ -19,6 +19,8 @@ class Matrix4
         const float& operator[](std::pair<int, int> index) const;
         //Vector3& operator*(const Vector3& v);
 };
+
+Matrix4 Matrix_camera (Vector3& pos, Vector3& cible, Vector3& up);
 
 std::ostream& operator<<(std::ostream& st, Matrix4& m);
 
