@@ -9,10 +9,11 @@ Sphere3D::Sphere3D(Sphere3D& _sphere)
   quads = _sphere.getQuads();
 }
 
-Sphere3D::Sphere3D(Vector3& _center, const float _radius, const int numSegments) {
+Sphere3D::Sphere3D(Vector3& _center, const float _radius, const int numSegments, uint32_t _color) {
   
   center = _center;
   radius = _radius;
+  color = _color;
   // Calcul des points de la sphère
   std::vector<Vector3> points;
   int k = 0;
@@ -30,27 +31,14 @@ Sphere3D::Sphere3D(Vector3& _center, const float _radius, const int numSegments)
 
 
   // Calcul des faces de la sphère
-  for (int i = 0; i < numSegments/2; i++) {
+  for (int i = 0; i < numSegments; i++) {
     for (int j = 0; j < numSegments; j++) {
       int a = i * (numSegments+1) + j;
       int b = (i+1) * (numSegments+1) + j;
       int c = (i+1) * (numSegments+1) + j + 1;
       int d = i * (numSegments+1) + j + 1;
       //face quadrilatère
-      Quad quad(points[b], points[d], points[a],points[c]);
-      quads.push_back(quad);
-
-    }
-  }
-
-  for (int i = numSegments/2; i < numSegments; i++) {
-    for (int j = 0; j < numSegments; j++) {
-      int a = i * (numSegments+1) + j;
-      int b = (i+1) * (numSegments+1) + j;
-      int c = (i+1) * (numSegments+1) + j + 1;
-      int d = i * (numSegments+1) + j + 1;
-      //face quadrilatère
-      Quad quad(points[c], points[a], points[b],points[d]);
+      Quad quad(points[c], points[d], points[a],points[b],color);
       quads.push_back(quad);
 
     }
@@ -65,6 +53,10 @@ Vector3 Sphere3D::getCenter()
 float Sphere3D::getRadius()
 {
   return radius;
+}
+
+uint32_t Sphere3D::getColor(){
+  return color;
 }
 
 std::vector<Quad> Sphere3D::getQuads()

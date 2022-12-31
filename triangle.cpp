@@ -1,10 +1,11 @@
 #include "triangle.hpp"
 
 
-Triangle::Triangle(Vector3 _a, Vector3 _b, Vector3 _c) {
+Triangle::Triangle(Vector3 _a, Vector3 _b, Vector3 _c, const uint32_t _color) {
     a = _a;
     b = _b;
     c = _c;
+    color = _color;
 }
 
 
@@ -18,6 +19,10 @@ Vector3 Triangle::getB() const {
 
 Vector3 Triangle::getC() const {
     return c;
+}
+
+uint32_t Triangle::getColor() const{
+    return color;
 }
 
 
@@ -47,6 +52,14 @@ bool Triangle::isVisible(){
     }
 
     return true;
+}
+
+Vector3 Triangle::getBarycentre(){
+    
+    float x = (a.getX() + c.getX()) / 2;
+    float y = (a.getY() + c.getY()) / 2;
+    float z = (a.getZ() + c.getZ()) / 2;
+    return Vector3(x,y,z);
 }
 
 

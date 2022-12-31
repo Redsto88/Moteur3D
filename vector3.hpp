@@ -1,7 +1,10 @@
 #ifndef VECTOR3_HPP
 #define VECTOR3_HPP
 
+#include <cmath>
 #include "matrix4.hpp"
+
+
 
 class Vector3 {
 
@@ -30,6 +33,7 @@ class Vector3 {
         friend Vector3 operator*(const float& f, const Vector3& v1);
 
         Vector3 multiplyVector3ByMatrix4(Vector3 vOutput, const Matrix4& m);
+        float magnitude();
 };
 
 std::ostream& operator<<(std::ostream& st, Vector3 v);
@@ -43,6 +47,7 @@ Vector3 operator/(const Vector3& v1, const float& f);
 Vector3 operator/(const float& f, const Vector3& v1);
 
 Vector3 planeNormal(const Vector3& v1, const Vector3& v2, const Vector3& v3);
+
 
 
 

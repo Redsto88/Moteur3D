@@ -29,11 +29,10 @@ class Affichage{
         void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, uint32_t color);
         void drawTriangle(Triangle tri);
         Vector2 project(Vector3 point);
-        //void render();
         bool isRunning();
         void destroy_window();
         SDL_Renderer* getRenderer();
-        void testFillTriangle(SDL_Renderer* renderer,SDL_Point v1, SDL_Point v2, SDL_Point v3, int h);
+        void testFillTriangle(SDL_Renderer* renderer,SDL_Point v1, SDL_Point v2, SDL_Point v3, uint32_t color, float illumination);
         void drawSDL_Rect(int x, int y, int width, int height);
         void test();
 };

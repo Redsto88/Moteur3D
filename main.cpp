@@ -23,16 +23,11 @@ void process_input(Affichage& affichage) {
 
 int main(int argc, char const *argv[])
 {
+    //creation de la scene
     std::cout << "creation scene" << std::endl;
     Scene scene;
     
-    // Vector3 v1(-1,-1,-1); //Test avec le constructeur qui prend une face
-    // Vector3 v2(-1,-1,1);
-    // Vector3 v3(1,-1,-1);
-    // Vector3 v4(1,-1,1);
-    // Quad q1(v1,v2,v3,v4);
-    // Pave3D* p1 = new Pave3D(q1, 2);
-    
+    //creation d'un cube
     std::cout << "creation pave" << std::endl;
     Vector3 v1(-1,-1,-1); //Test avec le constructeur qui prend 8 vector3
     Vector3 v2(-1,1,-1);
@@ -42,24 +37,25 @@ int main(int argc, char const *argv[])
     Vector3 v6(1,-1,1);
     Vector3 v7(-1,1,1);
     Vector3 v8(-1,-1,1);
-    Pave3D* p1 = new Pave3D(v1,v2,v3,v4,v5,v6,v7,v8);
+    Pave3D* p1 = new Pave3D(v1,v2,v3,v4,v5,v6,v7,v8, 0x00ffff);
 
+    //creation d'une sphere
     Vector3 v0(0,0,0);
-    Sphere3D* s1 = new Sphere3D(v0,0.8,6);
+    Sphere3D* s1 = new Sphere3D(v0,1,10, 0xff0000);
     
-    std::cout << "ajout du pave a la scene" << std::endl;
-    // scene.addVolume(s1);
-    scene.addVolume(p1);
-    //std::cout << typeid(p1).name() << std::endl;
+    //creation de la source lumineuse
+    Vector3 lightSource(2,2,-1);
+    
+    //mise en place des objets dans la scene
+    scene.addVolume(s1);
+    //scene.addVolume(p1);
+    scene.addLightSource(lightSource);
+    scene.setIntensite(20.0f);
 
     std::cout << "creation affichage" << std::endl;
     Affichage affichage(scene,800,600,640.0f);
     std::cout << (affichage.isRunning()? "true" : "false") << std::endl;
     
-    //affichage.render(); //fonctionne pas
-    //affichage.drawSDL_Rect(10,10,100,100); //fonctionne
-    //affichage.testFillTriangle(affichage.getRenderer()); //fonctionne à moitiée
-
     SDL_Event windowEvent;
     float t = 0.0f;
     while (affichage.isRunning())

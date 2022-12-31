@@ -81,6 +81,10 @@ Vector3 Vector3::multiplyVector3ByMatrix4(Vector3 vOutput, const Matrix4& m)
     return vOutput;
 }
 
+float Vector3::magnitude(){
+    return sqrt(x*x + y*y + z*z);
+}
+
 std::ostream& operator<<(std::ostream& st, Vector3 v){
     st << "(" << v.getX() << "; " << v.getY() << "; " << v.getZ() << ")" << std::endl;
     return st;
@@ -130,5 +134,7 @@ Vector3 planeNormal(const Vector3& v1, const Vector3& v2, const Vector3& v3) {
     Vector3 v6(v4.getY()*v5.getZ() - v4.getZ()*v5.getY(), v4.getZ()*v5.getX() - v4.getX()*v5.getZ(), v4.getX()*v5.getY() - v4.getY()*v5.getX());
     return v6;
 }
+
+
 
 

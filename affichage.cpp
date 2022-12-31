@@ -9,9 +9,9 @@
 
 
 typedef struct {
-    Triangle t;
-    int h;
-}triangleHypothenuse;
+    Triangle t; //triangle
+    float e; //eclairement
+}Tri_Ecl;
 
 Affichage::Affichage(Scene& _scene, const int _window_width, const int _window_height, const float _fov_factor){
     std::cout << "initialisation affichage scene" << std::endl;
@@ -94,44 +94,22 @@ float distance(Vector3 v1,Vector3 v2)
     return sqrt(dx * dx + dy * dy);
 }
 
-int hypothenuse(Triangle tri){
-    float d12 = distance(tri.getA(),tri.getB());
-    float d13 = distance(tri.getA(),tri.getC());
-    float d23 = distance(tri.getB(),tri.getC());
-    
-    if(d12 < d13){
-        if(d13 < d23){
-            return 23;
-        }
-        else {
-            return 13;
-        }
-    }
-    else if(d12 < d23){
-        return 23;
-    }
-    else{
-        return 12;
-    }
-}
 
 void Affichage::render(float time, bool isAnimated){
     Vector3 camera;
-    //SDL_DisplayMode DM;
-    //SDL_GetCurrentDisplayMode(0, &DM);
+    float xMin, xMax, yMin, yMax, zMin;
     
     render_color_buffer();
     clear_color_buffer(0xFF000000);
 
-
     //On récupère les différentes volumes
-    std::cout << "volumes" << std::endl;
+    // std::cout << "volumes" << std::endl;
     
     std::vector<Volume3D*> volumes = scene.getVolumes();
-    std::cout << "volumes.size() = " << volumes.size() << std::endl << std::endl;
+    // std::cout << "volumes.size() = " << volumes.size() << std::endl << std::endl;
 
     //On récupère les faces de chaque volume
-    std::cout << "faces" << std::endl;
+    // std::cout << "faces" << std::endl;
     std::vector<std::vector<Quad>> faces ;
     for (int i=0; i<volumes.size(); i++){
         faces.push_back(volumes[i]->getQuads());
@@ -140,7 +118,7 @@ void Affichage::render(float time, bool isAnimated){
     // std::cout << "faces.size() = " << faces.size() << std::endl << std::endl;
 
     //On récupère les triangles de chaque face
-    std::cout << "triangles" << std::endl;
+    // std::cout << "triangles" << std::endl;
     std::vector<Triangle> triangles;
     
     for (int i=0; i<faces.size(); i++)
@@ -153,54 +131,7 @@ void Affichage::render(float time, bool isAnimated){
             triangles.push_back(faces[i][j].getT2());
         }
     }
-    std::cout << "triangles.size() = " << triangles.size() << std::endl << std::endl;
-
-/*    // On définit les limites du plan de projection ainsi que la distance Z minimale et maximale d'affichage
-    float right = window_width;
-    float left = 0;
-    float top = window_height;
-    float bottom = 0;
-    float far = 100;
-    float near = 0.01;
-
-    // On définit la matrice de projection en perspective
-    std::cout << "matrices" << std::endl << std::endl;
-    Matrix4 projectionMatrix((2.0f * near) / (right - left), 0.0f, (right + left) / (right - left), 0.0f,
-                            0.0f, (2.0f * near) / (top - bottom), (top + bottom) / (top - bottom), 0.0f,
-                            0.0f, 0.0f, -(far + near) / (far - near), -(2.0f * far * near) / (far - near),
-                            0.0f, 0.0f, -1.0f, 0.0f);
-
-    std::cout << projectionMatrix[0][0] << "; " << projectionMatrix[0][1] << "; " << projectionMatrix[0][2] << "; " << projectionMatrix[0][3] << std::endl;
-    std::cout << projectionMatrix[1][0] << "; " << projectionMatrix[1][1] << "; " << projectionMatrix[1][2] << "; " << projectionMatrix[1][3] << std::endl;
-    std::cout << projectionMatrix[2][0] << "; " << projectionMatrix[2][1] << "; " << projectionMatrix[2][2] << "; " << projectionMatrix[2][3] << std::endl;
-    std::cout << projectionMatrix[3][0] << "; " << projectionMatrix[3][1] << "; " << projectionMatrix[3][2] << "; " << projectionMatrix[3][3] << std::endl << std::endl;
-
-    //on affiche les triangles
-    std::cout << "afficher triangles" << std::endl;
-    for(int i=0; i<triangles.size(); i++)
-    {
-        SDL_Point p1 = Vector3ToSDL_Point(triangles[i].getA(), projectionMatrix);
-        SDL_Point p2 = Vector3ToSDL_Point(triangles[i].getB(), projectionMatrix);
-        SDL_Point p3 = Vector3ToSDL_Point(triangles[i].getC(), projectionMatrix);
-
-        std::cout << "triangle " << i << "= " << p1.x << "; " << p1.y << "///";
-        std::cout << p2.x << "; " << p2.y << "///";
-        std::cout << p3.x << "; " << p3.y << std::endl;
-        
-        /*fillTriangle(renderer, 
-                    p1,
-                    p2,
-                    p3);
-
-        std::cout << "tentative de dessin du triangle " << i << std::endl;
-        SDL_RenderDrawLine(renderer, p1.x, p1.y, p2.x, p2.y);
-        SDL_RenderDrawLine(renderer, p2.x, p2.y, p3.x, p3.y);
-        SDL_RenderDrawLine(renderer, p3.x, p3.y, p1.x, p1.y);
-    }*/
-
-
-
-
+    // std::cout << "triangles.size() = " << triangles.size() << std::endl << std::endl;
 
 
     //matrice de projection V2
@@ -225,7 +156,7 @@ void Affichage::render(float time, bool isAnimated){
 
     //matrices de rotation
     Matrix4 matRotZ, matRotX;
-    float fTheta = isAnimated? time : 1.0f; //on laisse 0 si on ne veut pas de l'animation
+    float fTheta = isAnimated? time : 0.0f; //on laisse 0 si on ne veut pas de l'animation
 
     matRotZ[{0,0}] = cosf(fTheta);
     matRotZ[{0,1}] = sinf(fTheta);
@@ -241,8 +172,13 @@ void Affichage::render(float time, bool isAnimated){
     matRotX[{2,2}] = cosf(fTheta * 0.5f);
     matRotX[{3,3}] = 1;
 
+
+
+    // Initialisation des limites du volumes 
+    //setLimVolumes(triangles, xMin, xMax, yMin, yMax, zMin);
+
     //stockage pour les triangles projetés
-    std::vector<triangleHypothenuse> trianglesToRaster;
+    std::vector<Tri_Ecl> trianglesToRaster;
     //On dessine les triangles
     for (int i = 0; i < triangles.size(); i++)
     {
@@ -265,6 +201,7 @@ void Affichage::render(float time, bool isAnimated){
         triTranslated.setC(triTranslated.getC().setZ(triTranslated.getC().getZ() + 3.0f));
 
 
+        // calcul de la normale du triangle et de son orientation par rapport à la caméra
         Vector3 normal, ligne1, ligne2;
         ligne1 = triTranslated.getB()-triTranslated.getA();
         ligne2 = triTranslated.getC()-triTranslated.getA();
@@ -272,13 +209,14 @@ void Affichage::render(float time, bool isAnimated){
         normal.setY(ligne1.getZ()*ligne2.getX() - ligne1.getX()*ligne2.getZ());
         normal.setZ(ligne1.getX()*ligne2.getY() - ligne1.getY()*ligne2.getX());
 
-        float l = sqrt(normal.getX()*normal.getX() + normal.getY()*normal.getY() + normal.getZ()*normal.getZ());
-        normal.setX(normal.getX()/l);
-        normal.setY(normal.getY()/l);
-        normal.setZ(normal.getZ()/l);
+        float l_n = sqrt(normal.getX()*normal.getX() + normal.getY()*normal.getY() + normal.getZ()*normal.getZ());
+        normal.setX(normal.getX()/l_n);
+        normal.setY(normal.getY()/l_n);
+        normal.setZ(normal.getZ()/l_n);
         
         Vector3 cameraRay = triTranslated.getA() - camera;
         float dot = normal.getX()*cameraRay.getX() + normal.getY()*cameraRay.getY() + normal.getZ()*cameraRay.getZ();
+
         if (dot <= 0.0f)
         {
             //on projette le triangle
@@ -302,20 +240,50 @@ void Affichage::render(float time, bool isAnimated){
             triProjected.setC(triProjected.getC().setX(triProjected.getC().getX() * 0.5f * (float) window_width));
             triProjected.setC(triProjected.getC().setY(triProjected.getC().getY() * 0.5f * (float) window_height));
 
+            // calcul lumière
+            Vector3 lightRay = triTranslated.getBarycentre() - scene.getLightSource();
+            float lightRayMagnitude = lightRay.magnitude();
+            float dot_l = normal.getX()*lightRay.getX() + normal.getY()*lightRay.getY() + normal.getZ()*lightRay.getZ();
+            float eclairement;
 
-            int h = hypothenuse(triangles[i]);
+            float intensite = scene.getIntensite();
+            if(/*dot_l>=0 && */i%2 ==0){  
+                float teta = std::acos(dot_l / (normal.magnitude() * lightRay.magnitude()));      //E=(I/d^2)*cos(teta) = formule de l'éclairemnt      
+                eclairement = intensite / pow(lightRayMagnitude,2) * cos(teta);
+                
+                if(eclairement<0.1){
+                    eclairement=0.1;
+                }
+                if(eclairement>1){
+                    eclairement = 1;
+                }
+            }
+            else if(/*dot_l<=0 && */i%2 ==1){
+                float teta = std::acos(- dot_l / (normal.magnitude() * lightRay.magnitude()));      //E=(I/d^2)*cos(teta) = formule de l'éclairemnt      
+                eclairement = intensite / pow(lightRayMagnitude,2) * cos(teta);
+                
+                if(eclairement<0.1){
+                    eclairement=0;
+                }
+                if(eclairement>1){
+                    eclairement = 1.1;
+                }
+            }
+
+            std::cout << i << "triTranslated.getBarycentre() = " << triTranslated.getBarycentre() << " : dot_l = "<< dot_l << ";  lightRayMagnitude = " << lightRayMagnitude << ";  eclairement = " << eclairement << std::endl << std::endl;
 
             //stockage
-            trianglesToRaster.push_back({triProjected,h});
+            trianglesToRaster.push_back({triProjected,eclairement});
         }
     }
         
     //triage des triangles par profondeur
-    std::sort(trianglesToRaster.begin(), trianglesToRaster.end(), [](triangleHypothenuse &t1, triangleHypothenuse &t2){
+    std::sort(trianglesToRaster.begin(), trianglesToRaster.end(), [](Tri_Ecl &t1, Tri_Ecl &t2){
         float z1 = (t1.t.getA().getZ() + t1.t.getB().getZ() + t1.t.getC().getZ()) / 3.0f;
         float z2 = (t2.t.getA().getZ() + t2.t.getB().getZ() + t2.t.getC().getZ()) / 3.0f;
         return z1 > z2;
     });
+
 
     for (auto &triProjected : trianglesToRaster){
         //drawTriangle(triProjected) si sa normale pointe vers la caméra et qu'il n'est pas caché derrière un autre
@@ -325,7 +293,7 @@ void Affichage::render(float time, bool isAnimated){
         SDL_Point B = {(int) triProjected.t.getB().getX(),(int) triProjected.t.getB().getY()};
         SDL_Point C = {(int) triProjected.t.getC().getX(),(int) triProjected.t.getC().getY()};
            
-        testFillTriangle(renderer, A, B, C, triProjected.h);
+        testFillTriangle(renderer, A, B, C, triProjected.t.getColor(), triProjected.e);
         
     }
 
@@ -424,19 +392,6 @@ Vector2 Affichage::project(Vector3 point){
     return projected_point;
 }
 
-/*
-void Affichage::render(){
-    SDL_UpdateTexture(
-        SDL_CreateTextureFromSurface(renderer, SDL_CreateRGBSurfaceWithFormatFrom(color_buffer, window_width, window_height, 32, window_width * sizeof(uint32_t), SDL_PIXELFORMAT_RGBA32)),
-        NULL,
-        color_buffer,
-        (int)(window_width * sizeof(uint32_t))
-    );
-    SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, SDL_CreateTextureFromSurface(renderer, SDL_CreateRGBSurfaceWithFormatFrom(color_buffer, window_width, window_height, 32, window_width * sizeof(uint32_t), SDL_PIXELFORMAT_RGBA32)), NULL, NULL);
-    SDL_RenderPresent(renderer);
-}*/ 
-
 bool Affichage::isRunning(){
     return running;
 }
@@ -458,9 +413,6 @@ void Affichage::destroy_window(){
 // Fonction qui rasterise un triangle avec l'algorithme de Bresenham
 void fillTriangle(SDL_Renderer* renderer, SDL_Point v1, SDL_Point v2, SDL_Point v3)
 {
-    //Couleur de remplissage
-    SDL_SetRenderDrawColor(renderer,255,0,0,SDL_ALPHA_OPAQUE); //Rouge
-
     // Trier les sommets du triangle par ordre croissant de y
     if (v1.y > v2.y) std::swap(v1, v2);
     if (v1.y > v3.y) std::swap(v1, v3);
@@ -491,35 +443,37 @@ SDL_Renderer* Affichage::getRenderer(){
 }
 
 
-
-void Affichage::testFillTriangle(SDL_Renderer* renderer,SDL_Point v1, SDL_Point v2, SDL_Point v3, int h)
+SDL_Colour UintToColour(Uint32 colour)
 {
-    //fillTriangle(renderer,v1,v2,v3);
+	SDL_Colour tempcol;
+	tempcol.a = 255;
+	tempcol.r = (colour >> 16) & 0xFF;
+	tempcol.g = (colour >> 8) & 0xFF;
+	tempcol.b = colour & 0xFF;
+	return tempcol;
+}
+
+
+void Affichage::testFillTriangle(SDL_Renderer* renderer,SDL_Point v1, SDL_Point v2, SDL_Point v3, uint32_t color, float eclairement)
+{   
+    SDL_Color col = UintToColour(color);
+
+    //Couleur de remplissage
+    SDL_SetRenderDrawColor(renderer,col.r * eclairement, col.g * eclairement, col.b * eclairement, col.a); 
+    fillTriangle(renderer,v1,v2,v3);
 
     //Lignes 
 
     //Couleur des lignes
-    SDL_SetRenderDrawColor(renderer,255,123,0,SDL_ALPHA_OPAQUE);
+    SDL_SetRenderDrawColor(renderer,col.r,col.g,col.b,col.a);
 
     // Dessiner plusieurs lignes côte à côte pour simuler une ligne plus épaisse
     int line_thickness = 5;
     for (int i = 0; i < line_thickness; i++)
     {   
-            if(h == 12){
-            SDL_SetRenderDrawColor(renderer,255,0,0,SDL_ALPHA_OPAQUE);
-            SDL_RenderDrawLine(renderer, v1.x + i, v1.y, v3.x + i, v3.y);
-            SDL_RenderDrawLine(renderer, v2.x + i, v2.y, v3.x + i, v3.y);
-        }
-        if(h==13){
-            SDL_SetRenderDrawColor(renderer,0,255,0,SDL_ALPHA_OPAQUE);
-            SDL_RenderDrawLine(renderer, v1.x + i, v1.y, v2.x + i, v2.y);
-            SDL_RenderDrawLine(renderer, v2.x + i, v2.y, v3.x + i, v3.y);
-        }
-        if(h==23){
-            SDL_SetRenderDrawColor(renderer,0,0,255,SDL_ALPHA_OPAQUE);
-            SDL_RenderDrawLine(renderer, v1.x + i, v1.y, v2.x + i, v2.y);
-            SDL_RenderDrawLine(renderer, v1.x + i, v1.y, v3.x + i, v3.y);
-        }
+        SDL_SetRenderDrawColor(renderer,255,255,255,SDL_ALPHA_OPAQUE);
+        SDL_RenderDrawLine(renderer, v1.x + i, v1.y, v2.x + i, v2.y);
+        SDL_RenderDrawLine(renderer, v2.x + i, v2.y, v3.x + i, v3.y);
     }
 }
 
@@ -537,6 +491,3 @@ void Affichage::drawSDL_Rect(int x, int y, int width, int height){
 
     SDL_RenderDrawRect(renderer, &rect);
 }
-
-
-
