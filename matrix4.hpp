@@ -1,7 +1,6 @@
 #ifndef MATRIX4_HPP
 #define MATRIX4_HPP
 
-#include "vector3.hpp"
 #include <iostream>
 
 class Matrix4
@@ -20,7 +19,7 @@ class Matrix4
         //Vector3& operator*(const Vector3& v);
 };
 
-Matrix4 Matrix_camera (Vector3& pos, Vector3& cible, Vector3& up);
+//Matrix4 Matrix_camera (Vector3& pos, Vector3& cible, Vector3& up);
 
 std::ostream& operator<<(std::ostream& st, Matrix4& m);
 

@@ -30,21 +30,29 @@ Sphere3D::Sphere3D(Vector3& _center, const float _radius, const int numSegments)
 
 
   // Calcul des faces de la sphère
-  for (int i = 0; i < numSegments; i++) {
+  for (int i = 0; i < numSegments/2; i++) {
     for (int j = 0; j < numSegments; j++) {
       int a = i * (numSegments+1) + j;
       int b = (i+1) * (numSegments+1) + j;
       int c = (i+1) * (numSegments+1) + j + 1;
       int d = i * (numSegments+1) + j + 1;
       //face quadrilatère
-      Quad quad(points[a], points[b], points[c],points[d]);
+      Quad quad(points[b], points[d], points[a],points[c]);
       quads.push_back(quad);
 
-      /*triangles des faces Permtra de faire des tests pour faire des vérifications
-      Triangle tri1(points[a], points[b], points[c]);
-      Triangle tri2(points[a], points[c], points[d]);
-      triangles.push_back(tri1);
-      triangles.push_back(tri2);*/
+    }
+  }
+
+  for (int i = numSegments/2; i < numSegments; i++) {
+    for (int j = 0; j < numSegments; j++) {
+      int a = i * (numSegments+1) + j;
+      int b = (i+1) * (numSegments+1) + j;
+      int c = (i+1) * (numSegments+1) + j + 1;
+      int d = i * (numSegments+1) + j + 1;
+      //face quadrilatère
+      Quad quad(points[c], points[a], points[b],points[d]);
+      quads.push_back(quad);
+
     }
   }
 }

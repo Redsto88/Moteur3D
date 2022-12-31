@@ -9,7 +9,6 @@ class Sphere3D : public Volume3D
         Vector3 center;
         float radius;
         std::vector<Quad> quads;
-        //std::vector<Triangle> triangles;
     public:
 
         Sphere3D(Sphere3D& _sphere);

@@ -72,8 +72,8 @@ Pave3D::Pave3D(const Vector3& leftBotomFront,
     Triangle triBack2(rightBotomBack,leftBotomBack,leftTopBack);
     Triangle triLeft1(leftBotomBack,leftTopFront,leftTopBack);
     Triangle triLeft2(leftBotomBack,leftBotomFront,leftTopFront);
-    Triangle triTop1(leftTopFront,rightTopBack,leftTopBack);
-    Triangle triTop2(leftTopFront,rightTopFront,rightTopBack);
+    Triangle triTop1(rightTopBack,leftTopFront,rightTopFront);
+    Triangle triTop2(leftTopFront,rightTopBack,leftTopBack);
     Triangle triBotom1(rightBotomBack,leftBotomFront, leftBotomBack);
     Triangle triBotom2(rightBotomBack, rightBotomFront,leftBotomFront);
 

@@ -44,12 +44,12 @@ int main(int argc, char const *argv[])
     Vector3 v8(-1,-1,1);
     Pave3D* p1 = new Pave3D(v1,v2,v3,v4,v5,v6,v7,v8);
 
-    Vector3 v0(0,1,0);
-    Sphere3D* s1 = new Sphere3D(v0,0.8,15);
+    Vector3 v0(0,0,0);
+    Sphere3D* s1 = new Sphere3D(v0,0.8,6);
     
     std::cout << "ajout du pave a la scene" << std::endl;
+    // scene.addVolume(s1);
     scene.addVolume(p1);
-    scene.addVolume(s1);
     //std::cout << typeid(p1).name() << std::endl;
 
     std::cout << "creation affichage" << std::endl;
