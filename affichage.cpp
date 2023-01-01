@@ -194,7 +194,7 @@ void Affichage::render(float time, bool isAnimated){
         Vector3 cameraRay = triTranslated.getA() - vCamera;
         float dot = normal.getX()*cameraRay.getX() + normal.getY()*cameraRay.getY() + normal.getZ()*cameraRay.getZ();
 
-        if (dot <= 0.0f)
+        if (dot >= 0.0f)
         {
 
             //on applique la matrice de vue
@@ -244,7 +244,7 @@ void Affichage::render(float time, bool isAnimated){
             float eclairement;
 
             float intensite = scene.getIntensite();
-            if(/*dot_l>=0 &&*/ i%2 ==0){  
+            //if(/*dot_l>=0 &&*/ i%2 ==0){  
                 float teta = std::acos(dot_l / (normal.magnitude() * lightRay.magnitude()));      //E=(I/d^2)*cos(teta) = formule de l'éclairemnt      
                 eclairement = intensite / pow(lightRayMagnitude,2) * cos(teta);
                 
@@ -254,9 +254,9 @@ void Affichage::render(float time, bool isAnimated){
                 if(eclairement>1){
                     eclairement = 1;
                 }
-            }
-            else if(/*dot_l<=0 &&*/ i%2 ==1){
-                float teta = std::acos(- dot_l / (normal.magnitude() * lightRay.magnitude()));      //E=(I/d^2)*cos(teta) = formule de l'éclairemnt      
+            //}
+            //else if(/*dot_l<=0 &&*/ i%2 ==1){
+            /*    float teta = std::acos(- dot_l / (normal.magnitude() * lightRay.magnitude()));      //E=(I/d^2)*cos(teta) = formule de l'éclairemnt      
                 eclairement = intensite / pow(lightRayMagnitude,2) * cos(teta);
                 
                 if(eclairement<0.1){
@@ -265,7 +265,7 @@ void Affichage::render(float time, bool isAnimated){
                 if(eclairement>1){
                     eclairement = 1;
                 }
-            }
+            }*/
 
             //stockage
             trianglesToRaster.push_back({triProjected,eclairement});

@@ -32,7 +32,7 @@ int main(int argv, char** args)  //int argv, char** args //// int argc, char *ar
     colorLines.r = 100;
     colorLines.g = 100;
     colorLines.b = 100;
-    Scene scene(volumes,lightSource, 20.0f, true, false, 2, colorLines, true); 
+    Scene scene(volumes,lightSource, 20.0f, false, true, 2, colorLines, true); 
     
     //creation d'un cube
     SDL_Color colorP;
