@@ -33,7 +33,7 @@ Sphere3D::Sphere3D(Vector3& _center, const float _radius, const int numSegments,
       int c = (i+1) * (numSegments+1) + j + 1;
       int d = i * (numSegments+1) + j + 1;
       //face quadrilatère
-      Quad quad(points[c], points[d], points[a],points[b],color);
+      Quad quad(points[a], points[b], points[c],points[d],color);
       quads.push_back(quad);
 
     }
