@@ -11,7 +11,7 @@ class Triangle{
         Vector3 b;
         Vector3 c;
     public:
-        Triangle() = default;
+        Triangle();
         Triangle(Vector3 a, Vector3 b, Vector3 c);
         Vector3 getA() const;
         Vector3 getB() const;

@@ -1,6 +1,13 @@
 #include "triangle.hpp"
 
 
+Triangle::Triangle() {
+    a = Vector3(0,0,0);
+    b = Vector3(0,0,0);
+    c = Vector3(0,0,0);
+}
+
+
 Triangle::Triangle(Vector3 _a, Vector3 _b, Vector3 _c) {
     a = _a;
     b = _b;

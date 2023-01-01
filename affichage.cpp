@@ -115,7 +115,7 @@ int hypothenuse(Triangle tri){
     }
 }
 
-void Affichage::render(float time, bool isAnimated){
+void Affichage::render(float time, bool isAnimated, float fYaw){
     Vector3 camera;
     //SDL_DisplayMode DM;
     //SDL_GetCurrentDisplayMode(0, &DM);
@@ -125,13 +125,13 @@ void Affichage::render(float time, bool isAnimated){
 
 
     //On récupère les différentes volumes
-    std::cout << "volumes" << std::endl;
+    // std::cout << "volumes" << std::endl;
     
     std::vector<Volume3D*> volumes = scene.getVolumes();
-    std::cout << "volumes.size() = " << volumes.size() << std::endl << std::endl;
+    // std::cout << "volumes.size() = " << volumes.size() << std::endl << std::endl;
 
     //On récupère les faces de chaque volume
-    std::cout << "faces" << std::endl;
+    // std::cout << "faces" << std::endl;
     std::vector<std::vector<Quad>> faces ;
     for (int i=0; i<volumes.size(); i++){
         faces.push_back(volumes[i]->getQuads());
@@ -140,7 +140,7 @@ void Affichage::render(float time, bool isAnimated){
     // std::cout << "faces.size() = " << faces.size() << std::endl << std::endl;
 
     //On récupère les triangles de chaque face
-    std::cout << "triangles" << std::endl;
+    // std::cout << "triangles" << std::endl;
     std::vector<Triangle> triangles;
     
     for (int i=0; i<faces.size(); i++)
@@ -153,59 +153,11 @@ void Affichage::render(float time, bool isAnimated){
             triangles.push_back(faces[i][j].getT2());
         }
     }
-    std::cout << "triangles.size() = " << triangles.size() << std::endl << std::endl;
-
-/*    // On définit les limites du plan de projection ainsi que la distance Z minimale et maximale d'affichage
-    float right = window_width;
-    float left = 0;
-    float top = window_height;
-    float bottom = 0;
-    float far = 100;
-    float near = 0.01;
-
-    // On définit la matrice de projection en perspective
-    std::cout << "matrices" << std::endl << std::endl;
-    Matrix4 projectionMatrix((2.0f * near) / (right - left), 0.0f, (right + left) / (right - left), 0.0f,
-                            0.0f, (2.0f * near) / (top - bottom), (top + bottom) / (top - bottom), 0.0f,
-                            0.0f, 0.0f, -(far + near) / (far - near), -(2.0f * far * near) / (far - near),
-                            0.0f, 0.0f, -1.0f, 0.0f);
-
-    std::cout << projectionMatrix[0][0] << "; " << projectionMatrix[0][1] << "; " << projectionMatrix[0][2] << "; " << projectionMatrix[0][3] << std::endl;
-    std::cout << projectionMatrix[1][0] << "; " << projectionMatrix[1][1] << "; " << projectionMatrix[1][2] << "; " << projectionMatrix[1][3] << std::endl;
-    std::cout << projectionMatrix[2][0] << "; " << projectionMatrix[2][1] << "; " << projectionMatrix[2][2] << "; " << projectionMatrix[2][3] << std::endl;
-    std::cout << projectionMatrix[3][0] << "; " << projectionMatrix[3][1] << "; " << projectionMatrix[3][2] << "; " << projectionMatrix[3][3] << std::endl << std::endl;
-
-    //on affiche les triangles
-    std::cout << "afficher triangles" << std::endl;
-    for(int i=0; i<triangles.size(); i++)
-    {
-        SDL_Point p1 = Vector3ToSDL_Point(triangles[i].getA(), projectionMatrix);
-        SDL_Point p2 = Vector3ToSDL_Point(triangles[i].getB(), projectionMatrix);
-        SDL_Point p3 = Vector3ToSDL_Point(triangles[i].getC(), projectionMatrix);
-
-        std::cout << "triangle " << i << "= " << p1.x << "; " << p1.y << "///";
-        std::cout << p2.x << "; " << p2.y << "///";
-        std::cout << p3.x << "; " << p3.y << std::endl;
-        
-        /*fillTriangle(renderer, 
-                    p1,
-                    p2,
-                    p3);
-
-        std::cout << "tentative de dessin du triangle " << i << std::endl;
-        SDL_RenderDrawLine(renderer, p1.x, p1.y, p2.x, p2.y);
-        SDL_RenderDrawLine(renderer, p2.x, p2.y, p3.x, p3.y);
-        SDL_RenderDrawLine(renderer, p3.x, p3.y, p1.x, p1.y);
-    }*/
-
-
-
-
 
 
     //matrice de projection V2
-    float fNear = 10000.0f;
-    float fFar = 1000000000000000000000000.0f;
+    float fNear = 0.1f;
+    float fFar = 1000.0f;
     float fFov = 90.0f;
     float fAspectRatio = (float)window_height / (float)window_width;
     float fFovRad = 1.0f / tanf(fFov * 0.5f / 180.0f * 3.14159f);
@@ -224,7 +176,7 @@ void Affichage::render(float time, bool isAnimated){
 
 
     //matrices de rotation
-    Matrix4 matRotZ, matRotX;
+    Matrix4 matRotZ, matRotX, matRotY,  matView;
     float fTheta = isAnimated? time : 1.0f; //on laisse 0 si on ne veut pas de l'animation
 
     matRotZ[{0,0}] = cosf(fTheta);
@@ -240,6 +192,34 @@ void Affichage::render(float time, bool isAnimated){
     matRotX[{2,1}] = -sinf(fTheta * 0.5f);
     matRotX[{2,2}] = cosf(fTheta * 0.5f);
     matRotX[{3,3}] = 1;
+
+    matRotY[{0,0}] = cosf(fYaw);
+    matRotY[{0,2}] = sinf(fYaw);
+    matRotY[{1,1}] = 1;
+    matRotY[{2,0}] = -sinf(fYaw);
+    matRotY[{2,2}] = cosf(fYaw);
+    matRotY[{3,3}] = 1;
+
+    Vector3 vCamera = scene.getCameraPosition();
+    Vector3 vTarget = scene.getTarget();
+    Vector3 vUp = scene.getUpDirection();
+    std::cout << "vTarget AVANT= " << vTarget << std::endl;
+    std::cout << "look dir = " << scene.getLookDirection() << std::endl;
+    Vector3 vLookDir =  scene.getLookDirection().multiplyVector3ByMatrix4(scene.getLookDirection(),matRotY);
+    vTarget = vCamera + vLookDir;
+    std::cout << "vTarget APRES= " << vTarget << std::endl;
+    std::cout << "look dir = " << vLookDir << std::endl;
+    std::cout << "vCamera = " << vCamera << std::endl;
+    std::cout << "vTarget = " << vTarget << std::endl;
+    std::cout << "vUp = " << vUp << std::endl;
+
+    matView = (Matrix_camera(vCamera, vTarget, vUp)).inverse();
+
+
+    std::cout << "matView = " << matView << std::endl;
+
+
+   
 
     //stockage pour les triangles projetés
     std::vector<triangleHypothenuse> trianglesToRaster;
@@ -260,9 +240,10 @@ void Affichage::render(float time, bool isAnimated){
 
 
 
-        triTranslated.setA(triTranslated.getA().setZ(triTranslated.getA().getZ() + 3.0f));
-        triTranslated.setB(triTranslated.getB().setZ(triTranslated.getB().getZ() + 3.0f));
-        triTranslated.setC(triTranslated.getC().setZ(triTranslated.getC().getZ() + 3.0f));
+
+        // triTranslated.setA(triTranslated.getA().setZ(triTranslated.getA().getZ() + 5.0f));
+        // triTranslated.setB(triTranslated.getB().setZ(triTranslated.getB().getZ() + 5.0f));
+        // triTranslated.setC(triTranslated.getC().setZ(triTranslated.getC().getZ() + 5.0f));
 
 
         Vector3 normal, ligne1, ligne2;
@@ -281,10 +262,30 @@ void Affichage::render(float time, bool isAnimated){
         float dot = normal.getX()*cameraRay.getX() + normal.getY()*cameraRay.getY() + normal.getZ()*cameraRay.getZ();
         if (dot <= 0.0f)
         {
-            //on projette le triangle
+
+            //on applique la matrice de vue
+            triTranslated.setA(triTranslated.getA().multiplyVector3ByMatrix4(triTranslated.getA(), matView));
+            triTranslated.setB(triTranslated.getB().multiplyVector3ByMatrix4(triTranslated.getB(), matView));
+            triTranslated.setC(triTranslated.getC().multiplyVector3ByMatrix4(triTranslated.getC(), matView));
+        
+
+            // //on projette le triangle
             triProjected.setA(triTranslated.getA().multiplyVector3ByMatrix4(triTranslated.getA(), matProj));
             triProjected.setB(triTranslated.getB().multiplyVector3ByMatrix4(triTranslated.getB(), matProj));
             triProjected.setC(triTranslated.getC().multiplyVector3ByMatrix4(triTranslated.getC(), matProj));
+
+            // //on divise par w pour avoir des coordonnées homogènes
+            triProjected.setA(triProjected.getA() / triProjected.getA().getW());
+            triProjected.setB(triProjected.getB() / triProjected.getB().getW());
+            triProjected.setC(triProjected.getC() / triProjected.getC().getW());
+            
+            triProjected.setA(triProjected.getA().setX(triProjected.getA().getX() * -1.0f));
+            triProjected.setB(triProjected.getB().setX(triProjected.getB().getX() * -1.0f));
+            triProjected.setC(triProjected.getC().setX(triProjected.getC().getX() * -1.0f));
+            triProjected.setA(triProjected.getA().setY(triProjected.getA().getY() * -1.0f));
+            triProjected.setB(triProjected.getB().setY(triProjected.getB().getY() * -1.0f));
+            triProjected.setC(triProjected.getC().setY(triProjected.getC().getY() * -1.0f));
+            
         
 
             //met à l'échelle de la vue
@@ -538,5 +539,8 @@ void Affichage::drawSDL_Rect(int x, int y, int width, int height){
     SDL_RenderDrawRect(renderer, &rect);
 }
 
+Scene* Affichage::getScene(){
+    return &scene;
+}
 
 

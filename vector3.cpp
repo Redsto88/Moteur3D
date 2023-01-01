@@ -1,5 +1,5 @@
 #include <stdexcept>
-
+#include <cmath>
 #include "vector3.hpp"
 
 
@@ -7,6 +7,7 @@ Vector3::Vector3(float _x, float _y, float _z) {
     x = _x;
     y = _y;
     z = _z;
+    w = 1;
 }
 
 float Vector3::getX() const {
@@ -19,6 +20,10 @@ float Vector3::getY() const {
 
 float Vector3::getZ() const {
     return z;
+}
+
+float Vector3::getW() const {
+    return w;
 }
 
 Vector3 Vector3::setX(const float _x)
@@ -36,6 +41,12 @@ Vector3 Vector3::setY(const float _y)
 Vector3 Vector3::setZ(const float _z)
 {
     z=_z;
+    return *this;
+}
+
+Vector3 Vector3::setW(const float _w)
+{
+    w=_w;
     return *this;
 }
 
@@ -68,18 +79,32 @@ void Vector3::operator/=(const float& f) {
 
 Vector3 Vector3::multiplyVector3ByMatrix4(Vector3 vOutput, const Matrix4& m) 
 {
-    vOutput.setX(x * m[{0,0}] + y * m[{1,0}] + z * m[{2,0}] + m[{3,0}]);
-    vOutput.setY(x * m[{0,1}] + y * m[{1,1}] + z * m[{2,1}] + m[{3,1}]);
-    vOutput.setZ(x * m[{0,2}] + y * m[{1,2}] + z * m[{2,2}] + m[{3,2}]);
-    float w = x * m[{0,3}] + y * m[{1,3}] + z * m[{2,3}] + m[{3,3}];
-    
-    if (w != 0.0f)
-    {
-        vOutput /= w;
-    }
+    vOutput.setX(x * m[{0,0}] + y * m[{1,0}] + z * m[{2,0}] + w*m[{3,0}]);
+    vOutput.setY(x * m[{0,1}] + y * m[{1,1}] + z * m[{2,1}] + w*m[{3,1}]);
+    vOutput.setZ(x * m[{0,2}] + y * m[{1,2}] + z * m[{2,2}] + w*m[{3,2}]);
+    vOutput.setW(x * m[{0,3}] + y * m[{1,3}] + z * m[{2,3}] + w*m[{3,3}]);
+
 
     return vOutput;
 }
+
+void Vector3::normalize() {
+    float length = std::sqrt(x*x + y*y + z*z);
+    if (length != 0) {
+        x /= length;
+        y /= length;
+        z /= length;
+    }
+}
+
+float Vector3::dotProduct(const Vector3& v) const {
+    return x*v.x + y*v.y + z*v.z;
+}
+
+Vector3 Vector3::crossProduct(const Vector3& v) const {
+    return Vector3(y*v.z - z*v.y, z*v.x - x*v.z, x*v.y - y*v.x);
+}
+
 
 std::ostream& operator<<(std::ostream& st, Vector3 v){
     st << "(" << v.getX() << "; " << v.getY() << "; " << v.getZ() << ")" << std::endl;
@@ -95,7 +120,7 @@ Vector3 operator+(const Vector3& v1, const Vector3& v2) {
 
 Vector3 operator-(const Vector3& v1, const Vector3& v2) {
     Vector3 v3(0, 0, 0);
-    v3-=v1;
+    v3+=v1;
     v3-=v2;
     return v3;
 }
@@ -131,4 +156,34 @@ Vector3 planeNormal(const Vector3& v1, const Vector3& v2, const Vector3& v3) {
     return v6;
 }
 
+Matrix4 Matrix_camera (Vector3& pos, Vector3& cible, Vector3& up)
+{
 
+    std::cout << "pos : " << pos << std::endl;
+    std::cout << "cible : " << cible << std::endl;
+    std::cout << "up : " << up << std::endl;
+    //calcul de la direction dans laquelle on regarde
+    Vector3 forward = cible - pos;
+    std::cout << "forward : " << forward << std::endl;
+    forward.normalize();
+
+    Vector3 up2 = forward*up.dotProduct(forward);
+    up2 = up - up2;
+    up2.normalize();
+
+    Vector3 right = CrossProduct(up2,forward);
+    right.normalize();
+
+    Matrix4 result;
+    result[{0,0}] = right.getX(); result[{0,1}] = right.getY(); result[{0,2}] = right.getZ(); result[{0,3}] = 0.0f;
+    result[{1,0}] = up2.getX(); result[{1,1}] = up2.getY(); result[{1,2}] = up2.getZ(); result[{1,3}] = 0.0f;
+    result[{2,0}] = forward.getX(); result[{2,1}] = forward.getY(); result[{2,2}] = forward.getZ(); result[{2,3}] = 0.0f;
+    result[{3,0}] = pos.getX(); result[{3,1}] = pos.getY(); result[{3,2}] = pos.getZ(); result[{3,3}] = 1.0f;
+    std::cout << "BONJOUR" << std::endl;
+
+    return result;
+}
+
+Vector3 CrossProduct(const Vector3& v1, const Vector3& v2) {
+    return Vector3(v1.getY()*v2.getZ() - v1.getZ()*v2.getY(), v1.getZ()*v2.getX() - v1.getX()*v2.getZ(), v1.getX()*v2.getY() - v1.getY()*v2.getX());
+}

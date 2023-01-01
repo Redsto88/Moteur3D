@@ -16,12 +16,15 @@ class Matrix4
                 float m30, float m31, float m32, float m33);
         float& operator[](std::pair<int, int> index);
         const float& operator[](std::pair<int, int> index) const;
+        Matrix4 inverse();
+        Matrix4 operator *= (const Matrix4& m);
+        friend Matrix4 operator*(const Matrix4& m, const Matrix4& m2);
         //Vector3& operator*(const Vector3& v);
 };
 
-//Matrix4 Matrix_camera (Vector3& pos, Vector3& cible, Vector3& up);
 
 std::ostream& operator<<(std::ostream& st, Matrix4& m);
+Matrix4 operator*(const Matrix4& m1, const Matrix4& m2);
 
 
 #endif

@@ -5,10 +5,10 @@
 #include "pave3D.hpp"
 #include "sphere3D.hpp"
 
-void process_input(Affichage& affichage) {
+float process_input(Affichage& affichage, Scene& scene, float fYaw) {
     SDL_Event event;
     SDL_PollEvent(&event);
-
+    float f = fYaw;
     switch (event.type) {
         case SDL_QUIT:
             affichage.Setrunning(false);
@@ -16,8 +16,38 @@ void process_input(Affichage& affichage) {
         case SDL_KEYDOWN:
             if (event.key.keysym.sym == SDLK_ESCAPE)
                 affichage.Setrunning(false);
+            if (event.key.keysym.sym == SDLK_UP){
+                std::cout << "up" << std::endl;
+                Vector3 v(0,0.1,0);
+                affichage.getScene()->setCameraPosition(affichage.getScene()->getCameraPosition() + v);
+            }
+            if (event.key.keysym.sym == SDLK_DOWN){
+                std::cout << "down" << std::endl;
+                Vector3 v(0,-0.1,0);
+                affichage.getScene()->setCameraPosition(affichage.getScene()->getCameraPosition() + v);
+            }
+            if (event.key.keysym.sym == SDLK_LEFT){
+                std::cout << "left" << std::endl;
+                f-=0.1;
+            }
+            if (event.key.keysym.sym == SDLK_RIGHT){
+                std::cout << "right" << std::endl;
+                f+=0.1;
+            }
+            if (event.key.keysym.sym == SDLK_w){
+                std::cout << "w" << std::endl;
+                Vector3 v(0,0,0.1);
+                affichage.getScene()->setCameraPosition(affichage.getScene()->getCameraPosition() + v);
+            }
+            if (event.key.keysym.sym == SDLK_s){
+                std::cout << "s" << std::endl;
+                Vector3 v(0,0,-0.1);
+                affichage.getScene()->setCameraPosition(affichage.getScene()->getCameraPosition() + v);
+            }
             break;
+            
     }
+    return f;
 }
 
 
@@ -62,10 +92,11 @@ int main(int argc, char const *argv[])
 
     SDL_Event windowEvent;
     float t = 0.0f;
+    float fYaw = 0.0f;
     while (affichage.isRunning())
     {
-        process_input(affichage);
-        affichage.render(t,true);
+        fYaw = process_input(affichage, scene, fYaw);
+        affichage.render(t,false,fYaw);
         // affichage.test();
         t = (float)SDL_GetTicks()/1000.0f;
     }
