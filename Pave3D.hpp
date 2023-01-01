@@ -10,10 +10,7 @@ class Pave3D : public Volume3D
         SDL_Color color;
 
     public:
-
-        Pave3D(std::vector<Quad> _quads, SDL_Color _color);
         Pave3D(Pave3D& _pave);
-        Pave3D(const Quad& _quad, float height, const SDL_Color _color);
         Pave3D(const Vector3& leftBotomForward,
                 const Vector3& leftTopForward,
                 const Vector3& rightTopForward,

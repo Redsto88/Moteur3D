@@ -24,6 +24,47 @@ void process_input(Affichage& affichage, Scene& scene) {
 
 int main(int argv, char** args)  //int argv, char** args //// int argc, char *argv[]
 {
+    bool lit = true;
+    bool wireframe = true;
+    bool animation = false;
+
+    // On vérifie si un argument a été donné
+    if (argv > 1) {
+    
+        // On convertit l'argument en string
+        std::string arg = args[1];
+
+        // On vérifie les arguments
+        if (arg == "L") {
+            lit = true;
+            wireframe = false;
+        }
+        if (arg == "LW") {
+            lit = true;
+            wireframe = true;
+        }
+        if (arg == "U") {
+            lit = false;
+            wireframe = false;
+        }
+        if (arg == "UW") {
+            lit = false;
+            wireframe = true;
+        }
+        if (arg == "anim") {
+            animation = true;
+        }
+    }
+
+    if (argv > 2){
+        
+        std::string arg = args[2];
+
+        if (arg == "anim") {
+            animation = true;
+        }
+    }
+
     //creation de la scene
     std::vector<Volume3D*> volumes;
     Vector3 lightSource(2,2,-1);
@@ -31,7 +72,8 @@ int main(int argv, char** args)  //int argv, char** args //// int argc, char *ar
     colorLines.r = 100;
     colorLines.g = 100;
     colorLines.b = 100;
-    Scene scene(volumes,lightSource, 20.0f, true, false, 2, colorLines, true); 
+    int lineWidth = 2;
+    Scene scene(volumes,lightSource, 20.0f, lit, wireframe, lineWidth, colorLines, animation); 
     
     //creation d'un cube
     SDL_Color colorP;
@@ -57,9 +99,7 @@ int main(int argv, char** args)  //int argv, char** args //// int argc, char *ar
     colorS.a = 255;
     Vector3 v0(1,0,0);
     Sphere3D* s1 = new Sphere3D(v0,1,16, colorS); //RGBA
-    
-    
-    
+     
     //mise en place des objets dans la scene
     scene.addVolume(s1);
     scene.addVolume(p1);

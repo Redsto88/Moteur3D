@@ -1,35 +1,10 @@
 #include "pave3D.hpp"
 
 
-Pave3D::Pave3D(std::vector<Quad> _quads, SDL_Color _color)
-{
-    quads = _quads;
-    color = _color;
-}
-
 Pave3D::Pave3D(Pave3D& _pave)
 {
     quads = _pave.getQuads();
     color = _pave.getColor();
-}
-
-Pave3D::Pave3D(const Quad& _quad, float height, const SDL_Color _color)
-{
-    /*Les quatres points de la face frontale du pavé*/
-    Vector3 leftBotomFront = _quad.getT1().getA();
-    Vector3 leftTopFront = _quad.getT1().getB();
-    Vector3 rightTopFront = _quad.getT1().getC();
-    Vector3 rightBotomFront = _quad.getT2().getB();
-
-    Vector3 prof(0,0,height);
-    
-    /*Les quatres points à l'arrière du pavé*/
-    Vector3 rightTopBack = rightTopFront + prof;
-    Vector3 rightBotomBack = rightBotomFront + prof;
-    Vector3 leftTopBack = leftTopFront + prof;
-    Vector3 leftBotomBack = leftBotomFront + prof;
-
-    Pave3D(leftBotomFront,leftTopFront,rightTopFront,rightBotomFront,rightTopBack,rightBotomBack,leftTopBack,leftBotomBack,_color);
 }
 
 Pave3D::Pave3D(const Vector3& leftBotomFront,
