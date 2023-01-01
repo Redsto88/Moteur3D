@@ -32,7 +32,7 @@ class Affichage{
         bool isRunning();
         void destroy_window();
         SDL_Renderer* getRenderer();
-        void testFillTriangle(SDL_Renderer* renderer,SDL_Point v1, SDL_Point v2, SDL_Point v3, uint32_t color, float illumination);
+        void testFillTriangle(SDL_Renderer* renderer,SDL_Point v1, SDL_Point v2, SDL_Point v3, SDL_Color color, float illumination);
         void drawSDL_Rect(int x, int y, int width, int height);
         void test();
 };

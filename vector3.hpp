@@ -2,6 +2,7 @@
 #define VECTOR3_HPP
 
 #include <cmath>
+#include<SDL2/SDL.h>
 #include "matrix4.hpp"
 
 

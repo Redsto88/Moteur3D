@@ -9,7 +9,7 @@ Sphere3D::Sphere3D(Sphere3D& _sphere)
   quads = _sphere.getQuads();
 }
 
-Sphere3D::Sphere3D(Vector3& _center, const float _radius, const int numSegments, uint32_t _color) {
+Sphere3D::Sphere3D(Vector3& _center, const float _radius, const int numSegments, SDL_Color _color) {
   
   center = _center;
   radius = _radius;
@@ -55,7 +55,7 @@ float Sphere3D::getRadius()
   return radius;
 }
 
-uint32_t Sphere3D::getColor(){
+SDL_Color Sphere3D::getColor(){
   return color;
 }
 

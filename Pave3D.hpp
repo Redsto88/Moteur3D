@@ -7,13 +7,13 @@ class Pave3D : public Volume3D
 {
     private:
         std::vector<Quad> quads;
-        uint32_t color;
+        SDL_Color color;
 
     public:
 
-        Pave3D(std::vector<Quad> _quads, uint32_t _color);
+        Pave3D(std::vector<Quad> _quads, SDL_Color _color);
         Pave3D(Pave3D& _pave);
-        Pave3D(const Quad& _quad, float height, const uint32_t _color);
+        Pave3D(const Quad& _quad, float height, const SDL_Color _color);
         Pave3D(const Vector3& leftBotomForward,
                 const Vector3& leftTopForward,
                 const Vector3& rightTopForward,
@@ -22,9 +22,9 @@ class Pave3D : public Volume3D
                 const Vector3& rightBotomBackward,
                 const Vector3& leftTopBackward,
                 const Vector3& leftBotomBackward,
-                const uint32_t _color);
+                const SDL_Color _color);
         std::vector<Quad> getQuads() override;
-        uint32_t getColor() override;
+        SDL_Color getColor() override;
 };
 
 

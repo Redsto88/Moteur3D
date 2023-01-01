@@ -5,10 +5,15 @@ Scene::Scene() {
     volumes = std::vector<Volume3D*>();
 }
 
-Scene::Scene(std::vector<Volume3D*> _volumes, Vector3 _lightSource, int _intensite) {
+Scene::Scene(std::vector<Volume3D*> _volumes, Vector3 _lightSource, int _intensite, bool _isLit, bool _showEdge, int _lineThickness, SDL_Color _colorlines, bool _anim) {
     volumes = _volumes;
     lightSource = _lightSource;
     intensite = _intensite;
+    isLit = _isLit;
+    showEdge = _showEdge;
+    lineThickness = _lineThickness;
+    colorLines = _colorlines;
+    anim = _anim;
 }
 
 std::vector<Volume3D*> Scene::getVolumes() const {
@@ -21,10 +26,26 @@ Vector3 Scene::getLightSource(){
 
 float Scene::getIntensite(){
     return intensite;
- }
+}
 
-void Scene::setIntensite(float _intensite){
-    intensite = _intensite;
+bool Scene::getIsLit(){
+    return isLit;
+}
+
+bool Scene::getShowEdge(){
+    return showEdge;
+}
+
+int Scene::getLineThickness(){
+    return lineThickness;
+}
+
+SDL_Color Scene::getColorLines(){
+    return colorLines;
+}
+
+bool Scene::getAnim(){
+    return anim;
 }
 
 void Scene::addVolume(Volume3D* _volume) {

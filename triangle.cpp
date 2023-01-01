@@ -1,7 +1,7 @@
 #include "triangle.hpp"
 
 
-Triangle::Triangle(Vector3 _a, Vector3 _b, Vector3 _c, const uint32_t _color) {
+Triangle::Triangle(Vector3 _a, Vector3 _b, Vector3 _c, const SDL_Color _color) {
     a = _a;
     b = _b;
     c = _c;
@@ -21,7 +21,7 @@ Vector3 Triangle::getC() const {
     return c;
 }
 
-uint32_t Triangle::getColor() const{
+SDL_Color Triangle::getColor() const{
     return color;
 }
 
@@ -36,6 +36,10 @@ void Triangle::setB(Vector3 _b){
        
 void Triangle::setC(Vector3 _c){
     c = _c;
+}
+
+void Triangle::setColor(SDL_Color _color){
+    color = _color;
 }
 
 //La normale du triangle pointe vers "l'oeil" si on le lit A->B->C dans le sens des aiguilles d'une montre
