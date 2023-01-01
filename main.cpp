@@ -5,10 +5,9 @@
 #include "pave3D.hpp"
 #include "sphere3D.hpp"
 
-float process_input(Affichage& affichage, Scene& scene, float fYaw) {
+void process_input(Affichage& affichage, Scene& scene) {
     SDL_Event event;
     SDL_PollEvent(&event);
-    float f = fYaw;
     switch (event.type) {
         case SDL_QUIT:
             affichage.Setrunning(false);
@@ -17,38 +16,10 @@ float process_input(Affichage& affichage, Scene& scene, float fYaw) {
             if (event.key.keysym.sym == SDLK_ESCAPE)
             {
                 affichage.Setrunning(false);
-            if (event.key.keysym.sym == SDLK_UP){
-                std::cout << "up" << std::endl;
-                Vector3 v(0,0.1,0);
-                affichage.getScene()->setCameraPosition(affichage.getScene()->getCameraPosition() + v);
-            }
-            if (event.key.keysym.sym == SDLK_DOWN){
-                std::cout << "down" << std::endl;
-                Vector3 v(0,-0.1,0);
-                affichage.getScene()->setCameraPosition(affichage.getScene()->getCameraPosition() + v);
-            }
-            if (event.key.keysym.sym == SDLK_LEFT){
-                std::cout << "left" << std::endl;
-                f-=0.1;
-            }
-            if (event.key.keysym.sym == SDLK_RIGHT){
-                std::cout << "right" << std::endl;
-                f+=0.1;
-            }
-            if (event.key.keysym.sym == SDLK_w){
-                std::cout << "w" << std::endl;
-                Vector3 v(0,0,0.1);
-                affichage.getScene()->setCameraPosition(affichage.getScene()->getCameraPosition() + v);
-            }
-            if (event.key.keysym.sym == SDLK_s){
-                std::cout << "s" << std::endl;
-                Vector3 v(0,0,-0.1);
-                affichage.getScene()->setCameraPosition(affichage.getScene()->getCameraPosition() + v);
             }
             break;
             
     }
-    return f;
 }
 
 
@@ -61,7 +32,7 @@ int main(int argv, char** args)  //int argv, char** args //// int argc, char *ar
     colorLines.r = 100;
     colorLines.g = 100;
     colorLines.b = 100;
-    Scene scene(volumes,lightSource, 20.0f, true, true, 2, colorLines, true); 
+    Scene scene(volumes,lightSource, 20.0f, true, false, 2, colorLines, true); 
     
     //creation d'un cube
     SDL_Color colorP;
@@ -99,11 +70,10 @@ int main(int argv, char** args)  //int argv, char** args //// int argc, char *ar
     
     SDL_Event windowEvent;
     float t = 0.0f;
-    float fYaw = 0.0f;
     while (affichage.isRunning())
     {
-        fYaw = process_input(affichage, scene, fYaw);
-        affichage.render(t,scene.getAnim(),fYaw);
+        process_input(affichage, scene);
+        affichage.render(t,scene.getAnim());
         // affichage.test();
         t = (float)SDL_GetTicks()/1000.0f;
     }

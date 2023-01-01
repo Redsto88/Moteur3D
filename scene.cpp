@@ -4,8 +4,8 @@
 Scene::Scene() {
     volumes = std::vector<Volume3D*>();
     upDirection = Vector3(0, 1, 0);
-    lookDirection = Vector3(10, 0, 5);
-    cameraPosition = Vector3(-10, 0, -5);
+    lookDirection = Vector3(0, 0, 2);
+    cameraPosition = Vector3(0, 0, -2);
     target = cameraPosition + lookDirection;
 }
 

@@ -20,7 +20,7 @@ class Affichage{
     public:
         Affichage(Scene& _scene, const int _window_width, const int _window_height, const float _fov_factor);
         void Setrunning(bool _running);
-        void render(float time, bool isAnimated, float f);
+        void render(float time, bool isAnimated);
         void render_color_buffer(void);
         void clear_color_buffer(uint32_t color);
         void drawPixel(int x, int y, uint32_t color);

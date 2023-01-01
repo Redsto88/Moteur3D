@@ -163,12 +163,8 @@ Vector3 planeNormal(const Vector3& v1, const Vector3& v2, const Vector3& v3) {
 Matrix4 Matrix_camera (Vector3& pos, Vector3& cible, Vector3& up)
 {
 
-    std::cout << "pos : " << pos << std::endl;
-    std::cout << "cible : " << cible << std::endl;
-    std::cout << "up : " << up << std::endl;
     //calcul de la direction dans laquelle on regarde
     Vector3 forward = cible - pos;
-    std::cout << "forward : " << forward << std::endl;
     forward.normalize();
 
     Vector3 up2 = forward*up.dotProduct(forward);
@@ -176,14 +172,13 @@ Matrix4 Matrix_camera (Vector3& pos, Vector3& cible, Vector3& up)
     up2.normalize();
 
     Vector3 right = CrossProduct(up2,forward);
-    right.normalize();
+
 
     Matrix4 result;
     result[{0,0}] = right.getX(); result[{0,1}] = right.getY(); result[{0,2}] = right.getZ(); result[{0,3}] = 0.0f;
     result[{1,0}] = up2.getX(); result[{1,1}] = up2.getY(); result[{1,2}] = up2.getZ(); result[{1,3}] = 0.0f;
     result[{2,0}] = forward.getX(); result[{2,1}] = forward.getY(); result[{2,2}] = forward.getZ(); result[{2,3}] = 0.0f;
     result[{3,0}] = pos.getX(); result[{3,1}] = pos.getY(); result[{3,2}] = pos.getZ(); result[{3,3}] = 1.0f;
-    std::cout << "BONJOUR" << std::endl;
 
     return result;
 }

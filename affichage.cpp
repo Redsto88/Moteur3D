@@ -76,7 +76,7 @@ void Affichage::Setrunning(bool _running){
     running = _running;
 }
 
-void Affichage::render(float time, bool isAnimated, float Yaw){
+void Affichage::render(float time, bool isAnimated){
     Vector3 camera;
     float xMin, xMax, yMin, yMax, zMin;
     
@@ -138,33 +138,19 @@ void Affichage::render(float time, bool isAnimated, float Yaw){
     matRotX[{2,2}] = cosf(fTheta * 0.5f);
     matRotX[{3,3}] = 1;
 
-    matRotY[{0,0}] = cosf(fYaw);
-    matRotY[{0,2}] = sinf(fYaw);
+    matRotY[{0,0}] = cosf(fTheta);
+    matRotY[{0,2}] = sinf(fTheta);
     matRotY[{1,1}] = 1;
-    matRotY[{2,0}] = -sinf(fYaw);
-    matRotY[{2,2}] = cosf(fYaw);
+    matRotY[{2,0}] = -sinf(fTheta);
+    matRotY[{2,2}] = cosf(fTheta);
     matRotY[{3,3}] = 1;
 
     Vector3 vCamera = scene.getCameraPosition();
     Vector3 vTarget = scene.getTarget();
     Vector3 vUp = scene.getUpDirection();
-    std::cout << "vTarget AVANT= " << vTarget << std::endl;
-    std::cout << "look dir = " << scene.getLookDirection() << std::endl;
-    Vector3 vLookDir =  scene.getLookDirection().multiplyVector3ByMatrix4(scene.getLookDirection(),matRotY);
-    vTarget = vCamera + vLookDir;
-    std::cout << "vTarget APRES= " << vTarget << std::endl;
-    std::cout << "look dir = " << vLookDir << std::endl;
-    std::cout << "vCamera = " << vCamera << std::endl;
-    std::cout << "vTarget = " << vTarget << std::endl;
-    std::cout << "vUp = " << vUp << std::endl;
 
     matView = (Matrix_camera(vCamera, vTarget, vUp)).inverse();
 
-
-    std::cout << "matView = " << matView << std::endl;
-
-
-   
 
     //stockage pour les triangles projetés
     std::vector<Tri_Ecl> trianglesToRaster;
