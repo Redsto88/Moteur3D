@@ -1,5 +1,3 @@
-#include <stdexcept>
-#include <cmath>
 #include "vector3.hpp"
 
 

@@ -1,11 +1,8 @@
 #ifndef SCENE_HPP
 #define SCENE_HPP
 
-#include <vector>
-
 #include "volume3D.hpp"
-#include "pave3D.hpp"
-#include "vector3.hpp"
+
 
 class Scene
 {
@@ -35,8 +32,6 @@ class Scene
         SDL_Color getColorLines();
         bool getAnim();
         void addVolume(Volume3D* _volume);
-        void addLightSource(Vector3 _lightSource);
-        std::vector<Vector3> getPoints();
         void setCameraPosition(const Vector3& _cameraPosition);
         void setLookDirection(const Vector3& _lookDirection);
         void setUpDirection(const Vector3& _upDirection);

@@ -1,5 +1,6 @@
 #include "matrix4.hpp"
 
+
 Matrix4::Matrix4()
 {
     for (int i = 0; i < 4; i++)
@@ -31,23 +32,6 @@ const float& Matrix4::operator[](std::pair<int, int> index) const
 {
     return m[index.first][index.second];
 }
-
-/*Vector3& Matrix4::operator*(const Vector3& v) 
-{
-    Vector3 result;
-    result.setX(v.getX() * m[{0,0}] + v.getY() * m[{1,0}] + v.getZ() * m[{2,0}] + m[{3,0}]);
-    result.setY(v.getX() * m[{0,1}] + v.getY() * m[{1,1}] + v.getZ() * m[{2,1}] + m[{3,1}]);
-    result.setZ(v.getX() * m[{0,2}] + v.getY() * m[{1,2}] + v.getZ() * m[{2,2}] + m[{3,2}]);
-    float w = v.getX() * m[{0,3}] + v.getY() * m[{1,3}] + v.getZ() * m[{2,3}] + m[{3,3}];
-    
-    if (w != 0.0f)
-    {
-        result.setX(result.getX() / w);
-        result.setY(result.getY() / w);
-        result.setZ(result.getZ() / w);
-    }
-    return result;
-}*/
 
 std::ostream& operator<<(std::ostream& st, Matrix4& m)
 {

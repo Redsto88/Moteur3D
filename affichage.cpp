@@ -1,11 +1,4 @@
-#include <iostream>
-#include <algorithm>
-
 #include "affichage.hpp"
-#include "scene.hpp"
-#include "vector3.hpp"
-#include "vector2.hpp"
-#include "matrix4.hpp"
 
 
 typedef struct {
@@ -14,28 +7,20 @@ typedef struct {
 }Tri_Ecl;
 
 Affichage::Affichage(Scene& _scene, const int _window_width, const int _window_height, const float _fov_factor){
-    //std::cout << "initialisation affichage scene" << std::endl;
     scene = _scene;
-    //std::cout << "initialisation affichage width" << std::endl;
     window_width = _window_width;
-    //std::cout << "initialisation affichage height" << std::endl;
     window_height = _window_height;
-    //std::cout << "initialisation affichage fov" << std::endl;
     fov_factor = _fov_factor;
-    //std::cout << "initialisation affichage color_buffer" << std::endl;
     color_buffer = (uint32_t*)malloc(sizeof(uint32_t) * window_width * window_height);
-    //std::cout << "initialisation affichage color_buffer_texture" << std::endl;
-    //std::cout << "c_b_t initialisé";
     running = true;
     
-    //std::cout << "initialisation SDL" << std::endl;
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         fprintf(stderr, "Error initializing SDL.\n");
         running = false;
         return;
     }
+
     // Create a SDL Window
-    //std::cout << "creation fenetre" << std::endl;
     window = SDL_CreateWindow(
         "Projet",
         SDL_WINDOWPOS_UNDEFINED,
@@ -52,7 +37,6 @@ Affichage::Affichage(Scene& _scene, const int _window_width, const int _window_h
     }
     
     // Create a SDL renderer
-    //std::cout << "creation renderer" << std::endl;
     renderer = SDL_CreateRenderer(window, -1, 0);
     if (!renderer) {
         fprintf(stderr, "Error creating SDL renderer.\n");
@@ -72,7 +56,6 @@ Affichage::Affichage(Scene& _scene, const int _window_width, const int _window_h
 }
 
 void Affichage::Setrunning(bool _running){
-    //std::cout << "setRunning" << std::endl;
     running = _running;
 }
 
@@ -152,15 +135,15 @@ void Affichage::render(float time, bool isAnimated){
     matView = (Matrix_camera(vCamera, vTarget, vUp)).inverse();
 
 
-    //stockage pour les triangles projetés
+    //stockage pour les triangles projetés et leur éclairement
     std::vector<Tri_Ecl> trianglesToRaster;
+
     //On dessine les triangles
     for (int i = 0; i < triangles.size(); i++)
     {
         Triangle triProjected;
         triProjected.setColor(triangles[i].getColor());
         Triangle triTranslated = Triangle(triangles[i]); //triangle projeté et translaté pour la perspective
-
         
         triTranslated.setA(triTranslated.getA().multiplyVector3ByMatrix4(triTranslated.getA(), matRotZ));
         triTranslated.setB(triTranslated.getB().multiplyVector3ByMatrix4(triTranslated.getB(), matRotZ));
@@ -169,14 +152,6 @@ void Affichage::render(float time, bool isAnimated){
         triTranslated.setA(triTranslated.getA().multiplyVector3ByMatrix4(triTranslated.getA(), matRotX));
         triTranslated.setB(triTranslated.getB().multiplyVector3ByMatrix4(triTranslated.getB(), matRotX));
         triTranslated.setC(triTranslated.getC().multiplyVector3ByMatrix4(triTranslated.getC(), matRotX));
-
-
-
-
-        // triTranslated.setA(triTranslated.getA().setZ(triTranslated.getA().getZ() + 5.0f));
-        // triTranslated.setB(triTranslated.getB().setZ(triTranslated.getB().getZ() + 5.0f));
-        // triTranslated.setC(triTranslated.getC().setZ(triTranslated.getC().getZ() + 5.0f));
-
 
         // calcul de la normale du triangle et de son orientation par rapport à la caméra
         Vector3 normal, ligne1, ligne2;
@@ -201,14 +176,13 @@ void Affichage::render(float time, bool isAnimated){
             triTranslated.setA(triTranslated.getA().multiplyVector3ByMatrix4(triTranslated.getA(), matView));
             triTranslated.setB(triTranslated.getB().multiplyVector3ByMatrix4(triTranslated.getB(), matView));
             triTranslated.setC(triTranslated.getC().multiplyVector3ByMatrix4(triTranslated.getC(), matView));
-        
 
             // //on projette le triangle
             triProjected.setA(triTranslated.getA().multiplyVector3ByMatrix4(triTranslated.getA(), matProj));
             triProjected.setB(triTranslated.getB().multiplyVector3ByMatrix4(triTranslated.getB(), matProj));
             triProjected.setC(triTranslated.getC().multiplyVector3ByMatrix4(triTranslated.getC(), matProj));
 
-            // //on divise par w pour avoir des coordonnées homogènes
+            //on divise par w pour avoir des coordonnées homogènes
             triProjected.setA(triProjected.getA() / triProjected.getA().getW());
             triProjected.setB(triProjected.getB() / triProjected.getB().getW());
             triProjected.setC(triProjected.getC() / triProjected.getC().getW());
@@ -219,8 +193,6 @@ void Affichage::render(float time, bool isAnimated){
             triProjected.setA(triProjected.getA().setY(triProjected.getA().getY() * -1.0f));
             triProjected.setB(triProjected.getB().setY(triProjected.getB().getY() * -1.0f));
             triProjected.setC(triProjected.getC().setY(triProjected.getC().getY() * -1.0f));
-            
-        
 
             //met à l'échelle de la vue
             triProjected.setA(triProjected.getA().setX(triProjected.getA().getX() + 1.0f));
@@ -244,28 +216,15 @@ void Affichage::render(float time, bool isAnimated){
             float eclairement;
 
             float intensite = scene.getIntensite();
-            //if(/*dot_l>=0 &&*/ i%2 ==0){  
-                float teta = std::acos(dot_l / (normal.magnitude() * lightRay.magnitude()));      //E=(I/d^2)*cos(teta) = formule de l'éclairemnt      
-                eclairement = intensite / pow(lightRayMagnitude,2) * cos(teta);
+            float teta = std::acos(dot_l / (normal.magnitude() * lightRay.magnitude()));      //E=(I/d^2)*cos(teta) = formule de l'éclairemnt      
+            eclairement = intensite / pow(lightRayMagnitude,2) * cos(teta);
                 
-                if(eclairement<0.1){
-                    eclairement=0.1;
-                }
-                if(eclairement>1){
-                    eclairement = 1;
-                }
-            //}
-            //else if(/*dot_l<=0 &&*/ i%2 ==1){
-            /*    float teta = std::acos(- dot_l / (normal.magnitude() * lightRay.magnitude()));      //E=(I/d^2)*cos(teta) = formule de l'éclairemnt      
-                eclairement = intensite / pow(lightRayMagnitude,2) * cos(teta);
-                
-                if(eclairement<0.1){
-                    eclairement=0.1;
-                }
-                if(eclairement>1){
-                    eclairement = 1;
-                }
-            }*/
+            if(eclairement<0.1){
+                eclairement=0.1;
+            }
+            if(eclairement>1){
+                eclairement = 1;
+            }
 
             //stockage
             trianglesToRaster.push_back({triProjected,eclairement});
@@ -279,7 +238,6 @@ void Affichage::render(float time, bool isAnimated){
         return z1 > z2;
     });
 
-
     for (auto &triProjected : trianglesToRaster){
         //drawTriangle(triProjected) si sa normale pointe vers la caméra et qu'il n'est pas caché derrière un autre
         // //std::cout << i << " isVisible : " << triProjected.isVisible() << std::endl << std::endl;
@@ -288,12 +246,10 @@ void Affichage::render(float time, bool isAnimated){
         SDL_Point B = {(int) triProjected.t.getB().getX(),(int) triProjected.t.getB().getY()};
         SDL_Point C = {(int) triProjected.t.getC().getX(),(int) triProjected.t.getC().getY()};
            
-        testFillTriangle(renderer, A, B, C, triProjected.t.getColor(), triProjected.e);
-        
+        drawTriangle(renderer, A, B, C, triProjected.t.getColor(), triProjected.e);
     }
 
     SDL_RenderPresent(renderer);
-
 }
 
 void Affichage::render_color_buffer(void) {
@@ -307,84 +263,11 @@ void Affichage::render_color_buffer(void) {
 }
 
 void Affichage::clear_color_buffer(uint32_t color) {
-    //for (int y = 0; y < window_height; y++) {
-      //  for (int x = 0; x < window_width; x++) {
-        //    color_buffer[(window_width * y) + x] = color;
-       // }
-   // }
-
    int x = 0;
    while(x<window_width*window_height){
        color_buffer[x] = color;
        x++;
    }
-}
-
-void Affichage::drawPixel(int x, int y, uint32_t color){
-    if(x >= 0 && x < window_width && y >= 0 && y < window_height){
-        color_buffer[(window_width * y) + x] = color;
-    }
-}
-
-void Affichage::drawRect(int x, int y, int width, int height, uint32_t color){
-    //color_buffer[window_width*y + x] = color;
-    int rectX = x;
-    int rectY = y;
-    while(rectY<=y+height){
-        rectX = x;
-        while(rectX<=x+width){
-            //color_buffer[(window_width * rectY) + rectX] = color;
-            drawPixel(rectX,rectY,color);
-            rectX++;
-        }
-        rectY++;
-    }
-}
-
-void Affichage::drawLine(int x0, int y0, int x1, int y1, uint32_t color){
-    int delta_x = x1 - x0;
-    int delta_y = y1 - y0;
-    int longest_side;
-
-    if(abs(delta_x) > abs(delta_y)){
-        longest_side = abs(delta_x);
-    }
-    else{
-        longest_side = abs(delta_y);
-    }
-
-    float x_increment = delta_x / (float)longest_side;
-    float y_increment = delta_y / (float)longest_side;
-
-    float currentX = (float)x0;
-    float currentY = (float)y0;
-
-    for(int i = 0; i<longest_side; i++){
-        drawPixel(round(currentX),round(currentY),color);
-        currentX += x_increment;
-        currentY += y_increment;
-    }
-}
-
-void Affichage::drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, uint32_t color){
-    drawLine(x1, y1, x2, y2, color);
-    drawLine(x1, y1, x3, y3, color);
-    drawLine(x3, y3, x2, y2, color);
-}
-
-void Affichage::drawTriangle(Triangle tri){
-    SDL_RenderDrawLine(renderer, tri.getA().getX(), tri.getA().getY(), tri.getB().getX(), tri.getB().getY());
-    SDL_RenderDrawLine(renderer, tri.getA().getX(), tri.getA().getY(), tri.getC().getX(), tri.getC().getY());
-    //SDL_RenderDrawLine(renderer, tri.getC().getX(), tri.getC().getY(), tri.getB().getX(), tri.getB().getY());
-}
-
-Vector2 Affichage::project(Vector3 point){
-    Vector2 projected_point = {
-       (int) (fov_factor * point.getX() / point.getZ()),
-       (int) (fov_factor * point.getY() / point.getZ())
-    };
-
-    return projected_point;
 }
 
 bool Affichage::isRunning(){
@@ -400,12 +283,6 @@ void Affichage::destroy_window(){
     SDL_Quit();
 }
 
-
-
-
-////// FONCTIONS DE TESTS /////
-
-
 // Fonction qui rasterise un triangle avec l'algorithme de Bresenham
 void fillTriangle(SDL_Renderer* renderer, SDL_Point v1, SDL_Point v2, SDL_Point v3)
 {
@@ -416,7 +293,6 @@ void fillTriangle(SDL_Renderer* renderer, SDL_Point v1, SDL_Point v2, SDL_Point 
 
     // Déterminer la zone de remplissage du triangle
     int total_height = v3.y - v1.y;
-    // std::cout << "total_height = " << total_height << std::endl;
     for (int i = 0; i < total_height; i++)
     {
         bool second_half = i > v2.y - v1.y || v2.y == v1.y;
@@ -428,29 +304,12 @@ void fillTriangle(SDL_Renderer* renderer, SDL_Point v1, SDL_Point v2, SDL_Point 
         if (A.x > B.x) std::swap(A, B);
         for (int j = A.x; j <= B.x; j++)
         {
-            // std::cout << "j = " << j << std::endl;
             SDL_RenderDrawPoint(renderer, j, A.y);
         }
     }
 }
 
-SDL_Renderer* Affichage::getRenderer(){
-    return renderer;
-}
-
-
-SDL_Color UintTocolor(uint32_t color)
-{
-	SDL_Color tempcol;
-	tempcol.a = (color >> 24) & 0xFF;
-	tempcol.r = (color >> 16) & 0xFF;
-	tempcol.g = (color >> 8) & 0xFF;
-	tempcol.b = color & 0xFF;
-	return tempcol;
-}
-
-
-void Affichage::testFillTriangle(SDL_Renderer* renderer,SDL_Point v1, SDL_Point v2, SDL_Point v3, SDL_Color color, float eclairement)
+void Affichage::drawTriangle(SDL_Renderer* renderer,SDL_Point v1, SDL_Point v2, SDL_Point v3, SDL_Color color, float eclairement)
 {   
     //Couleur de remplissage
     if(scene.getIsLit()){
@@ -477,24 +336,3 @@ void Affichage::testFillTriangle(SDL_Renderer* renderer,SDL_Point v1, SDL_Point 
         SDL_RenderDrawLine(renderer, v2.x + i, v2.y, v3.x + i, v3.y);
     }
 }
-
-void Affichage::drawSDL_Rect(int x, int y, int width, int height){
-    //Couleur de remplissage
-    int rectX = x;
-    int rectY = y;
-
-    SDL_SetRenderDrawColor(renderer,255,0,0,SDL_ALPHA_OPAQUE); //Rouge
-    SDL_Rect rect;
-    rect.x = x;
-    rect.y = y;
-    rect.h = height;
-    rect.w = width;
-
-    SDL_RenderDrawRect(renderer, &rect);
-}
-
-Scene* Affichage::getScene(){
-    return &scene;
-}
-
-

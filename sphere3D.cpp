@@ -1,18 +1,13 @@
 #include "sphere3D.hpp"
-#include <SDL2/SDL.h>
 
 
 Sphere3D::Sphere3D(Sphere3D& _sphere)
 {
-  center = _sphere.getCenter();
-  radius = _sphere.getRadius();
   quads = _sphere.getQuads();
 }
 
-Sphere3D::Sphere3D(Vector3& _center, const float _radius, const int numSegments, SDL_Color _color) {
-  
-  center = _center;
-  radius = _radius;
+Sphere3D::Sphere3D(Vector3& _center, const float _radius, const int numSegments, SDL_Color _color) 
+{
   color = _color;
   // Calcul des points de la sphère
   std::vector<Vector3> points;
@@ -21,9 +16,9 @@ Sphere3D::Sphere3D(Vector3& _center, const float _radius, const int numSegments,
     float lat = -M_PI/2 + M_PI * ((float)i) / numSegments;
     for (int j = 0; j <= numSegments; j++) {
       float lng = 2 * M_PI * ((float)j) / numSegments;
-      float x = radius * cos(lat) * cos(lng) + center.getX(); 
-      float y = radius * cos(lat) * sin(lng) + center.getY();
-      float z = radius * sin(lat) + center.getZ();
+      float x = _radius * cos(lat) * cos(lng) + _center.getX(); 
+      float y = _radius * cos(lat) * sin(lng) + _center.getY();
+      float z = _radius * sin(lat) + _center.getZ();
       points.push_back({x, y, z});
       k++;
     }
@@ -45,16 +40,6 @@ Sphere3D::Sphere3D(Vector3& _center, const float _radius, const int numSegments,
   }
 }
 
-Vector3 Sphere3D::getCenter()
-{
-  return center;
-}
-
-float Sphere3D::getRadius()
-{
-  return radius;
-}
-
 SDL_Color Sphere3D::getColor(){
   return color;
 }
@@ -63,40 +48,3 @@ std::vector<Quad> Sphere3D::getQuads()
 {
   return quads;
 }
-
-
-
-
-/* AUTRE METHODE 
-#include <iostream>
-#include <cmath>
-#include <vector>
-#include <SDL2/SDL.h>
-#include "vector3.hpp"
-
-
-// Fonction pour créer les points d'une sphère
-std::vector<Vector3> createSpherePoints(float radius, int numVerticalSubdivisions, int numHorizontalSubdivisions) {
-  std::vector<Vector3> points;
-
-  // Pas de subdivisions
-  if (numVerticalSubdivisions == 0 || numHorizontalSubdivisions == 0) {
-    return points ;
-  }
-
-  // Nombre de degrés de chaque subdivision verticale et horizontale
-  float verticalDegrees = 180.0f / numVerticalSubdivisions;
-  float horizontalDegrees = 360.0f / numHorizontalSubdivisions;
-
-  // Création des points
-  for (float i = -90.0f; i <= 90.0f; i += verticalDegrees) {
-    for (float j = 0.0f; j < 360.0f; j += horizontalDegrees) {
-      float x = radius * sin(i * M_PI / 180.0f) * cos(j * M_PI / 180.0f);
-      float y = radius * sin(i * M_PI / 180.0f) * sin(j * M_PI / 180.0f);
-      float z = radius * cos(i * M_PI / 180.0f);
-      points.emplace_back(x, y, z);
-    }
-  }
-
-  return points
-}*/

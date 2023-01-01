@@ -1,9 +1,8 @@
 #ifndef Quad_HPP
 #define Quad_HPP
 
-#include "Triangle.hpp"
 #include <vector>
-#include "vector3.hpp"
+#include "Triangle.hpp"
 
 class Quad
 {
@@ -23,7 +22,6 @@ public:
     Triangle getT1() const;
     Triangle getT2() const;
     SDL_Color getColor() const;
-    std::vector<Vector3> getPoints() const;
 };
 
 

@@ -49,22 +49,6 @@ void Triangle::setColor(SDL_Color _color){
     color = _color;
 }
 
-//La normale du triangle pointe vers "l'oeil" si on le lit A->B->C dans le sens des aiguilles d'une montre
-bool Triangle::isVisible(){
-    if(c.getX() < b.getX() 
-            && a.getY() < b.getY())
-    {
-        return false;
-    }
-    else if(c.getX() > b.getX()
-            && a.getY() > b.getY())
-    {
-        return false;
-    }
-
-    return true;
-}
-
 Vector3 Triangle::getBarycentre(){
     
     float x = (a.getX() + c.getX()) / 2;

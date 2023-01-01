@@ -1,9 +1,9 @@
 #ifndef AFFICHAGE_HPP
 #define AFFICHAGE_HPP
 
+#include <algorithm>
 #include "scene.hpp"
-#include "vector2.hpp"
-#include <SDL2/SDL.h>
+#include "matrix4.hpp"
 
 class Affichage{
     private:
@@ -23,19 +23,10 @@ class Affichage{
         void render(float time, bool isAnimated);
         void render_color_buffer(void);
         void clear_color_buffer(uint32_t color);
-        void drawPixel(int x, int y, uint32_t color);
-        void drawRect(int x, int y, int width, int height, uint32_t color);
-        void drawLine(int x0, int y0, int x1, int y1, uint32_t color);
-        void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, uint32_t color);
-        void drawTriangle(Triangle tri);
-        Vector2 project(Vector3 point);
         bool isRunning();
         void destroy_window();
         SDL_Renderer* getRenderer();
-        void testFillTriangle(SDL_Renderer* renderer,SDL_Point v1, SDL_Point v2, SDL_Point v3, SDL_Color color, float illumination);
-        void drawSDL_Rect(int x, int y, int width, int height);
-        void test();
-        Scene* getScene();
+        void drawTriangle(SDL_Renderer* renderer,SDL_Point v1, SDL_Point v2, SDL_Point v3, SDL_Color color, float illumination);
 };
 
 

@@ -3,8 +3,6 @@
 
 #include "vector3.hpp"
 
-
-
 class Triangle{
     private:
         Vector3 a;
@@ -23,8 +21,6 @@ class Triangle{
         void setB(Vector3 _b);
         void setC(Vector3 _c);
         void setColor(SDL_Color _color);
-        bool isVisible(); //true si la normale du triangle pointe vers "l'oeil". Dans ce cas il doit être affiché 
-                          // ne sert qu'une fois le triangle projeté sur l'écran
         Vector3 getBarycentre();
 };
 

@@ -1,9 +1,6 @@
 #ifndef VOL3D_HPP
 #define VOL3D_HPP
 
-#include <vector>
-#include <iostream>
-
 #include "Quad.hpp"
 
 class Volume3D

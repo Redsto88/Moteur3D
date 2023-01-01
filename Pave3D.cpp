@@ -1,5 +1,6 @@
 #include "pave3D.hpp"
 
+
 Pave3D::Pave3D(std::vector<Quad> _quads, SDL_Color _color)
 {
     quads = _quads;
@@ -74,8 +75,6 @@ Pave3D::Pave3D(const Vector3& leftBotomFront,
 
 std::vector<Quad> Pave3D::getQuads() 
 {
-    //std::cout << "Pave3D::getQuads()" << std::endl;
-    //std::cout << "quads.size() = " << quads.size() << std::endl;
     return quads;
 }
 

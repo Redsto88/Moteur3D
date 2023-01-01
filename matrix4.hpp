@@ -19,7 +19,6 @@ class Matrix4
         Matrix4 inverse();
         Matrix4 operator *= (const Matrix4& m);
         friend Matrix4 operator*(const Matrix4& m, const Matrix4& m2);
-        //Vector3& operator*(const Vector3& v);
 };
 
 
