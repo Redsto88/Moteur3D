@@ -12,8 +12,8 @@ Scene::Scene() {
 Scene::Scene(std::vector<Volume3D*> _volumes, Vector3 _lightSource, int _intensite, bool _isLit, bool _showEdge, int _lineThickness, SDL_Color _colorlines, bool _anim) {
     volumes = _volumes;
     upDirection = Vector3(0, 1, 0);
-    lookDirection = Vector3(10, 0, 5);
-    cameraPosition = Vector3(-10, 0, -5);
+    lookDirection = Vector3(0, 0, 4);
+    cameraPosition = Vector3(0, 0, -4);
     target = cameraPosition + lookDirection;
     lightSource = _lightSource;
     intensite = _intensite;

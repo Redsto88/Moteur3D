@@ -191,7 +191,7 @@ void Affichage::render(float time, bool isAnimated){
         normal.setY(normal.getY()/l_n);
         normal.setZ(normal.getZ()/l_n);
         
-        Vector3 cameraRay = triTranslated.getA() - camera;
+        Vector3 cameraRay = triTranslated.getA() - vCamera;
         float dot = normal.getX()*cameraRay.getX() + normal.getY()*cameraRay.getY() + normal.getZ()*cameraRay.getZ();
 
         if (dot <= 0.0f)
