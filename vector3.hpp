@@ -1,7 +1,11 @@
 #ifndef VECTOR3_HPP
 #define VECTOR3_HPP
 
+#include <cmath>
+#include<SDL2/SDL.h>
 #include "matrix4.hpp"
+
+
 
 class Vector3 {
 
@@ -39,6 +43,7 @@ class Vector3 {
 
         Vector3 multiplyVector3ByMatrix4(Vector3 vOutput, const Matrix4& m);
         
+        float magnitude();
 };
 
 std::ostream& operator<<(std::ostream& st, Vector3 v);
@@ -56,5 +61,6 @@ Vector3 planeNormal(const Vector3& v1, const Vector3& v2, const Vector3& v3);
 
 Matrix4 Matrix_camera(Vector3& pos, Vector3& cible, Vector3& up);
 Vector3 CrossProduct(const Vector3& v1, const Vector3& v2);
+
 
 #endif

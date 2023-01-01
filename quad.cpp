@@ -1,18 +1,20 @@
 #include "quad.hpp"
 
-Quad::Quad(const Triangle& _t1,const Triangle& _t2)
+Quad::Quad(const Triangle& _t1,const Triangle& _t2, const SDL_Color _color)
 {
     /*TODO : Les deux triangles doivent avoir deux points en commun (un côté en commun)*/
     t1 = _t1;
     t2 = _t2;
+    color = _color;
 }
 
-Quad::Quad(const Vector3& _a, const Vector3& _b, const Vector3& _c, const Vector3& _d)
+Quad::Quad(const Vector3& _a, const Vector3& _b, const Vector3& _c, const Vector3& _d, const SDL_Color _color)
 {
-    Triangle _t1(_a,_b,_c);
-    Triangle _t2(_a,_c,_d);
+    Triangle _t1(_a,_b,_c, _color);
+    Triangle _t2(_c,_d,_a, _color);
     t1 = _t1;
     t2 = _t2;
+    color = _color;
 }
 
 Triangle Quad::getT1() const
@@ -25,6 +27,9 @@ Triangle Quad::getT2() const
     return t2;
 }
 
+SDL_Color Quad::getColor() const{
+    return color;
+}
 std::vector<Vector3> Quad::getPoints() const
 {
     std::vector<Vector3> points;

@@ -106,6 +106,10 @@ Vector3 Vector3::crossProduct(const Vector3& v) const {
 }
 
 
+float Vector3::magnitude(){
+    return sqrt(x*x + y*y + z*z);
+}
+
 std::ostream& operator<<(std::ostream& st, Vector3 v){
     st << "(" << v.getX() << "; " << v.getY() << "; " << v.getZ() << ")" << std::endl;
     return st;

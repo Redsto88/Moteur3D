@@ -1,58 +1,34 @@
 #include "pave3D.hpp"
 
-Pave3D::Pave3D(std::vector<Quad> _quads)
+Pave3D::Pave3D(std::vector<Quad> _quads, SDL_Color _color)
 {
     quads = _quads;
+    color = _color;
 }
 
 Pave3D::Pave3D(Pave3D& _pave)
 {
     quads = _pave.getQuads();
+    color = _pave.getColor();
 }
 
-Pave3D::Pave3D(const Quad& _quad, float height)
+Pave3D::Pave3D(const Quad& _quad, float height, const SDL_Color _color)
 {
-    /*Les quatres points de la base du quadrilatère*/
-    Vector3 DownA = _quad.getT1().getA();
-    Vector3 DownB = _quad.getT1().getB();
-    Vector3 DownC = _quad.getT1().getC();
-    Vector3 DownD = _quad.getT2().getA();
-    Vector3 normal = planeNormal(DownA, DownB, DownC);//normale du plan de la base
+    /*Les quatres points de la face frontale du pavé*/
+    Vector3 leftBotomFront = _quad.getT1().getA();
+    Vector3 leftTopFront = _quad.getT1().getB();
+    Vector3 rightTopFront = _quad.getT1().getC();
+    Vector3 rightBotomFront = _quad.getT2().getB();
 
-    /*Les quatres points du haut du quadrilatère*/
-    Vector3 UpA = DownA + normal * height;
-    Vector3 UpB = DownB + normal * height;
-    Vector3 UpC = DownC + normal * height;
-    Vector3 UpD = DownD + normal * height;
+    Vector3 prof(0,0,height);
+    
+    /*Les quatres points à l'arrière du pavé*/
+    Vector3 rightTopBack = rightTopFront + prof;
+    Vector3 rightBotomBack = rightBotomFront + prof;
+    Vector3 leftTopBack = leftTopFront + prof;
+    Vector3 leftBotomBack = leftBotomFront + prof;
 
-    /*les triangles du haut*/
-    Triangle t1(UpA, UpB, UpC);
-    Triangle t2(UpD, UpB, UpC);
-    Quad q1(t1,t2);
-
-    /*Les triangles des côtés*/
-    Triangle t3(DownA, DownB, UpA);
-    Triangle t4(UpB, DownB, UpA);
-    Quad q2(t3,t4);
-
-    Triangle t5(DownB, DownC, UpB);
-    Triangle t6(UpC, DownC, UpB);
-    Quad q3(t5,t6);
-
-    Triangle t7(DownC, DownD, UpC);
-    Triangle t8(UpD, DownD, UpC);
-    Quad q4(t7,t8);
-
-    Triangle t9(DownD, DownA, UpD);
-    Triangle t10(UpA, DownA, UpD);
-    Quad q5(t9,t10);
-    quads = std::vector<Quad>();
-    quads.push_back(_quad);
-    quads.push_back(q1);
-    quads.push_back(q2);
-    quads.push_back(q3);
-    quads.push_back(q4);
-    quads.push_back(q5);
+    Pave3D(leftBotomFront,leftTopFront,rightTopFront,rightBotomFront,rightTopBack,rightBotomBack,leftTopBack,leftBotomBack,_color);
 }
 
 Pave3D::Pave3D(const Vector3& leftBotomFront,
@@ -62,27 +38,30 @@ Pave3D::Pave3D(const Vector3& leftBotomFront,
                 const Vector3& rightTopBack,
                 const Vector3& rightBotomBack,
                 const Vector3& leftTopBack,
-                const Vector3& leftBotomBack)
+                const Vector3& leftBotomBack,
+                const SDL_Color _color)
 {
-    Triangle triFront1(leftBotomFront,rightTopFront,leftTopFront);
-    Triangle triFront2(leftBotomFront,rightBotomFront,rightTopFront);
-    Triangle triRight1(rightBotomFront,rightTopBack,rightTopFront);
-    Triangle triRight2(rightBotomFront,rightBotomBack,rightTopBack);
-    Triangle triBack1(rightBotomBack,leftTopBack,rightTopBack);
-    Triangle triBack2(rightBotomBack,leftBotomBack,leftTopBack);
-    Triangle triLeft1(leftBotomBack,leftTopFront,leftTopBack);
-    Triangle triLeft2(leftBotomBack,leftBotomFront,leftTopFront);
-    Triangle triTop1(rightTopBack,leftTopFront,rightTopFront);
-    Triangle triTop2(leftTopFront,rightTopBack,leftTopBack);
-    Triangle triBotom1(rightBotomBack,leftBotomFront, leftBotomBack);
-    Triangle triBotom2(rightBotomBack, rightBotomFront,leftBotomFront);
+    color = _color;
 
-    Quad front(triFront1,triFront2);
-    Quad rigth(triRight1,triRight2);
-    Quad back(triBack1,triBack2);
-    Quad left(triLeft1,triLeft2);
-    Quad top(triTop1,triTop2);
-    Quad botom(triBotom1,triBotom2);
+    Triangle triFront1(rightTopFront,leftTopFront,leftBotomFront, color);
+    Triangle triFront2(leftBotomFront,rightBotomFront,rightTopFront, color);
+    Triangle triRight1(rightTopBack,rightTopFront,rightBotomFront, color);
+    Triangle triRight2(rightBotomFront,rightBotomBack,rightTopBack, color);
+    Triangle triBack1(leftTopBack,rightTopBack,rightBotomBack, color);
+    Triangle triBack2(rightBotomBack,leftBotomBack,leftTopBack, color);
+    Triangle triLeft1(leftTopFront,leftTopBack,leftBotomBack, color);
+    Triangle triLeft2(leftBotomBack,leftBotomFront,leftTopFront, color);
+    Triangle triTop1(leftTopFront,rightTopFront,rightTopBack, color);
+    Triangle triTop2(rightTopBack,leftTopBack,leftTopFront, color);
+    Triangle triBotom1(leftBotomFront, leftBotomBack,rightBotomBack, color);
+    Triangle triBotom2(rightBotomBack, rightBotomFront,leftBotomFront, color);
+
+    Quad front(triFront1,triFront2,color);
+    Quad rigth(triRight1,triRight2,color);
+    Quad back(triBack1,triBack2,color);
+    Quad left(triLeft1,triLeft2,color);
+    Quad top(triTop1,triTop2,color);
+    Quad botom(triBotom1,triBotom2,color);
 
     quads = std::vector<Quad>();
     quads.push_back(front);
@@ -98,6 +77,10 @@ std::vector<Quad> Pave3D::getQuads()
     //std::cout << "Pave3D::getQuads()" << std::endl;
     //std::cout << "quads.size() = " << quads.size() << std::endl;
     return quads;
+}
+
+SDL_Color Pave3D::getColor(){
+    return color;
 }
 
 

@@ -15,6 +15,7 @@ float process_input(Affichage& affichage, Scene& scene, float fYaw) {
             break;
         case SDL_KEYDOWN:
             if (event.key.keysym.sym == SDLK_ESCAPE)
+            {
                 affichage.Setrunning(false);
             if (event.key.keysym.sym == SDLK_UP){
                 std::cout << "up" << std::endl;
@@ -51,52 +52,58 @@ float process_input(Affichage& affichage, Scene& scene, float fYaw) {
 }
 
 
-int main(int argc, char const *argv[])
+int main(int argv, char** args)  //int argv, char** args //// int argc, char *argv[]
 {
-    std::cout << "creation scene" << std::endl;
-    Scene scene;
+    //creation de la scene
+    std::vector<Volume3D*> volumes;
+    Vector3 lightSource(2,2,-1);
+    SDL_Color colorLines; //toujours opaque
+    colorLines.r = 100;
+    colorLines.g = 100;
+    colorLines.b = 100;
+    Scene scene(volumes,lightSource, 20.0f, true, true, 2, colorLines, true); 
     
-    // Vector3 v1(-1,-1,-1); //Test avec le constructeur qui prend une face
-    // Vector3 v2(-1,-1,1);
-    // Vector3 v3(1,-1,-1);
-    // Vector3 v4(1,-1,1);
-    // Quad q1(v1,v2,v3,v4);
-    // Pave3D* p1 = new Pave3D(q1, 2);
-    
-    std::cout << "creation pave" << std::endl;
-    Vector3 v1(-1,-1,-1); //Test avec le constructeur qui prend 8 vector3
-    Vector3 v2(-1,1,-1);
-    Vector3 v3(1,1,-1);
-    Vector3 v4(1,-1,-1);
-    Vector3 v5(1,1,1);
-    Vector3 v6(1,-1,1);
-    Vector3 v7(-1,1,1);
-    Vector3 v8(-1,-1,1);
-    Pave3D* p1 = new Pave3D(v1,v2,v3,v4,v5,v6,v7,v8);
+    //creation d'un cube
+    SDL_Color colorP;
+    colorP.r = 0;
+    colorP.g = 100;
+    colorP.b = 250;
+    colorP.a = 100;
+    Vector3 v1(-2,-1,-1); //Test avec le constructeur qui prend 8 vector3
+    Vector3 v2(-2,1,-1);
+    Vector3 v3(0,1,-1);
+    Vector3 v4(0,-1,-1);
+    Vector3 v5(0,1,1);
+    Vector3 v6(0,-1,1);
+    Vector3 v7(-2,1,1);
+    Vector3 v8(-2,-1,1);
+    Pave3D* p1 = new Pave3D(v1,v2,v3,v4,v5,v6,v7,v8, colorP); //RGBA
 
-    Vector3 v0(0,0,0);
-    Sphere3D* s1 = new Sphere3D(v0,0.8,6);
+    //creation d'une sphere
+    SDL_Color colorS;
+    colorS.r = 255;
+    colorS.g = 100;
+    colorS.b = 0; 
+    colorS.a = 255;
+    Vector3 v0(1,0,0);
+    Sphere3D* s1 = new Sphere3D(v0,1,16, colorS); //RGBA
     
-    std::cout << "ajout du pave a la scene" << std::endl;
-    // scene.addVolume(s1);
+    
+    
+    //mise en place des objets dans la scene
+    scene.addVolume(s1);
     scene.addVolume(p1);
-    //std::cout << typeid(p1).name() << std::endl;
 
-    std::cout << "creation affichage" << std::endl;
+    // creation affichage
     Affichage affichage(scene,800,600,640.0f);
-    std::cout << (affichage.isRunning()? "true" : "false") << std::endl;
     
-    //affichage.render(); //fonctionne pas
-    //affichage.drawSDL_Rect(10,10,100,100); //fonctionne
-    //affichage.testFillTriangle(affichage.getRenderer()); //fonctionne à moitiée
-
     SDL_Event windowEvent;
     float t = 0.0f;
     float fYaw = 0.0f;
     while (affichage.isRunning())
     {
         fYaw = process_input(affichage, scene, fYaw);
-        affichage.render(t,false,fYaw);
+        affichage.render(t,scene.getAnim(),fYaw);
         // affichage.test();
         t = (float)SDL_GetTicks()/1000.0f;
     }
