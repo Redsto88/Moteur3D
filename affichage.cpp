@@ -105,7 +105,7 @@ void Affichage::render(float time, bool isAnimated){
 
     //matrices de rotation
     Matrix4 matRotZ, matRotX, matRotY,  matView;
-    float fTheta = isAnimated? time : 5.0f; //on laisse 0 si on ne veut pas de l'animation
+    float fTheta = isAnimated? time : 180.0f; //valeur de rotation par défaut (0 pour une vue orthogonale du haut)
 
     matRotZ[{0,0}] = cosf(fTheta);
     matRotZ[{0,1}] = sinf(fTheta);
@@ -216,8 +216,8 @@ void Affichage::render(float time, bool isAnimated){
             float eclairement;
 
             float intensite = scene.getIntensite();
-            float teta = std::acos(dot_l / (normal.magnitude() * lightRay.magnitude()));      //E=(I/d^2)*cos(teta) = formule de l'éclairemnt      
-            eclairement = intensite / pow(lightRayMagnitude,2) * cos(teta);
+            float theta = std::acos(dot_l / (normal.magnitude() * lightRay.magnitude()));      //E=(I/d^2)*cos(theta) = formule de l'éclairemnt      
+            eclairement = intensite / pow(lightRayMagnitude,2) * cos(theta);
                 
             if(eclairement<0.1){
                 eclairement=0.1;
