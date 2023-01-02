@@ -57,29 +57,35 @@ class Triangle{
          */
         Triangle(Vector3& a, Vector3& b, Vector3& c, const SDL_Color& _color);
         /**
+         * @brief Constructeur de copie de la classe.
+         * 
+         * @param tri (Triangle)
+         */
+        Triangle(const Triangle& tri);
+        /**
          * @brief Getter de l'attribut a. 
          * 
          * @return L'attribut a (Vector3)
          */
-        Vector3& getA() const;
+        Vector3& getA();
         /**
          * @brief Getter de l'attribut b. 
          * 
          * @return L'attribut b (Vector3)
          */
-        Vector3& getB() const;
+        Vector3& getB();
         /**
          * @brief Getter de l'attribut c. 
          * 
          * @return L'attribut c (Vector3)
          */
-        Vector3& getC() const;
+        Vector3& getC();
         /**
          * @brief Getter de l'attribut color. 
          * 
          * @return L'attribut color (SDL_Color)
          */
-        SDL_Color& getColor() const;
+        SDL_Color& getColor();
         /**
          * @brief Setter de l'attribut a.
          * 
@@ -110,14 +116,43 @@ class Triangle{
          * @return Le miliei du troisième côté (Vector3)
          */
         Vector3 getCenterThirdSide();
-        
+        /**
+         * @brief multiplie chaque point du triangle par la matrice mat.
+         * 
+         * @param mat 
+         * @return Triangle 
+         */
         Triangle multiplyByMatrix(const Matrix4& mat);
+        /**
+         * @brief Ajoute le vecteur vec à chaque point du triangle. (Translation)
+         * 
+         * @param vec 
+         */
         void operator+= (const Vector3& vec);
+        /**
+         * @brief Multiplie chaque point du triangle par le scalaire scalar.
+         * 
+         * @param scalar 
+         */
         void operator*= (float scalar);
+        /**
+         * @brief Multiplie les coordonnées x et y de chaque point du triangle par -1.
+         * 
+         */
         void inverseXY();
+        /**
+         * @brief les valeurs de la matrice de projection étant comprises entre -1 et 1, cette méthode permet de transformer les coordonnées pour qu'elles soient affichables dans une fenêtre.
+         * 
+         */
         void scaleToViewAndWindow(int window_width,int window_height);
 };
-
+/**
+ * @brief Surcharge de l'opérateur << pour afficher les points du triangle.
+ * 
+ * @param st 
+ * @param tri 
+ * @return std::ostream& 
+ */
 std::ostream& operator<<(std::ostream& st, Triangle& tri);
 
 

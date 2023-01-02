@@ -125,7 +125,7 @@ void Affichage::render(float time, bool isAnimated){
         Vector3 cameraRay = triTranslated.getA() - vCamera; // vecteur allant du centre de la caméra au triangle
         float dot = normal.getX()*cameraRay.getX() + normal.getY()*cameraRay.getY() + normal.getZ()*cameraRay.getZ();
 
-        if (dot >= 0.0f)
+        if (dot >= 0.0f)//si le triangle est orienté vers la caméra
         {
             //on applique la matrice de vue
             triTranslated.multiplyByMatrix(matView);
@@ -206,7 +206,7 @@ void Affichage::destroy_window(){
 }
 
 // Fonction qui rasterise un triangle avec l'algorithme de Bresenham
-void fillTriangle(SDL_Renderer* renderer, SDL_Point v1, SDL_Point v2, SDL_Point v3)
+void Affichage::fillTriangle(SDL_Point v1, SDL_Point v2, SDL_Point v3)
 {
     // Trier les sommets du triangle par ordre croissant de y
     if (v1.y > v2.y) std::swap(v1, v2);
@@ -241,7 +241,7 @@ void Affichage::drawTriangle(SDL_Point v1, SDL_Point v2, SDL_Point v3, SDL_Color
         SDL_SetRenderDrawColor(renderer,color.r, color.g, color.b, color.a); //pas d'ombre
     }
         
-    fillTriangle(renderer,v1,v2,v3);
+    fillTriangle(v1,v2,v3);
 
     //Lignes 
 

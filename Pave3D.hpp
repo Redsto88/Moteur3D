@@ -52,15 +52,15 @@ class Pave3D : public Volume3D
          * @param leftBotomBackward (Vector3&)
          * @param _color (SDL_Color)
          */
-        Pave3D(const Vector3& leftBotomForward,
-                const Vector3& leftTopForward,
-                const Vector3& rightTopForward,
-                const Vector3& rightBotomForward,
-                const Vector3& rightTopBackward,
-                const Vector3& rightBotomBackward,
-                const Vector3& leftTopBackward,
-                const Vector3& leftBotomBackward,
-                const SDL_Color& _color);
+        Pave3D( Vector3& leftBotomForward,
+                Vector3& leftTopForward,
+                Vector3& rightTopForward,
+                Vector3& rightBotomForward,
+                Vector3& rightTopBackward,
+                Vector3& rightBotomBackward,
+                Vector3& leftTopBackward,
+                Vector3& leftBotomBackward,
+                SDL_Color& _color);
         /**
          * @brief Getter de l'attribut quads.
          * 

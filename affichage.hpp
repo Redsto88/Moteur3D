@@ -113,7 +113,14 @@ class Affichage{
          * 
          */
         void destroy_window();
-        
+        /**
+         * @brief remplit le triangle dont les points sont donnés par des SDL_Points.
+         * 
+         * @param v1 (SDL_Point)
+         * @param v2 (SDL_Point)
+         * @param v3 (SDL_Point)
+         */
+        void fillTriangle(SDL_Point v1, SDL_Point v2, SDL_Point v3);
         /**
          * @brief dessine un triangle projeté sur un plan dont les points sont des SDL_Points et plus des Vector3 selon le mode de rendu de la scene choisi.
          * 
@@ -123,7 +130,7 @@ class Affichage{
          * @param color (SDL_Color)
          * @param illumination (float)
          */
-        void drawTriangle(renderer,SDL_Point v1, SDL_Point v2, SDL_Point v3, SDL_Color color, float illumination);
+        void drawTriangle(SDL_Point v1, SDL_Point v2, SDL_Point v3, SDL_Color color, float illumination);
 };
 
 

@@ -4,9 +4,16 @@
 Scene::Scene() {
     volumes = std::vector<Volume3D*>();
     upDirection = Vector3(0, 1, 0);
-    lookDirection = Vector3(0, 0, 2);
-    cameraPosition = Vector3(0, 0, -2);
+    lookDirection = Vector3(0, 0, 4);
+    cameraPosition = Vector3(0, 0, -4);
     target = cameraPosition + lookDirection;
+    lightSource = Vector3(0, 0, 0);
+    intensite = 20;
+    isLit = true;
+    showEdge = false;
+    lineThickness = 1;
+    colorLines = {255, 255, 255, 255};
+    anim = false;
 }
 
 Scene::Scene(std::vector<Volume3D*> _volumes, Vector3 _lightSource, int _intensite, bool _isLit, bool _showEdge, int _lineThickness, SDL_Color _colorlines, bool _anim) {

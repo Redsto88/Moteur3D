@@ -49,7 +49,7 @@ public:
      * @param _t2 (const Triangle&)
      * @param _color (SDL_Color)
      */
-    Quad(const Triangle& _t1,const Triangle& _t2, SDL_Color& _color);
+    Quad(Triangle& _t1,Triangle& _t2, SDL_Color& _color);
     /**
      * @brief Construit un nouveau Quad de points A, B, C et D à donner dans le sens trigonométrique.
      * les vecteurs doivent être donné dans le sens trigonométrique suivant

@@ -154,13 +154,18 @@ class Vector3 {
         friend Vector3 operator*(const Vector3& v1, const float& f);
         friend Vector3 operator*(const float& f, const Vector3& v1);
         friend Vector3 operator*(const Vector3& v1, const Vector3& v2);
-
+        /**
+         * @brief Effectue le produit matriciel entre l'instance et une Matrix4 et retourne le résultat.
+         * 
+         * @param m 
+         * @return Vector3 
+         */
         Vector3 multiplyVector3ByMatrix4(const Matrix4& m);
-        Vector3 multiplyVector3ByMatrix4(Vector3 vOutput, const Matrix4& m);
-        
+        /**
+         * @brief Mutliplie les attributs x et y par -1. 
+         * 
+         */
         void inverseXY();
-
-        float magnitude();
 };
 
 std::ostream& operator<<(std::ostream& st, Vector3 v);
@@ -174,10 +179,22 @@ Vector3 operator*(const Vector3& v1, const Vector3& v2);
 Vector3 operator/(const Vector3& v1, const float& f);
 Vector3 operator/(const float& f, const Vector3& v1);
 
-Vector3 planeNormal(const Vector3& v1, const Vector3& v2, const Vector3& v3);
-
-
+/**
+ * @brief Renvoie une initialisation de la matrice de camera à l'aide des vecteurs de la caméra passé en paramètre
+ * 
+ * @param pos 
+ * @param cible 
+ * @param up 
+ * @return Matrix4 
+ */
 Matrix4 Matrix_camera(Vector3& pos, Vector3& cible, Vector3& up);
+/**
+ * @brief effectue le produit vectoriel entre deux vecteurs et renvoie le résultat
+ * 
+ * @param v1 
+ * @param v2 
+ * @return Vector3 
+ */
 Vector3 CrossProduct(const Vector3& v1, const Vector3& v2);
 
 
