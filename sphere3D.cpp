@@ -1,13 +1,11 @@
 #include "sphere3D.hpp"
 
 
-Sphere3D::Sphere3D(Sphere3D& _sphere)
-{
+Sphere3D::Sphere3D(Sphere3D& _sphere){
   quads = _sphere.getQuads();
 }
 
-Sphere3D::Sphere3D(Vector3& _center, const float _radius, const int numSegments, SDL_Color _color) 
-{
+Sphere3D::Sphere3D(Vector3& _center, const float _radius, const int numSegments, SDL_Color _color){
   color = _color;
   // Calcul des points de la sphère
   std::vector<Vector3> points;
@@ -44,7 +42,6 @@ SDL_Color Sphere3D::getColor(){
   return color;
 }
 
-std::vector<Quad> Sphere3D::getQuads()
-{
+std::vector<Quad> Sphere3D::getQuads(){
   return quads;
 }

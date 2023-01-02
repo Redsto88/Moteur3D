@@ -1,8 +1,7 @@
 #include "pave3D.hpp"
 
 
-Pave3D::Pave3D(Pave3D& _pave)
-{
+Pave3D::Pave3D(Pave3D& _pave){
     quads = _pave.getQuads();
     color = _pave.getColor();
 }
@@ -15,8 +14,7 @@ Pave3D::Pave3D( Vector3& leftBotomFront,
                 Vector3& rightBotomBack,
                 Vector3& leftTopBack,
                 Vector3& leftBotomBack,
-                SDL_Color& _color)
-{
+                SDL_Color& _color){
     color = _color;
 
     Triangle triFront1(rightTopFront,leftTopFront,leftBotomFront, color);
@@ -48,8 +46,7 @@ Pave3D::Pave3D( Vector3& leftBotomFront,
     quads.push_back(botom);
 }
 
-std::vector<Quad> Pave3D::getQuads() 
-{
+std::vector<Quad> Pave3D::getQuads() {
     return quads;
 }
 

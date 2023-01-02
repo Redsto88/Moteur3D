@@ -1,7 +1,7 @@
 #include "affichage.hpp"
 
 
-typedef struct {
+typedef struct{
     Triangle t; //triangle
     float e; //eclairement
 }Tri_Ecl;
@@ -129,7 +129,7 @@ void Affichage::render(float time, bool isAnimated){
         {
             //on applique la matrice de vue
             triTranslated.multiplyByMatrix(matView);
-            // //on projette le triangle
+            //on projette le triangle
             triProjected = Triangle(triTranslated);
             triProjected.multiplyByMatrix(matProj);
 
@@ -171,7 +171,7 @@ void Affichage::render(float time, bool isAnimated){
     SDL_RenderPresent(renderer);
 }
 
-void Affichage::render_color_buffer(void) {
+void Affichage::render_color_buffer(void){
     SDL_UpdateTexture(
         color_buffer_texture,
         NULL,
@@ -181,7 +181,7 @@ void Affichage::render_color_buffer(void) {
     SDL_RenderCopy(renderer, color_buffer_texture, NULL, NULL);
 }
 
-void Affichage::clear_color_buffer(uint32_t color) {
+void Affichage::clear_color_buffer(uint32_t color){
    int x = 0;
    while(x<window_width*window_height){
        color_buffer[x] = color;
@@ -202,9 +202,8 @@ void Affichage::destroy_window(){
     SDL_Quit();
 }
 
-// Fonction qui rasterise un triangle avec l'algorithme de Bresenham
-void Affichage::fillTriangle(SDL_Point v1, SDL_Point v2, SDL_Point v3)
-{
+// Fonction qui rasterise un triangle avec l'algorithme de Scanline
+void Affichage::fillTriangle(SDL_Point v1, SDL_Point v2, SDL_Point v3){
     // Trier les sommets du triangle par ordre croissant de y
     if (v1.y > v2.y) std::swap(v1, v2);
     if (v1.y > v3.y) std::swap(v1, v3);
@@ -228,8 +227,7 @@ void Affichage::fillTriangle(SDL_Point v1, SDL_Point v2, SDL_Point v3)
     }
 }
 
-void Affichage::drawTriangle(SDL_Point v1, SDL_Point v2, SDL_Point v3, SDL_Color color, float eclairement)
-{   
+void Affichage::drawTriangle(SDL_Point v1, SDL_Point v2, SDL_Point v3, SDL_Color color, float eclairement){   
     //Couleur de remplissage
     if(scene.getIsLit()){
         SDL_SetRenderDrawColor(renderer,color.r * eclairement, color.g * eclairement, color.b * eclairement, color.a); //ombre

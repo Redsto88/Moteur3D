@@ -8,7 +8,7 @@
  * 
  * @param affichage (Affichage&)
  */
-void process_input(Affichage& affichage) {
+void process_input(Affichage& affichage){
     SDL_Event event;
     SDL_PollEvent(&event);
     switch (event.type) {
@@ -26,8 +26,7 @@ void process_input(Affichage& affichage) {
 }
 
 
-int main(int argv, char** args)  //int argv, char** args //// int argc, char *argv[]
-{
+int main(int argv, char** args){
     bool lit = true;
     bool wireframe = true;
     bool animation = false;
