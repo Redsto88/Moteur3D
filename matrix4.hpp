@@ -19,10 +19,14 @@ class Matrix4
         Matrix4 inverse();
         Matrix4 operator *= (const Matrix4& m);
         friend Matrix4 operator*(const Matrix4& m, const Matrix4& m2);
+        void initializeZRot(float angle);
+        void initializeYRot(float angle);
+        void initializeXRot(float angle);
+        void initializeProj(int window_width,int window_height);
 };
 
 
-std::ostream& operator<<(std::ostream& st, Matrix4& m);
+std::ostream& operator<<(std::ostream& st,const Matrix4& m);
 Matrix4 operator*(const Matrix4& m1, const Matrix4& m2);
 
 

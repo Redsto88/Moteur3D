@@ -1,5 +1,5 @@
 #include "matrix4.hpp"
-
+#include <cmath>
 
 Matrix4::Matrix4()
 {
@@ -33,7 +33,7 @@ const float& Matrix4::operator[](std::pair<int, int> index) const
     return m[index.first][index.second];
 }
 
-std::ostream& operator<<(std::ostream& st, Matrix4& m)
+std::ostream& operator<<(std::ostream& st,const Matrix4& m)
 {
     st << m[{0,0}] << "; " << m[{0,1}] << "; " << m[{0,2}] << "; " << m[{0,3}] << std::endl
     << m[{1,0}] << "; " << m[{1,1}] << "; " << m[{1,2}] << "; " << m[{1,3}] << std::endl
@@ -74,4 +74,45 @@ Matrix4 operator*(const Matrix4& m1, const Matrix4& m2)
     Matrix4 result = m1;
     result *= m2;
     return result;
+}
+
+void Matrix4::initializeZRot(float angle){
+    m[0][0] = cosf(angle);
+    m[0][1] = sinf(angle);
+    m[1][0] = -sinf(angle);
+    m[1][1] = cosf(angle);
+    m[2][2] = 1;
+    m[3][3] = 1;
+}
+
+void Matrix4::initializeYRot(float angle){
+    m[0][0] = cosf(angle);
+    m[0][2] = -sinf(angle);
+    m[1][1] = 1;
+    m[2][0] = sinf(angle);
+    m[2][2] = cosf(angle);
+    m[3][3] = 1;
+}
+
+void Matrix4::initializeXRot(float angle){
+    m[0][0] = 1;
+    m[1][1] = cosf(angle);
+    m[1][2] = sinf(angle);
+    m[2][1] = -sinf(angle);
+    m[2][2] = cosf(angle);
+    m[3][3] = 1;
+}
+
+void Matrix4::initializeProj(int window_width, int window_height){
+    float fNear = 0.1f;
+    float fFar = 1000.0f;
+    float fFov = 90.0f;
+    float fAspectRatio = (float)window_height / (float)window_width;
+    float fFovRad = 1.0f / tanf(fFov * 0.5f / 180.0f * 3.14159f);
+
+    m[0][0] = fAspectRatio * fFovRad;
+    m[1][1] = fFovRad;
+    m[2][2] = fFar / (fFar - fNear);
+    m[3][2] = (-fFar * fNear) / (fFar - fNear);
+    m[2][3] = 1.0f;
 }

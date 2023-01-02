@@ -7,15 +7,15 @@ Pave3D::Pave3D(Pave3D& _pave)
     color = _pave.getColor();
 }
 
-Pave3D::Pave3D(const Vector3& leftBotomFront,
-                const Vector3& leftTopFront,
-                const Vector3& rightTopFront,
-                const Vector3& rightBotomFront,
-                const Vector3& rightTopBack,
-                const Vector3& rightBotomBack,
-                const Vector3& leftTopBack,
-                const Vector3& leftBotomBack,
-                const SDL_Color _color)
+Pave3D::Pave3D( Vector3& leftBotomFront,
+                Vector3& leftTopFront,
+                Vector3& rightTopFront,
+                Vector3& rightBotomFront,
+                Vector3& rightTopBack,
+                Vector3& rightBotomBack,
+                Vector3& leftTopBack,
+                Vector3& leftBotomBack,
+                SDL_Color& _color)
 {
     color = _color;
 

@@ -1,7 +1,7 @@
 #include "quad.hpp"
 
 
-Quad::Quad(const Triangle& _t1,const Triangle& _t2, const SDL_Color _color)
+Quad::Quad(Triangle& _t1,Triangle& _t2, SDL_Color& _color)
 {
     /*TODO : Les deux triangles doivent avoir deux points en commun (un côté en commun)*/
     t1 = _t1;
@@ -9,7 +9,7 @@ Quad::Quad(const Triangle& _t1,const Triangle& _t2, const SDL_Color _color)
     color = _color;
 }
 
-Quad::Quad(const Vector3& _a, const Vector3& _b, const Vector3& _c, const Vector3& _d, const SDL_Color _color)
+Quad::Quad(Vector3& _a, Vector3& _b, Vector3& _c, Vector3& _d, SDL_Color& _color)
 {
     Triangle _t1(_a,_b,_c, _color);
     Triangle _t2(_c,_d,_a, _color);

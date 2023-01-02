@@ -60,9 +60,6 @@ void Affichage::Setrunning(bool _running){
 }
 
 void Affichage::render(float time, bool isAnimated){
-    Vector3 camera;
-    float xMin, xMax, yMin, yMax, zMin;
-    
     render_color_buffer();
     clear_color_buffer(0xFF000000);
 
@@ -87,54 +84,22 @@ void Affichage::render(float time, bool isAnimated){
         }
     }
 
-    //matrice de projection V2
-    float fNear = 0.1f;
-    float fFar = 1000.0f;
-    float fFov = 90.0f;
-    float fAspectRatio = (float)window_height / (float)window_width;
-    float fFovRad = 1.0f / tanf(fFov * 0.5f / 180.0f * 3.14159f);
-
     //Défintion de la matrice (est normalisée donc renvoie toujours un résultat entre -1 et 1)
     Matrix4 matProj;
-
-    matProj[{0,0}] = fAspectRatio * fFovRad;
-    matProj[{1,1}] = fFovRad;
-    matProj[{2,2}] = fFar / (fFar - fNear);
-    matProj[{3,2}] = (-fFar * fNear) / (fFar - fNear);
-    matProj[{2,3}] = 1.0f;
-
+    matProj.initializeProj(window_width, window_height);
     //matrices de rotation
     Matrix4 matRotZ, matRotX, matRotY,  matView;
     float fTheta = isAnimated? time : 180.0f; //valeur de rotation par défaut (0 pour une vue orthogonale du haut)
 
-    matRotZ[{0,0}] = cosf(fTheta);
-    matRotZ[{0,1}] = sinf(fTheta);
-    matRotZ[{1,0}] = -sinf(fTheta);
-    matRotZ[{1,1}] = cosf(fTheta);
-    matRotZ[{2,2}] = 1;
-    matRotZ[{3,3}] = 1;
-
-    matRotX[{0,0}] = 1;
-    matRotX[{1,1}] = cosf(fTheta * 0.5f);
-    matRotX[{1,2}] = sinf(fTheta * 0.5f);
-    matRotX[{2,1}] = -sinf(fTheta * 0.5f);
-    matRotX[{2,2}] = cosf(fTheta * 0.5f);
-    matRotX[{3,3}] = 1;
-
-    matRotY[{0,0}] = cosf(fTheta);
-    matRotY[{0,2}] = sinf(fTheta);
-    matRotY[{1,1}] = 1;
-    matRotY[{2,0}] = -sinf(fTheta);
-    matRotY[{2,2}] = cosf(fTheta);
-    matRotY[{3,3}] = 1;
+    matRotZ.initializeZRot(fTheta);
+    matRotX.initializeXRot(fTheta);
+    matRotY.initializeYRot(fTheta);
 
     Vector3 vCamera = scene.getCameraPosition();
     Vector3 vTarget = scene.getTarget();
     Vector3 vUp = scene.getUpDirection();
-
     matView = (Matrix_camera(vCamera, vTarget, vUp)).inverse();
-
-
+    
     //stockage pour les triangles projetés et leur éclairement
     std::vector<Tri_Ecl> trianglesToRaster;
 
@@ -142,16 +107,11 @@ void Affichage::render(float time, bool isAnimated){
     for (int i = 0; i < triangles.size(); i++)
     {
         Triangle triProjected;
-        triProjected.setColor(triangles[i].getColor());
-        Triangle triTranslated = Triangle(triangles[i]); //triangle projeté et translaté pour la perspective
+        Triangle triTranslated = Triangle(triangles[i]); //triangle copié pour ne pas modifier le triangle de la scène
+        triTranslated.setColor(triangles[i].getColor());
         
-        triTranslated.setA(triTranslated.getA().multiplyVector3ByMatrix4(triTranslated.getA(), matRotZ));
-        triTranslated.setB(triTranslated.getB().multiplyVector3ByMatrix4(triTranslated.getB(), matRotZ));
-        triTranslated.setC(triTranslated.getC().multiplyVector3ByMatrix4(triTranslated.getC(), matRotZ));
-
-        triTranslated.setA(triTranslated.getA().multiplyVector3ByMatrix4(triTranslated.getA(), matRotX));
-        triTranslated.setB(triTranslated.getB().multiplyVector3ByMatrix4(triTranslated.getB(), matRotX));
-        triTranslated.setC(triTranslated.getC().multiplyVector3ByMatrix4(triTranslated.getC(), matRotX));
+        triTranslated.multiplyByMatrix(matRotZ);
+        triTranslated.multiplyByMatrix(matRotX);
 
         // calcul de la normale du triangle et de son orientation par rapport à la caméra
         Vector3 normal, ligne1, ligne2;
@@ -160,72 +120,34 @@ void Affichage::render(float time, bool isAnimated){
         normal.setX(ligne1.getY()*ligne2.getZ() - ligne1.getZ()*ligne2.getY());
         normal.setY(ligne1.getZ()*ligne2.getX() - ligne1.getX()*ligne2.getZ());
         normal.setZ(ligne1.getX()*ligne2.getY() - ligne1.getY()*ligne2.getX());
-
-        float l_n = sqrt(normal.getX()*normal.getX() + normal.getY()*normal.getY() + normal.getZ()*normal.getZ());
-        normal.setX(normal.getX()/l_n);
-        normal.setY(normal.getY()/l_n);
-        normal.setZ(normal.getZ()/l_n);
+        normal.normalize();
         
-        Vector3 cameraRay = triTranslated.getA() - vCamera;
+        Vector3 cameraRay = triTranslated.getA() - vCamera; // vecteur allant du centre de la caméra au triangle
         float dot = normal.getX()*cameraRay.getX() + normal.getY()*cameraRay.getY() + normal.getZ()*cameraRay.getZ();
 
         if (dot >= 0.0f)
         {
-
             //on applique la matrice de vue
-            triTranslated.setA(triTranslated.getA().multiplyVector3ByMatrix4(triTranslated.getA(), matView));
-            triTranslated.setB(triTranslated.getB().multiplyVector3ByMatrix4(triTranslated.getB(), matView));
-            triTranslated.setC(triTranslated.getC().multiplyVector3ByMatrix4(triTranslated.getC(), matView));
-
+            triTranslated.multiplyByMatrix(matView);
             // //on projette le triangle
-            triProjected.setA(triTranslated.getA().multiplyVector3ByMatrix4(triTranslated.getA(), matProj));
-            triProjected.setB(triTranslated.getB().multiplyVector3ByMatrix4(triTranslated.getB(), matProj));
-            triProjected.setC(triTranslated.getC().multiplyVector3ByMatrix4(triTranslated.getC(), matProj));
+            triProjected = Triangle(triTranslated);
+            triProjected.multiplyByMatrix(matProj);
 
             //on divise par w pour avoir des coordonnées homogènes
-            triProjected.setA(triProjected.getA() / triProjected.getA().getW());
-            triProjected.setB(triProjected.getB() / triProjected.getB().getW());
-            triProjected.setC(triProjected.getC() / triProjected.getC().getW());
+            (triProjected.getA() /= triProjected.getA().getW());
+            (triProjected.getB() /= triProjected.getB().getW());
+            (triProjected.getC() /= triProjected.getC().getW());
+            triProjected.inverseXY(); //multiplie X par -1 et Y par -1 
+            triProjected.scaleToViewAndWindow(window_width, window_height); //met à l'échelle de la vue
             
-            triProjected.setA(triProjected.getA().setX(triProjected.getA().getX() * -1.0f));
-            triProjected.setB(triProjected.getB().setX(triProjected.getB().getX() * -1.0f));
-            triProjected.setC(triProjected.getC().setX(triProjected.getC().getX() * -1.0f));
-            triProjected.setA(triProjected.getA().setY(triProjected.getA().getY() * -1.0f));
-            triProjected.setB(triProjected.getB().setY(triProjected.getB().getY() * -1.0f));
-            triProjected.setC(triProjected.getC().setY(triProjected.getC().getY() * -1.0f));
-
-            //met à l'échelle de la vue
-            triProjected.setA(triProjected.getA().setX(triProjected.getA().getX() + 1.0f));
-            triProjected.setA(triProjected.getA().setY(triProjected.getA().getY() + 1.0f));
-            triProjected.setB(triProjected.getB().setX(triProjected.getB().getX() + 1.0f));
-            triProjected.setB(triProjected.getB().setY(triProjected.getB().getY() + 1.0f));
-            triProjected.setC(triProjected.getC().setX(triProjected.getC().getX() + 1.0f));
-            triProjected.setC(triProjected.getC().setY(triProjected.getC().getY() + 1.0f));
-
-            triProjected.setA(triProjected.getA().setX(triProjected.getA().getX() * 0.5f * (float) window_width));
-            triProjected.setA(triProjected.getA().setY(triProjected.getA().getY() * 0.5f * (float) window_height));
-            triProjected.setB(triProjected.getB().setX(triProjected.getB().getX() * 0.5f * (float) window_width));
-            triProjected.setB(triProjected.getB().setY(triProjected.getB().getY() * 0.5f * (float) window_height));
-            triProjected.setC(triProjected.getC().setX(triProjected.getC().getX() * 0.5f * (float) window_width));
-            triProjected.setC(triProjected.getC().setY(triProjected.getC().getY() * 0.5f * (float) window_height));
-
             // calcul lumière
             Vector3 lightRay = triTranslated.getBarycentre() - scene.getLightSource();
             float lightRayMagnitude = lightRay.magnitude();
-            float dot_l = normal.getX()*lightRay.getX() + normal.getY()*lightRay.getY() + normal.getZ()*lightRay.getZ();
-            float eclairement;
-
-            float intensite = scene.getIntensite();
+            float dot_l = normal.dotProduct(lightRay);
             float theta = std::acos(dot_l / (normal.magnitude() * lightRay.magnitude()));      //E=(I/d^2)*cos(theta) = formule de l'éclairemnt      
-            eclairement = intensite / pow(lightRayMagnitude,2) * cos(theta);
-                
-            if(eclairement<0.1){
-                eclairement=0.1;
-            }
-            if(eclairement>1){
-                eclairement = 1;
-            }
-
+            float eclairement = scene.getIntensite() / pow(lightRayMagnitude,2) * cos(theta);
+            if(eclairement<0.1) eclairement= 0.1;
+            if(eclairement>1) eclairement= 1;
             //stockage
             trianglesToRaster.push_back({triProjected,eclairement});
         }
@@ -246,7 +168,7 @@ void Affichage::render(float time, bool isAnimated){
         SDL_Point B = {(int) triProjected.t.getB().getX(),(int) triProjected.t.getB().getY()};
         SDL_Point C = {(int) triProjected.t.getC().getX(),(int) triProjected.t.getC().getY()};
            
-        drawTriangle(renderer, A, B, C, triProjected.t.getColor(), triProjected.e);
+        drawTriangle(A, B, C, triProjected.t.getColor(), triProjected.e);
     }
 
     SDL_RenderPresent(renderer);
@@ -309,7 +231,7 @@ void fillTriangle(SDL_Renderer* renderer, SDL_Point v1, SDL_Point v2, SDL_Point 
     }
 }
 
-void Affichage::drawTriangle(SDL_Renderer* renderer,SDL_Point v1, SDL_Point v2, SDL_Point v3, SDL_Color color, float eclairement)
+void Affichage::drawTriangle(SDL_Point v1, SDL_Point v2, SDL_Point v3, SDL_Color color, float eclairement)
 {   
     //Couleur de remplissage
     if(scene.getIsLit()){

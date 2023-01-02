@@ -1,7 +1,7 @@
 #ifndef VOL3D_HPP
 #define VOL3D_HPP
 
-#include "Quad.hpp"
+#include "quad.hpp"
 
 class Volume3D
 {

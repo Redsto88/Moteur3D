@@ -26,7 +26,7 @@ class Affichage{
         bool isRunning();
         void destroy_window();
         SDL_Renderer* getRenderer();
-        void drawTriangle(SDL_Renderer* renderer,SDL_Point v1, SDL_Point v2, SDL_Point v3, SDL_Color color, float illumination);
+        void drawTriangle(SDL_Point v1, SDL_Point v2, SDL_Point v3, SDL_Color color, float illumination);
 };
 
 
