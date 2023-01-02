@@ -141,7 +141,7 @@ void Affichage::render(float time, bool isAnimated){
             triProjected.scaleToViewAndWindow(window_width, window_height); //met à l'échelle de la vue
             
             // calcul lumière
-            Vector3 lightRay = triTranslated.getBarycentre() - scene.getLightSource();
+            Vector3 lightRay = triTranslated.getCenterThirdSide() - scene.getLightSource();
             float lightRayMagnitude = lightRay.magnitude();
             float dot_l = normal.dotProduct(lightRay);
             float theta = std::acos(dot_l / (normal.magnitude() * lightRay.magnitude()));      //E=(I/d^2)*cos(theta) = formule de l'éclairemnt      
