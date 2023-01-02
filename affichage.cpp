@@ -210,7 +210,7 @@ void Affichage::render(float time, bool isAnimated){
             triProjected.setC(triProjected.getC().setY(triProjected.getC().getY() * 0.5f * (float) window_height));
 
             // calcul lumière
-            Vector3 lightRay = triTranslated.getBarycentre() - scene.getLightSource();
+            Vector3 lightRay = triTranslated.getCenterThirdSide() - scene.getLightSource();
             float lightRayMagnitude = lightRay.magnitude();
             float dot_l = normal.getX()*lightRay.getX() + normal.getY()*lightRay.getY() + normal.getZ()*lightRay.getZ();
             float eclairement;

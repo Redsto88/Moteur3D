@@ -3,7 +3,12 @@
 #include "pave3D.hpp"
 #include "sphere3D.hpp"
 
-
+/**
+ * @brief Ferme la fenêtre et quitte le programme si l'utiliateur clique sur la croix ou appuie sur Echap.
+ * 
+ * @param affichage (Affichage&)
+ * @param scene (Scene&)
+ */
 void process_input(Affichage& affichage, Scene& scene) {
     SDL_Event event;
     SDL_PollEvent(&event);

@@ -49,7 +49,7 @@ void Triangle::setColor(SDL_Color _color){
     color = _color;
 }
 
-Vector3 Triangle::getBarycentre(){
+Vector3 Triangle::getCenterThirdSide(){
     
     float x = (a.getX() + c.getX()) / 2;
     float y = (a.getY() + c.getY()) / 2;
