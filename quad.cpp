@@ -11,10 +11,8 @@ Quad::Quad(Triangle& _t1,Triangle& _t2, SDL_Color& _color)
 
 Quad::Quad(Vector3& _a, Vector3& _b, Vector3& _c, Vector3& _d, SDL_Color& _color)
 {
-    Triangle _t1(_a,_b,_c, _color);
-    Triangle _t2(_c,_d,_a, _color);
-    t1 = _t1;
-    t2 = _t2;
+    t1 = Triangle(_a,_b,_c, _color);
+    t2 = Triangle(_c,_d,_a, _color);
     color = _color;
 }
 

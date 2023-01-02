@@ -68,16 +68,16 @@ void Affichage::render(float time, bool isAnimated){
 
     //On récupère les faces de chaque volume
     std::vector<std::vector<Quad>> faces ;
-    for (int i=0; i<volumes.size(); i++){
+    for (int i=0; i< (int) volumes.size(); i++){
         faces.push_back(volumes[i]->getQuads());
     }
 
     //On récupère les triangles de chaque face
     std::vector<Triangle> triangles;
     
-    for (int i=0; i<faces.size(); i++)
+    for (int i=0; i< (int) faces.size(); i++)
     {
-        for (int j=0; j<faces[i].size(); j++)
+        for (int j=0; j< (int) faces[i].size(); j++)
         {
             triangles.push_back(faces[i][j].getT1());
             triangles.push_back(faces[i][j].getT2());
@@ -104,7 +104,7 @@ void Affichage::render(float time, bool isAnimated){
     std::vector<Tri_Ecl> trianglesToRaster;
 
     //On dessine les triangles
-    for (int i = 0; i < triangles.size(); i++)
+    for (int i = 0; i < (int) triangles.size(); i++)
     {
         Triangle triProjected;
         Triangle triTranslated = Triangle(triangles[i]); //triangle copié pour ne pas modifier le triangle de la scène
@@ -161,9 +161,6 @@ void Affichage::render(float time, bool isAnimated){
     });
 
     for (auto &triProjected : trianglesToRaster){
-        //drawTriangle(triProjected) si sa normale pointe vers la caméra et qu'il n'est pas caché derrière un autre
-        // //std::cout << i << " isVisible : " << triProjected.isVisible() << std::endl << std::endl;
-
         SDL_Point A = {(int) triProjected.t.getA().getX(),(int) triProjected.t.getA().getY()};
         SDL_Point B = {(int) triProjected.t.getB().getX(),(int) triProjected.t.getB().getY()};
         SDL_Point C = {(int) triProjected.t.getC().getX(),(int) triProjected.t.getC().getY()};
@@ -248,13 +245,14 @@ void Affichage::drawTriangle(SDL_Point v1, SDL_Point v2, SDL_Point v3, SDL_Color
     //Couleur des lignes
     if(scene.getShowEdge()){
         SDL_SetRenderDrawColor(renderer,scene.getColorLines().r,scene.getColorLines().g,scene.getColorLines().b,SDL_ALPHA_OPAQUE);
-    }
+    
 
-    // Dessiner plusieurs lignes côte à côte pour simuler une ligne plus épaisse
-    int line_thickness = scene.getLineThickness();
-    for (int i = 0; i < line_thickness; i++)
-    {   
-        SDL_RenderDrawLine(renderer, v1.x + i, v1.y, v2.x + i, v2.y);
-        SDL_RenderDrawLine(renderer, v2.x + i, v2.y, v3.x + i, v3.y);
+        // Dessiner plusieurs lignes côte à côte pour simuler une ligne plus épaisse
+        int line_thickness = scene.getLineThickness();
+        for (int i = 0; i < line_thickness; i++)
+        {   
+            SDL_RenderDrawLine(renderer, v1.x + i, v1.y, v2.x + i, v2.y);
+            SDL_RenderDrawLine(renderer, v2.x + i, v2.y, v3.x + i, v3.y);
+        }
     }
 }

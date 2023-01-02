@@ -7,9 +7,8 @@
  * @brief Ferme la fenêtre et quitte le programme si l'utiliateur clique sur la croix ou appuie sur Echap.
  * 
  * @param affichage (Affichage&)
- * @param scene (Scene&)
  */
-void process_input(Affichage& affichage, Scene& scene) {
+void process_input(Affichage& affichage) {
     SDL_Event event;
     SDL_PollEvent(&event);
     switch (event.type) {
@@ -83,8 +82,8 @@ int main(int argv, char** args)  //int argv, char** args //// int argc, char *ar
     //creation d'un cube
     SDL_Color colorP;
     colorP.r = 0;
-    colorP.g = 100;
-    colorP.b = 250;
+    colorP.g = 0;
+    colorP.b = 255;
     colorP.a = 100;
     Vector3 v1(-2,-1,-1); //Test avec le constructeur qui prend 8 vector3
     Vector3 v2(-2,1,-1);
@@ -99,7 +98,7 @@ int main(int argv, char** args)  //int argv, char** args //// int argc, char *ar
     //creation d'une sphere
     SDL_Color colorS;
     colorS.r = 255;
-    colorS.g = 100;
+    colorS.g = 0;
     colorS.b = 0; 
     colorS.a = 255;
     Vector3 v0(1,0,0);
@@ -111,12 +110,10 @@ int main(int argv, char** args)  //int argv, char** args //// int argc, char *ar
 
     // creation affichage
     Affichage affichage(scene,800,600,640.0f);
-    
-    SDL_Event windowEvent;
     float t = 0.0f;
     while (affichage.isRunning())
     {
-        process_input(affichage, scene);
+        process_input(affichage);
         affichage.render(t,scene.getAnim());
         // affichage.test();
         t = (float)SDL_GetTicks()/1000.0f;

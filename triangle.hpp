@@ -145,6 +145,7 @@ class Triangle{
          * 
          */
         void scaleToViewAndWindow(int window_width,int window_height);
+        Triangle operator=(const Triangle& tri);
 };
 /**
  * @brief Surcharge de l'opérateur << pour afficher les points du triangle.

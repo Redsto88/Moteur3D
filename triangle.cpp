@@ -92,6 +92,14 @@ void Triangle::operator+= (const Vector3& vec){
     c += vec;
 }
 
+Triangle Triangle::operator= (const Triangle& tri){
+    a = tri.a;
+    b = tri.b;
+    c = tri.c;
+    color = tri.color;
+    return *this;
+}
+
 std::ostream& operator<<(std::ostream& st, Triangle& tri){
     st << tri.getA() << " // " << tri.getB() << " // " << tri.getC() << std::endl;
     return st;
