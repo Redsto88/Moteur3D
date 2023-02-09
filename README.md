@@ -33,20 +33,20 @@ Le mode Wireframe peut être activé ou non. S'il l'est, les arrêtes des quadri
 Enfin, le mode animation permet d'animer ou non la scène.
 
 <figure>
-<p align="center">
-    <img src="/Images/Lit.png"
-         alt="Mode Lit">
-    <figcaption>Figure 2.1 : Mode Lit</figcaption>
-    <img src="/Images/LitWireframe.png"
-         alt="Mode Lit et Wireframe">
-    <figcaption>Figure 2.2 : Mode Lit et Wireframe</figcaption>
-    <img src="/Images/Unlit.png"
-         alt="Mode Unlit">
-    <figcaption>Figure 2.3 : Mode Unlit</figcaption>
-    <img src="/Images/UnlitWireframe.png"
-         alt="Mode Unlit et Wireframe">
-    <figcaption>Figure 2.4 : Mode Unlit et Wireframe</figcaption>
-    <figcaption>Figure 2 : Comparaison des différents modes de rendu</figcaption>
+    <p align="center">
+        <img src="/Images/Lit.png"
+            alt="Mode Lit">
+        <figcaption>Figure 2.1 : Mode Lit</figcaption>
+        <img src="/Images/LitWireframe.png"
+            alt="Mode Lit et Wireframe">
+        <figcaption>Figure 2.2 : Mode Lit et Wireframe</figcaption>
+        <img src="/Images/Unlit.png"
+            alt="Mode Unlit">
+        <figcaption>Figure 2.3 : Mode Unlit</figcaption>
+        <img src="/Images/UnlitWireframe.png"
+            alt="Mode Unlit et Wireframe">
+        <figcaption>Figure 2.4 : Mode Unlit et Wireframe</figcaption>
+        <figcaption>Figure 2 : Comparaison des différents modes de rendu</figcaption>
     </p>
 </figure>
 
@@ -100,7 +100,7 @@ Les Triangles sont la base des figures 3D. Ils sont composés de trois points 3D
         <img src="Images/triangle.png"
          alt="Triangle orientation">
         <figcaption>Figure 3 : Triangle orienté dans le sens trigonométrique. La flèche représente la normale</figcaption>
-        </p>
+    </p>
 </figure>
 
 
@@ -110,10 +110,10 @@ Enfin à cela s'ajoutent les getters et setters de chaque point et de la couleur
 Les quadrilatères sont composés de deux triangles et d'une couleur ainsi que trois constructeurs. Un par défaut, un prenant en argument deux triangles coplanaires, devant partager deux sommets en communs, et une couleur et un prenant en argument quatre Vector3, correspondants aux quatres points coplanairers du quadrilatère et devant être donné dans le sens trigonométrique, et une couleur.
 
 <figure>
-<p align="center">
-    <img src="Images/quad.png"
-         alt="Quad orientation">
-    <figcaption>Figure 4 : Quadrilatère contenant deux triangles</figcaption>
+    <p align="center">
+        <img src="Images/quad.png"
+            alt="Quad orientation">
+        <figcaption>Figure 4 : Quadrilatère contenant deux triangles</figcaption>
     </p>
 </figure>
 
@@ -130,10 +130,10 @@ Les Pave3D sont une sorte de Volume3D, ils sont composés de 6 faces qui sont de
 Les sphères sont un assemblage de quadrilatères. Chaque quadrilatère étant composé des deux triangles, il existe 2 principaux moyens de faire des spheres en 3 dimensions. La première est une icosphère, qui est un assemblage de triangles homogènes mais sans quadrilatère.  L'autre manière est d'utiliser la longitude et la latitude sur une sphere afin de faire des arceaux tous perpendiculaires à l'axe Nord-Sud de la sphere. Ce qui fait une sphere composée de rangées de quadrilatères avec des triangles aux pôles.
 
 <figure>
-<p align="center">
-    <img src="Images/icosphereetsphere.png"
-         alt="Difference between icosphere and sphere">
-    <figcaption>Figure 5 : Différentes manières de faire un maillage de sphere. L'icosphere est à droite.</figcaption>
+    <p align="center">
+        <img src="Images/icosphereetsphere.png"
+            alt="Difference between icosphere and sphere">
+        <figcaption>Figure 5 : Différentes manières de faire un maillage de sphere. L'icosphere est à droite.</figcaption>
     </p>
 </figure>
 
@@ -143,10 +143,10 @@ Nous avons choisi la deuxième manière de faire car elle plus simple à mettre 
 Le constructeur de la sphère est alors simplement composé d'un point pour le centre, d'un flottant pour le rayon, d'un nombre de segments correspondant au nombre de subdivisions transversales et longitudinales et d'une couleur. 
 
 <figure>
-<p align="center">
-    <img src="Images/sphere.png"
-         alt="Sphere orientation">
-    <figcaption>Figure 6 : Représentation choisie de la sphere.</figcaption>
+    <p align="center">
+        <img src="Images/sphere.png"
+            alt="Sphere orientation">
+        <figcaption>Figure 6 : Représentation choisie de la sphere.</figcaption>
     </p>
 </figure>
 
@@ -168,10 +168,10 @@ Pour expliquer plus précisément le fonctionnement de la méthode **render**, c
  et on effectue sa projection sur un plan correspondant à l'oeil. C'est aussi cette méthode qui permet de calculer l'éclairement des faces à afficher. Nous développeront également ce point dans les parties suivantes. Une fois la liste des triangles projetés à afficher ainsi que leurs informations (couleur, éclairement, position sur l'écran) nous les dessinons en partant du fond ce qui permet de ne pas avoir de problèmes d'affichage si un objet est devant un autre.
 
 <figure>
-<p align="center">
-    <img src="Images/pipeline.png"
-         alt="Pipeline for draw a triangle">
-    <figcaption>Figure 7 : Pipeline d'affichage d'un triangle.</figcaption>
+    <p align="center">
+        <img src="Images/pipeline.png"
+            alt="Pipeline for draw a triangle">
+        <figcaption>Figure 7 : Pipeline d'affichage d'un triangle.</figcaption>
     </p>
 </figure>
 
@@ -195,10 +195,10 @@ Ainsi après avoir trié les sommets de haut en bas par rapport à l'écran, nou
 La projection est le coeur du fonctionnement de l'affichage, elle permet de transformer une scene 3D en des coordonnées 2D affichable. La projection fonctionne avec le schéma suivant :
 
 <figure>
-<p align="center">
-    <img src="Images/oeil.png"
-         alt="eye projection">
-    <figcaption>Figure 8 : Schéma de la projection.</figcaption>
+    <p align="center">
+        <img src="Images/oeil.png"
+            alt="eye projection">
+        <figcaption>Figure 8 : Schéma de la projection.</figcaption>
     </p>
 </figure>
 
@@ -287,9 +287,9 @@ En effet, cet indice d'éclairement et ensuite multiplié par les composantes R,
 Il est à noter que les objets ne génèrent pas d'ombre avec cette méthode. Il faudrait pour cela vérifier qu'aucun obstacle n'est présent entre la face et la source et dans le cas contraire assigner un éclairement de 0.1 à la face. De plus la source ne possède pas de couleur, c'est une source de lumière blanche. Pour faire une source de couleur il faudrait multiplier les couleurs pour obtenir un rendu un peu plus réaliste (un objet blanc éclairé par une lumière rouge apparaît rouge).
 
 <figure>
-<p align="center">
-    <img src="Images/end.png"
-         alt="final result">
-    <figcaption>Figure 9 : Rendu final.</figcaption>
+    <p align="center">
+        <img src="Images/end.png"
+            alt="final result">
+        <figcaption>Figure 9 : Rendu final.</figcaption>
     </p>
 </figure>
