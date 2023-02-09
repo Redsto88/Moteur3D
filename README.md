@@ -11,10 +11,13 @@ Ainsi, nous avons dû créer un ensemble d'objets en 3 dimensions tels que des p
 Le projet devait aussi contenir une caméra depuis laquelle afficher les différents objets.
 
 <figure>
-    <img src="/Images/UML.png"
-         alt="UML Project Overview">
-    <figcaption>Figure 1 : Diagramme UML du projet (sans le fichier main)</figcaption>
+    <p align="center">
+        <img src="/Images/UML.png" alt="UML Project Overview">
+        Figure 1 : Diagramme UML du projet (sans le fichier main)
+    </p>
 </figure>
+
+
 
 
 ### Manuel d'utilisation
