@@ -1,9 +1,8 @@
 # Projet de Programmation avancée et Projets : **Moteur 3D**
-Benjamin FARIGOUL & Hugo PIERRON
-December 2022
+Benjamin FARIGOUL & Hugo PIERRON, December 2022
 
 ## Introduction
-\Large
+
 ### Présentation du projet
 Le projet consistait en la création d'un moteur 3D en c++ avec la bibliothèque SDL. Cette bibliothèque permet l'affichage, de lignes, de points, de triangles et de toute autre figure géométrique en 2 dimensions.
 Ainsi, nous avons dû créer un ensemble d'objets en 3 dimensions tels que des points, des triangles, des quadrilatères, des cubes et des sphères. 
@@ -201,7 +200,11 @@ Cette image est un schéma en deux dimensions, l'axe horizontal est l'axe X. La 
 
 On peut ainsi voir que chaque point se trouvant dans le trapèze va être être projeté sur l'écran et tout point en dehors ne s'affichera pas. L'angle $\theta$ représente le FOV (Field of View), il peut être modifié pour avoir un vue plus large ou resserrée. Les valeurs $Zfar$ et $Znear$ représente respectivement la distance maximale de vue d'un objet et la distance minimale.
 Pour projeter un point sur l'écran, on mutliplie alors le vecteur Point par une matrice de projection $P$ issu de la figure : 
-$$\begin{bmatrix} \frac{h}{l}\cdot\frac{1}{\tan\left(\frac{\theta}{2}\right)} & 0 & 0 & 0\\0 & \frac{1}{\tan\left(\frac{\theta}{2}\right)} &0 & 0 \\0 & 0 & \frac{Zfar}{ZFar-Znear} & 1\\0 & 0 & -\frac{ZFar*ZNear}{ZFar-ZNear} & 0\end{bmatrix}$$
+
+```math
+\begin{bmatrix} \frac{h}{l}\cdot\frac{1}{\tan\left(\frac{\theta}{2}\right)} & 0 & 0 & 0\\0 & \frac{1}{\tan\left(\frac{\theta}{2}\right)} &0 & 0 \\0 & 0 & \frac{Zfar}{ZFar-Znear} & 1\\0 & 0 & -\frac{ZFar*ZNear}{ZFar-ZNear} & 0\end{bmatrix}
+```
+
 Où $h$ est la hauteur de l'écran en pixels, $w$ la largeur de l'écran en pixels et  $\theta$ est le FOV en radian.
 La matrice étant de taille 4, il a donc fallu ajouter une valeur $w$ au vecteur Point. Cette valeur permet une homogénisation des coordonnées après calculs.
 
@@ -246,15 +249,15 @@ Malgré la multiplication des calculs, certains objets s'affichent lorsqu'ils pa
 La gestion de la lumière, visible dans le mode Lit n'est pas une gestion réaliste utilisant le raytracing. En effet, dans le raytracing, des rayons partent dans tous les sens de la source lumineuse jusqu'aux objets environnants. Ici c'est l'inverse, le rayon $lightRay$ part du centre d'une face quadrilatères en direction de la source de lumière. Il n'y a ainsi qu'un seul rayon à calculer. Il nous donne la distance $d$  séparant la face de la source. 
 Pour déterminer si la face est éclairée ou non, nous effectuons un produit scalaire entre le vecteur $lightRay$ et la normale $n$ de la face. Soit $\vec{n}$ le vecteur de la normale et $\vec{lr}$ le vecteur $lightRay$. Nous pouvons alors obtenir l'angle $\theta$ entre ces deux veteurs suivant la formule suivante :
 
-\[
+```math
    \theta = arcos(\frac{\vec{n} \cdot \vec{lr}}{\lVert \vec{n} \rVert * \lVert \vec{lr} \rVert})
-\]
+```
 
 Enfin, en notant $I$ l'intensité de la source lumineuse obtenue avec **scene.getIntensite()**, nous obtenons l'éclairement du triangle grâce à la formule physique 
 
-\[
+```math
     E = \frac{I}{d^2}cos(\theta)
-\]
+```
 
 Les paramètres par défaut de l'intensité, égal à 20.0, et de la positon de la source nous donnent des valeurs entre 0 et 1.2, c'est pourquoi nous contraignons les valeurs au dessus de 1 à être égales à 1 et les valeurs inférieures à 0.1 à être égale à 0.1. De cette façon, aucune face n'est jamais invisible et reste dans la couleur choisie.
 En effet, cet indice d'éclairement et ensuite multiplié par les composantes R, G et B de la couleur du triangle. Ainsi plus l'éclairement est grand, plus la face sera de la couleur réelle de l'objet, plus l'éclairement est petit, plus la face est dans l'ombre. Cela se remarque particulièrement sur la sphère.
