@@ -27,34 +27,21 @@ Le mode Wireframe peut être activé ou non. S'il l'est, les arrêtes des quadri
 
 Enfin, le mode animation permet d'animer ou non la scène.
 
-```math
-\begin{figure}[h]
-
-\begin{subfigure}{0.5\textwidth}
-\centering\includegraphics[scale=0.5]{Lit.png} 
-\caption{Mode Lit}
-\label{fig:subim1}
-\end{subfigure}
-\begin{subfigure}{0.5\textwidth}
-\centering\includegraphics[scale=0.5]{LitWireframe.png}
-\caption{Mode Lit et Wireframe}
-\label{fig:subim2}
-\end{subfigure}
-\begin{subfigure}{0.5\textwidth}
-\centering\includegraphics[scale=0.5]{Unlit.png} 
-\caption{Mode Unlit}
-\label{fig:subim3}
-\end{subfigure}
-\begin{subfigure}{0.5\textwidth}
-\centering\includegraphics[scale=0.5]{UnlitWireframe.png}
-\caption{Mode Unlit et Wireframe}
-\label{fig:subim4}
-\end{subfigure}
-
-\caption{Comparaison des différents mode de rendu}
-\label{fig:image2}
-\end{figure}
-```
+<figure>
+    <img src="/Images/Lit.png"
+         alt="Mode Lit">
+    <figcaption>Figure 2.1 : Mode Lit</figcaption>
+    <img src="/Images/LitWireframe.png"
+         alt="Mode Lit et Wireframe">
+    <figcaption>Figure 2.2 : Mode Lit et Wireframe</figcaption>
+    <img src="/Images/Unlit.png"
+         alt="Mode Unlit">
+    <figcaption>Figure 2.3 : Mode Unlit</figcaption>
+    <img src="/Images/UnlitWireframe.png"
+         alt="Mode Unlit et Wireframe">
+    <figcaption>Figure 2.4 : Mode Unlit et Wireframe</figcaption>
+    <figcaption>Figure 2 : Comparaison des différents modes de rendu</figcaption>
+</figure>
 
 
 Après avoir compilé notre projet et obtenu l'executable, il est possible de l'utiliser avec ou sans arguments afin de choisir les modes de rendu.
