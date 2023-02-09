@@ -36,17 +36,25 @@ Enfin, le mode animation permet d'animer ou non la scène.
     <p align="center">
         <img src="/Images/Lit.png"
             alt="Mode Lit">
-        <figcaption>Figure 2.1 : Mode Lit</figcaption>
+        Figure 2.1 : Mode Lit
+    </p>
+    <p align="center">
         <img src="/Images/LitWireframe.png"
             alt="Mode Lit et Wireframe">
-        <figcaption>Figure 2.2 : Mode Lit et Wireframe</figcaption>
+        Figure 2.2 : Mode Lit et Wireframe
+    </p>
+    <p align="center">
         <img src="/Images/Unlit.png"
             alt="Mode Unlit">
-        <figcaption>Figure 2.3 : Mode Unlit</figcaption>
+        Figure 2.3 : Mode Unlit
+    </p>
+    <p align="center">
         <img src="/Images/UnlitWireframe.png"
             alt="Mode Unlit et Wireframe">
-        <figcaption>Figure 2.4 : Mode Unlit et Wireframe</figcaption>
-        <figcaption>Figure 2 : Comparaison des différents modes de rendu</figcaption>
+        Figure 2.4 : Mode Unlit et Wireframe
+    </p>
+    <p align="center">
+        Figure 2 : Comparaison des différents modes de rendu.
     </p>
 </figure>
 
@@ -99,7 +107,7 @@ Les Triangles sont la base des figures 3D. Ils sont composés de trois points 3D
     <p align="center">
         <img src="Images/triangle.png"
          alt="Triangle orientation">
-        <figcaption>Figure 3 : Triangle orienté dans le sens trigonométrique. La flèche représente la normale</figcaption>
+        Figure 3 : Triangle orienté dans le sens trigonométrique. La flèche représente la normale.
     </p>
 </figure>
 
@@ -113,7 +121,7 @@ Les quadrilatères sont composés de deux triangles et d'une couleur ainsi que t
     <p align="center">
         <img src="Images/quad.png"
             alt="Quad orientation">
-        <figcaption>Figure 4 : Quadrilatère contenant deux triangles</figcaption>
+        Figure 4 : Quadrilatère contenant deux triangles.
     </p>
 </figure>
 
@@ -133,7 +141,7 @@ Les sphères sont un assemblage de quadrilatères. Chaque quadrilatère étant c
     <p align="center">
         <img src="Images/icosphereetsphere.png"
             alt="Difference between icosphere and sphere">
-        <figcaption>Figure 5 : Différentes manières de faire un maillage de sphere. L'icosphere est à droite.</figcaption>
+        Figure 5 : Différentes manières de faire un maillage de sphere. L'icosphere est à droite.
     </p>
 </figure>
 
@@ -146,7 +154,7 @@ Le constructeur de la sphère est alors simplement composé d'un point pour le c
     <p align="center">
         <img src="Images/sphere.png"
             alt="Sphere orientation">
-        <figcaption>Figure 6 : Représentation choisie de la sphere.</figcaption>
+        Figure 6 : Représentation choisie de la sphere.
     </p>
 </figure>
 
@@ -171,7 +179,7 @@ Pour expliquer plus précisément le fonctionnement de la méthode **render**, c
     <p align="center">
         <img src="Images/pipeline.png"
             alt="Pipeline for draw a triangle">
-        <figcaption>Figure 7 : Pipeline d'affichage d'un triangle.</figcaption>
+        Figure 7 : Pipeline d'affichage d'un triangle.
     </p>
 </figure>
 
@@ -198,7 +206,7 @@ La projection est le coeur du fonctionnement de l'affichage, elle permet de tran
     <p align="center">
         <img src="Images/oeil.png"
             alt="eye projection">
-        <figcaption>Figure 8 : Schéma de la projection.</figcaption>
+        Figure 8 : Schéma de la projection.
     </p>
 </figure>
 
@@ -290,6 +298,6 @@ Il est à noter que les objets ne génèrent pas d'ombre avec cette méthode. Il
     <p align="center">
         <img src="Images/end.png"
             alt="final result">
-        <figcaption>Figure 9 : Rendu final.</figcaption>
+        Figure 9 : Rendu final.
     </p>
 </figure>
