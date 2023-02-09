@@ -19,7 +19,11 @@ Le projet consistait en la création d'un moteur 3D en c++ avec la bibliothèque
 Ainsi, nous avons dû créer un ensemble d'objets en 3 dimensions tels que des points, des triangles, des quadrilatères, des cubes et des sphères. 
 Le projet devait aussi contenir une caméra depuis laquelle afficher les différents objets.
 
-![UML Project Overview] (/Images/UML.png "Figure 1 : Diagramme UML du projet (sans le fichier main)")
+<figure>
+    <img src="/Images/UML.png"
+         alt="UML Project Overview">
+    <figcaption>Figure 1 : Diagramme UML du projet (sans le fichier main)</figcaption>
+</figure>
 
 
 ## Manuel d'utilisation
@@ -102,16 +106,17 @@ Ils sont composés de 4 flottants : 3 pour les coordonnées et 1 pour l'homogén
 
 La classe de ces points comporte un constructeur simple ainsi que des getters et setters.
 
-Nous avons aussi ajouté à cela des opérateurs : ($+=$)  ($-=$)  ($*=$)  ($/=$) ($+$) ($-$) ($*$) ($/$) ; ainsi que des fonctions telle que la normalisation, le produit scalaire et le produit de vecteur (car nos points sont semblables à des vecteurs, nous utilisons d'ailleurs les deux interprétations sans différence)
+Nous avons aussi ajouté à cela des opérateurs : += , -=, *=, /=, +, -, *, /. ainsi que des fonctions telle que la normalisation, le produit scalaire et le produit de vecteur (car nos points sont semblables à des vecteurs, nous utilisons d'ailleurs les deux interprétations sans différence)
 
 ## Les triangles
 Les Triangles sont la base des figures 3D. Ils sont composés de trois points 3D et d'une couleur. A cela s'ajoute un constructeur par défaut, initialisant tous ses points sur l'origine et un constructeur prenant en argument trois points. Pour faire ce projet, il a fallu orienter les triangles dans le sens trigonométrique afin de pouvoir les afficher correctement ensuite. 
 
 <figure>
-    <center><img src="Images/triangle.png"
-         alt="Triangle orientation"></center>
-    <center><figcaption>Figure 3 : Triangle orienté dans le sens trigonométrique. La flèche représente la normale</figcaption></center>
+    <img src="Images/triangle.png"
+         alt="Triangle orientation">
+    <figcaption>Figure 3 : Triangle orienté dans le sens trigonométrique. La flèche représente la normale</figcaption>
 </figure>
+
 
 Enfin à cela s'ajoutent les getters et setters de chaque point et de la couleur ainsi qu'une méthode retournant le milieu du côté AC. Celle-ci est utile afin de déterminer la couleur à afficher en mode Lit (voir La scene).
 
@@ -119,9 +124,9 @@ Enfin à cela s'ajoutent les getters et setters de chaque point et de la couleur
 Les quadrilatères sont composés de deux triangles et d'une couleur ainsi que trois constructeurs. Un par défaut, un prenant en argument deux triangles coplanaires, devant partager deux sommets en communs, et une couleur et un prenant en argument quatre Vector3, correspondants aux quatres points coplanairers du quadrilatère et devant être donné dans le sens trigonométrique, et une couleur.
 
 <figure>
-    <center><img src="Images/quad.png"
-         alt="Quad orientation"></center>
-    <center><figcaption>Figure 4 : Quadrilatère contenant deux triangles</figcaption></center>
+    <img src="Images/quad.png"
+         alt="Quad orientation">
+    <figcaption>Figure 4 : Quadrilatère contenant deux triangles</figcaption>
 </figure>
 
 
@@ -137,9 +142,9 @@ Les Pave3D sont une sorte de Volume3D, ils sont composés de 6 faces qui sont de
 Les sphères sont un assemblage de quadrilatères. Chaque quadrilatère étant composé des deux triangles, il existe 2 principaux moyens de faire des spheres en 3 dimensions. La première est une icosphère, qui est un assemblage de triangles homogènes mais sans quadrilatère.  L'autre manière est d'utiliser la longitude et la latitude sur une sphere afin de faire des arceaux tous perpendiculaires à l'axe Nord-Sud de la sphere. Ce qui fait une sphere composée de rangées de quadrilatères avec des triangles aux pôles.
 
 <figure>
-    <center><img src="Images/icosphereetsphere.png"
-         alt="Difference between icosphere and sphere"></center>
-    <center><figcaption>Figure 5 : Différentes manières de faire un maillage de sphere. L'icosphere est à droite.</figcaption></center>
+    <img src="Images/icosphereetsphere.png"
+         alt="Difference between icosphere and sphere">
+    <figcaption>Figure 5 : Différentes manières de faire un maillage de sphere. L'icosphere est à droite.</figcaption>
 </figure>
 
 
@@ -148,10 +153,11 @@ Nous avons choisi la deuxième manière de faire car elle plus simple à mettre 
 Le constructeur de la sphère est alors simplement composé d'un point pour le centre, d'un flottant pour le rayon, d'un nombre de segments correspondant au nombre de subdivisions transversales et longitudinales et d'une couleur. 
 
 <figure>
-    <center><img src="Images/sphere.png"
-         alt="Sphere orientation"></center>
-    <center><figcaption>Figure 6 : Représentation choisie de la sphere.</figcaption></center>
+    <img src="Images/sphere.png"
+         alt="Sphere orientation">
+    <figcaption>Figure 6 : Représentation choisie de la sphere.</figcaption>
 </figure>
+
 
 ## La scene
 La scène est l'objet contenant tout ce qui servira à l'affichage par la suite. Elle contient un ensemble de Volume3D, la position de la caméra, des vecteurs servant à la caméra, un point pour la source de lumière, un flottant pour l'intensité de la lumière, deux booléens pour les modes de rendus, un entier pour l'épaisseur des lignes, une couleur pour les lignes et un booléen pour animer ou non la scène.
@@ -170,25 +176,23 @@ Pour expliquer plus précisément le fonctionnement de la méthode **render**, c
  et on effectue sa projection sur un plan correspondant à l'oeil. C'est aussi cette méthode qui permet de calculer l'éclairement des faces à afficher. Nous développeront également ce point dans les parties suivantes. Une fois la liste des triangles projetés à afficher ainsi que leurs informations (couleur, éclairement, position sur l'écran) nous les dessinons en partant du fond ce qui permet de ne pas avoir de problèmes d'affichage si un objet est devant un autre.
 
 <figure>
-    <center><img src="Images/pipeline.png"
-         alt="Pipeline for draw a triangle"></center>
-    <center><figcaption>Figure 7 : Pipeline d'affichage d'un triangle.</figcaption></center>
+    <img src="Images/pipeline.png"
+         alt="Pipeline for draw a triangle">
+    <figcaption>Figure 7 : Pipeline d'affichage d'un triangle.</figcaption>
 </figure>
 
 
 # Rasterisation
 Pour colorier les faces, nous procédons à une rasterisation, c'est à dire, d'après la définition du dictionaire, convertir une image vectorielle en image matricielle afin de l'afficher sur un écran. Concrétement, l'image matricielle est l'écran qui est une matrice de pixels. L'image vectorielle, c'est le triangle projeté qui est défini par trois points en deux dimensions (des **SDL_Point** dans le cas de notre projet). L'objectif est donc de remplir les lignes du triangles une à une. Pour cela, nous avons utilisé l'algorithme de Scanline.
-\newline \newline Explication de l'algorithme en général :
 
-\begin{enumerate}
-     Trier les sommets de la forme fermée par ordre croissant de leur coordonnée y. Cela permet de parcourir les lignes de la forme de haut en bas, de la manière la plus efficace possible.
-     Déterminer la zone de remplissage de chaque ligne en utilisant des coefficients de proportionnalité. Pour chaque ligne, il faut :
-    \begin{enumerate}
-         Calculer les coefficients de proportionnalité alpha et beta, qui vont permettre de déterminer les coordonnées A et B des points qui délimitent la zone de remplissage de la ligne courante. Alpha représente la proportion de la hauteur totale de la forme parcourue, tandis que beta représente la proportion de la hauteur du segment courant parcourue.
-         Calculer les coordonnées A et B en utilisant les coefficients de proportionnalité et les coordonnées x des sommets de la forme.
-         Parcourir la ligne de A à B en dessinant chaque pixel de la zone de remplissage.
-    \end{enumerate}
-\end{enumerate}
+Explication de l'algorithme en général :
+
+1. Trier les sommets de la forme fermée par ordre croissant de leur coordonnée y. Cela permet de parcourir les lignes de la forme de haut en bas, de la manière la plus efficace possible.
+2. Déterminer la zone de remplissage de chaque ligne en utilisant des coefficients de proportionnalité. Pour chaque ligne, il faut :
+2.1 Calculer les coefficients de proportionnalité alpha et beta, qui vont permettre de déterminer les coordonnées A et B des points qui délimitent la zone de remplissage de la ligne courante. Alpha représente la proportion de la hauteur totale de la forme parcourue, tandis que beta représente la proportion de la hauteur du segment courant parcourue.
+2.2 Calculer les coordonnées A et B en utilisant les coefficients de proportionnalité et les coordonnées x des sommets de la forme.
+2.3 Parcourir la ligne de A à B en dessinant chaque pixel de la zone de remplissage.
+
 
 Ainsi après avoir trié les sommets de haut en bas par rapport à l'écran, nous traçons une ligne horizontale pixel par pixel entre les extrêmités gauche et droite précédement calculées avec les coefficients de proportionnalité.
 
@@ -197,60 +201,55 @@ Ainsi après avoir trié les sommets de haut en bas par rapport à l'écran, nou
 La projection est le coeur du fonctionnement de l'affichage, elle permet de transformer une scene 3D en des coordonnées 2D affichable. La projection fonctionne avec le schéma suivant :
 
 <figure>
-    <center><img src="Images/oeil.png"
-         alt="eye projection"></center>
-    <center><figcaption>Figure 8 : Schéma de la projection.</figcaption></center>
+    <img src="Images/oeil.png"
+         alt="eye projection">
+    <figcaption>Figure 8 : Schéma de la projection.</figcaption>
 </figure>
+
 
 Cette image est un schéma en deux dimensions, l'axe horizontal est l'axe X. La figure de projection est alors un prisme.
 
 On peut ainsi voir que chaque point se trouvant dans le trapèze va être être projeté sur l'écran et tout point en dehors ne s'affichera pas. L'angle $\theta$ représente le FOV (Field of View), il peut être modifié pour avoir un vue plus large ou resserrée. Les valeurs $Zfar$ et $Znear$ représente respectivement la distance maximale de vue d'un objet et la distance minimale.
 Pour projeter un point sur l'écran, on mutliplie alors le vecteur Point par une matrice de projection $P$ issu de la figure : 
-$\begin{bmatrix}
-\frac{h}{l}\cdot\frac{1}{\tan\left(\frac{\theta}{2}\right)} & 0 & 0 & 0\\
-0 & \frac{1}{\tan\left(\frac{\theta}{2}\right)} & 0 & 0 \\
-0 & 0 & \frac{Zfar}{ZFar-Znear} & 1\\
-0 & 0 & -\frac{ZFar*ZNear}{ZFar-ZNear} & 0
-\end{bmatrix}$
+$\begin{bmatrix} \frac{h}{l}\cdot\frac{1}{\tan\left(\frac{\theta}{2}\right)} & 0 & 0 & 0\\0 & \frac{1}{\tan\left(\frac{\theta}{2}\right)} &0 & 0 \\0 & 0 & \frac{Zfar}{ZFar-Znear} & 1\\0 & 0 & -\frac{ZFar*ZNear}{ZFar-ZNear} & 0\end{bmatrix}$
 Où $h$ est la hauteur de l'écran en pixels, $w$ la largeur de l'écran en pixels et  $\theta$ est le FOV en radian.
 La matrice étant de taille 4, il a donc fallu ajouter une valeur $w$ au vecteur Point. Cette valeur permet une homogénisation des coordonnées après calculs.
-\newline\newline
+
 Pour la caméra, il fallait aussi trouver une matrice adaptée. Ainsi, il a fallut définir 4 vecteurs dans la scene : un point désignant le centre de la caméra, un vecteur direction correspondant à la direction vers laquelle regarde la caméra, un vecteur qui pointe vers le haut (pour l'orientation de la caméra) et un point désignant la cible de la caméra. La cible et la direction du regard sont liés mais nous avons besoin des deux pour effectuer les calculs.
 Pour la matrice, il faut avoir les vecteurs suivants : 
 
-[\ \begin{itemize}
- Un vecteur correspondant au haut (up) : 
+- Un vecteur correspondant au haut (up) : 
 $\begin{pmatrix}
 Ux\\
 Uy\\
 Uz\\
 \end{pmatrix}$
- Un vecteur correpondant à la droite (right) :
+- Un vecteur correpondant à la droite (right) :
 $\begin{pmatrix}
 Rx\\
 Ry\\
 Rz\\
 \end{pmatrix}$
- Un vecteur allant vers l'avant (forward) :
+- Un vecteur allant vers l'avant (forward) :
 $\begin{pmatrix}
 Fx\\
 Fy\\
 Fz\\
 \end{pmatrix}$
- Un vecteur pour la position de la caméra : 
+- Un vecteur pour la position de la caméra : 
 $\begin{pmatrix}
 Px\\
 Py\\
 Pz\\
 \end{pmatrix}$
-\end{itemize}
+
 La matrice de Caméra $C$ se forme alors ainsi :
 $\begin{bmatrix}
 Rx & Ry & Rz & 0\\
 Ux & Ux & Uz & 0\\
 Fx & Fy & Fz & 0\\
 Px & Py & Pz & 1
-\end{bmatrix}$ \]
+\end{bmatrix}$
 
 Chaque point en 3 dimensions est alors multiplié par la matrice $C$ puis multiplié par la matrice de projection $P$ pour être affiché. On divise ensuite ses coordonnées par le coefficient $w$ pour homogénéiser. On obtient alors des valeurs flottantes entre -1 et 1 qui permettent ensuite l'affichage sur un écran en ajoutant 1 et en multipliant par $\frac{h}{2}$ pour Y et par $\frac{l}{2}$ pour X. 
 
@@ -278,7 +277,7 @@ En effet, cet indice d'éclairement et ensuite multiplié par les composantes R,
 Il est à noter que les objets ne génèrent pas d'ombre avec cette méthode. Il faudrait pour cela vérifier qu'aucun obstacle n'est présent entre la face et la source et dans le cas contraire assigner un éclairement de 0.1 à la face. De plus la source ne possède pas de couleur, c'est une source de lumière blanche. Pour faire une source de couleur il faudrait multiplier les couleurs pour obtenir un rendu un peu plus réaliste (un objet blanc éclairé par une lumière rouge apparaît rouge).
 
 <figure>
-    <center><img src="Images/end.png"
-         alt="final result"></center>
-    <center><figcaption>Figure 9 : Rendu final.</figcaption></center>
+    <img src="Images/end.png"
+         alt="final result">
+    <figcaption>Figure 9 : Rendu final.</figcaption>
 </figure>
