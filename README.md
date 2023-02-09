@@ -27,7 +27,7 @@ Le mode Wireframe peut être activé ou non. S'il l'est, les arrêtes des quadri
 
 Enfin, le mode animation permet d'animer ou non la scène.
 
-$$
+```math
 \begin{figure}[h]
 
 \begin{subfigure}{0.5\textwidth}
@@ -54,7 +54,7 @@ $$
 \caption{Comparaison des différents mode de rendu}
 \label{fig:image2}
 \end{figure}
-$$
+```
 
 
 Après avoir compilé notre projet et obtenu l'executable, il est possible de l'utiliser avec ou sans arguments afin de choisir les modes de rendu.
@@ -212,33 +212,47 @@ Pour la caméra, il fallait aussi trouver une matrice adaptée. Ainsi, il a fall
 Pour la matrice, il faut avoir les vecteurs suivants : 
 
 - Un vecteur correspondant au haut (up) : 
-$$\begin{pmatrix}Ux\\ Uy\\ Uz\\ \end{pmatrix}$$
+```math 
+\begin{pmatrix}
+Ux\\ 
+Uy\\ 
+Uz\\ 
+\end{pmatrix}
+```
 - Un vecteur correpondant à la droite (right) :
-$\begin{pmatrix}
+```math
+\begin{pmatrix}
 Rx\\
 Ry\\
 Rz\\
-\end{pmatrix}$
+\end{pmatrix}
+```
 - Un vecteur allant vers l'avant (forward) :
-$\begin{pmatrix}
+```math
+\begin{pmatrix}
 Fx\\
 Fy\\
 Fz\\
-\end{pmatrix}$
+\end{pmatrix}
+```
 - Un vecteur pour la position de la caméra : 
-$\begin{pmatrix}
+```math
+\begin{pmatrix}
 Px\\
 Py\\
 Pz\\
-\end{pmatrix}$
+\end{pmatrix}
+```
 
 La matrice de Caméra $C$ se forme alors ainsi :
-$\begin{bmatrix}
+```math
+\begin{bmatrix}
 Rx & Ry & Rz & 0\\
 Ux & Ux & Uz & 0\\
 Fx & Fy & Fz & 0\\
 Px & Py & Pz & 1
-\end{bmatrix}$
+\end{bmatrix}
+```
 
 Chaque point en 3 dimensions est alors multiplié par la matrice $C$ puis multiplié par la matrice de projection $P$ pour être affiché. On divise ensuite ses coordonnées par le coefficient $w$ pour homogénéiser. On obtient alors des valeurs flottantes entre -1 et 1 qui permettent ensuite l'affichage sur un écran en ajoutant 1 et en multipliant par $\frac{h}{2}$ pour Y et par $\frac{l}{2}$ pour X. 
 
