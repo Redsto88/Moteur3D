@@ -1,20 +1,10 @@
-\title{Projet de Programmation avancée et Projets\\
-  \LARGE Moteur 3D
-}
+# Projet de Programmation avancée et Projets : **Moteur 3D**
+Benjamin FARIGOUL & Hugo PIERRON
+December 2022
 
-\author{Benjamin Farigoul et Hugo Pierron}
-\date{December 2022}
-
-\begin{document}
-
-\maketitle
-\renewcommand*\contentsname{Sommaire}
-\tableofcontents
-
-
-# Introduction
+## Introduction
 \Large
-## Présentation du projet
+### Présentation du projet
 Le projet consistait en la création d'un moteur 3D en c++ avec la bibliothèque SDL. Cette bibliothèque permet l'affichage, de lignes, de points, de triangles et de toute autre figure géométrique en 2 dimensions.
 Ainsi, nous avons dû créer un ensemble d'objets en 3 dimensions tels que des points, des triangles, des quadrilatères, des cubes et des sphères. 
 Le projet devait aussi contenir une caméra depuis laquelle afficher les différents objets.
@@ -26,7 +16,7 @@ Le projet devait aussi contenir une caméra depuis laquelle afficher les différ
 </figure>
 
 
-## Manuel d'utilisation
+### Manuel d'utilisation
 Il existe plusieurs modes de rendu de notre projet. 
 Le mode Lit, le mode Unlit, le mode Wireframe et le mode Animation. Certains de ces modes sont indépendants des autres (il est par exemple possible d'être en mode Lit et Wireframe tout en ayant l'animation).
 
@@ -38,7 +28,7 @@ Le mode Wireframe peut être activé ou non. S'il l'est, les arrêtes des quadri
 
 Enfin, le mode animation permet d'animer ou non la scène.
 
-\[
+$$
 \begin{figure}[h]
 
 \begin{subfigure}{0.5\textwidth}
@@ -65,7 +55,7 @@ Enfin, le mode animation permet d'animer ou non la scène.
 \caption{Comparaison des différents mode de rendu}
 \label{fig:image2}
 \end{figure}
-\]
+$$
 
 
 Après avoir compilé notre projet et obtenu l'executable, il est possible de l'utiliser avec ou sans arguments afin de choisir les modes de rendu.
@@ -97,9 +87,9 @@ Il est aussi possible de modifier l'angle de vue de la caméra, il suffit pour c
 
 
 
-# Classes de bases
+## Classes de bases
 
-## Les Vector3
+### Les Vector3
 Les points sont des vector3 et été la première pierre apportée au projet. Ils sont la base de toutes les figures 3D du projet.
 
 Ils sont composés de 4 flottants : 3 pour les coordonnées et 1 pour l'homogénisation de celles ci lors des projections.
@@ -108,7 +98,7 @@ La classe de ces points comporte un constructeur simple ainsi que des getters et
 
 Nous avons aussi ajouté à cela des opérateurs : += , -=, *=, /=, +, -, *, /. ainsi que des fonctions telle que la normalisation, le produit scalaire et le produit de vecteur (car nos points sont semblables à des vecteurs, nous utilisons d'ailleurs les deux interprétations sans différence)
 
-## Les triangles
+### Les triangles
 Les Triangles sont la base des figures 3D. Ils sont composés de trois points 3D et d'une couleur. A cela s'ajoute un constructeur par défaut, initialisant tous ses points sur l'origine et un constructeur prenant en argument trois points. Pour faire ce projet, il a fallu orienter les triangles dans le sens trigonométrique afin de pouvoir les afficher correctement ensuite. 
 
 <figure>
@@ -120,7 +110,7 @@ Les Triangles sont la base des figures 3D. Ils sont composés de trois points 3D
 
 Enfin à cela s'ajoutent les getters et setters de chaque point et de la couleur ainsi qu'une méthode retournant le milieu du côté AC. Celle-ci est utile afin de déterminer la couleur à afficher en mode Lit (voir La scene).
 
-## Les quadrilatères
+### Les quadrilatères
 Les quadrilatères sont composés de deux triangles et d'une couleur ainsi que trois constructeurs. Un par défaut, un prenant en argument deux triangles coplanaires, devant partager deux sommets en communs, et une couleur et un prenant en argument quatre Vector3, correspondants aux quatres points coplanairers du quadrilatère et devant être donné dans le sens trigonométrique, et une couleur.
 
 <figure>
@@ -132,13 +122,13 @@ Les quadrilatères sont composés de deux triangles et d'une couleur ainsi que t
 
 La classe contient également des getters pour chaque attribut. 
 
-## Les volumes3D
+### Les volumes3D
 La classe Volume3D est une classe générique pour tous les volumes en 3 dimensions. Elle permet à la scene d'avoir une liste d'objets à rendre sans avoir à donner la classe de chaque objet rendu. Ainsi, elle ne contient qu'un vecteur de quadrilatère, une couleur d'affichage ainsi qu'une fonction donnant accès aux quadrilatères.
 
-## Les pave3D
+### Les pave3D
 Les Pave3D sont une sorte de Volume3D, ils sont composés de 6 faces qui sont des quadrilatères et d'une couleur. Nous avons mis en place un constructeur avec un vecteur de quadrilatères et une couleur, un constructeur de copie et un dernier constructeur avec les 8 points du pavé ainsi que la couleur.
 
-## Les sphere3D
+### Les sphere3D
 Les sphères sont un assemblage de quadrilatères. Chaque quadrilatère étant composé des deux triangles, il existe 2 principaux moyens de faire des spheres en 3 dimensions. La première est une icosphère, qui est un assemblage de triangles homogènes mais sans quadrilatère.  L'autre manière est d'utiliser la longitude et la latitude sur une sphere afin de faire des arceaux tous perpendiculaires à l'axe Nord-Sud de la sphere. Ce qui fait une sphere composée de rangées de quadrilatères avec des triangles aux pôles.
 
 <figure>
@@ -159,13 +149,13 @@ Le constructeur de la sphère est alors simplement composé d'un point pour le c
 </figure>
 
 
-## La scene
+### La scene
 La scène est l'objet contenant tout ce qui servira à l'affichage par la suite. Elle contient un ensemble de Volume3D, la position de la caméra, des vecteurs servant à la caméra, un point pour la source de lumière, un flottant pour l'intensité de la lumière, deux booléens pour les modes de rendus, un entier pour l'épaisseur des lignes, une couleur pour les lignes et un booléen pour animer ou non la scène.
 
 Scene comporte aussi un constructeur par défaut (avec des valeurs fixées arbitrairement donc peut utilisable en pratique) et un constructeur où l'on fourni tous les arguments de la scene.
 La scene est principalement un objet de stockage, donc ses seules méthodes sont des getters et des setters.
 
-## L'affichage
+### L'affichage
 L'affichage est la classe permettant d'utiliser la SDL dans notre projet. Elle contient un pointeur vers une fenêtre, un pointeur vers un renderer, un tableau de couleurs (pour chaque pixel de l'écran), un pointeur vers un buffer de textures (utile pour le rendu), deux entiers correspondants à la taille de la fenêtre et enfin un booléen pour savoir si la fenêtre est ouverte ou non.
 
 La classe contient également deux méthodes pour le rendu qui sont **render_color_buffer** qui permet de créer une texture pouvant être affichée lors du rendu. La fonction **clear_color_buffer** a aussi été créée pour remettre à zéro l'écran (à chaque rendu d'image par exemple).
@@ -182,7 +172,7 @@ Pour expliquer plus précisément le fonctionnement de la méthode **render**, c
 </figure>
 
 
-# Rasterisation
+## Rasterisation
 Pour colorier les faces, nous procédons à une rasterisation, c'est à dire, d'après la définition du dictionaire, convertir une image vectorielle en image matricielle afin de l'afficher sur un écran. Concrétement, l'image matricielle est l'écran qui est une matrice de pixels. L'image vectorielle, c'est le triangle projeté qui est défini par trois points en deux dimensions (des **SDL_Point** dans le cas de notre projet). L'objectif est donc de remplir les lignes du triangles une à une. Pour cela, nous avons utilisé l'algorithme de Scanline.
 
 Explication de l'algorithme en général :
@@ -197,7 +187,7 @@ Explication de l'algorithme en général :
 Ainsi après avoir trié les sommets de haut en bas par rapport à l'écran, nous traçons une ligne horizontale pixel par pixel entre les extrêmités gauche et droite précédement calculées avec les coefficients de proportionnalité.
 
 
-# Projection et Caméra
+## Projection et Caméra
 La projection est le coeur du fonctionnement de l'affichage, elle permet de transformer une scene 3D en des coordonnées 2D affichable. La projection fonctionne avec le schéma suivant :
 
 <figure>
@@ -211,7 +201,7 @@ Cette image est un schéma en deux dimensions, l'axe horizontal est l'axe X. La 
 
 On peut ainsi voir que chaque point se trouvant dans le trapèze va être être projeté sur l'écran et tout point en dehors ne s'affichera pas. L'angle $\theta$ représente le FOV (Field of View), il peut être modifié pour avoir un vue plus large ou resserrée. Les valeurs $Zfar$ et $Znear$ représente respectivement la distance maximale de vue d'un objet et la distance minimale.
 Pour projeter un point sur l'écran, on mutliplie alors le vecteur Point par une matrice de projection $P$ issu de la figure : 
-$\begin{bmatrix} \frac{h}{l}\cdot\frac{1}{\tan\left(\frac{\theta}{2}\right)} & 0 & 0 & 0\\0 & \frac{1}{\tan\left(\frac{\theta}{2}\right)} &0 & 0 \\0 & 0 & \frac{Zfar}{ZFar-Znear} & 1\\0 & 0 & -\frac{ZFar*ZNear}{ZFar-ZNear} & 0\end{bmatrix}$
+$$\begin{bmatrix} \frac{h}{l}\cdot\frac{1}{\tan\left(\frac{\theta}{2}\right)} & 0 & 0 & 0\\0 & \frac{1}{\tan\left(\frac{\theta}{2}\right)} &0 & 0 \\0 & 0 & \frac{Zfar}{ZFar-Znear} & 1\\0 & 0 & -\frac{ZFar*ZNear}{ZFar-ZNear} & 0\end{bmatrix}$$
 Où $h$ est la hauteur de l'écran en pixels, $w$ la largeur de l'écran en pixels et  $\theta$ est le FOV en radian.
 La matrice étant de taille 4, il a donc fallu ajouter une valeur $w$ au vecteur Point. Cette valeur permet une homogénisation des coordonnées après calculs.
 
@@ -219,11 +209,7 @@ Pour la caméra, il fallait aussi trouver une matrice adaptée. Ainsi, il a fall
 Pour la matrice, il faut avoir les vecteurs suivants : 
 
 - Un vecteur correspondant au haut (up) : 
-$\begin{pmatrix}
-Ux\\
-Uy\\
-Uz\\
-\end{pmatrix}$
+$$\begin{pmatrix}Ux\\ Uy\\ Uz\\ \end{pmatrix}$$
 - Un vecteur correpondant à la droite (right) :
 $\begin{pmatrix}
 Rx\\
@@ -256,7 +242,7 @@ Chaque point en 3 dimensions est alors multiplié par la matrice $C$ puis multip
 Malgré la multiplication des calculs, certains objets s'affichent lorsqu'ils passent derrière la caméra. De nombreux essais ont été fait pour tenter de régler le problème mais le bug est resté. La caméra n'est donc pas mobile et lors de l'initialisation, il faut éviter de placer la caméra dans un sens qui conduirait à un problème.
 
 
-# Gestion de la lumière
+## Gestion de la lumière
 La gestion de la lumière, visible dans le mode Lit n'est pas une gestion réaliste utilisant le raytracing. En effet, dans le raytracing, des rayons partent dans tous les sens de la source lumineuse jusqu'aux objets environnants. Ici c'est l'inverse, le rayon $lightRay$ part du centre d'une face quadrilatères en direction de la source de lumière. Il n'y a ainsi qu'un seul rayon à calculer. Il nous donne la distance $d$  séparant la face de la source. 
 Pour déterminer si la face est éclairée ou non, nous effectuons un produit scalaire entre le vecteur $lightRay$ et la normale $n$ de la face. Soit $\vec{n}$ le vecteur de la normale et $\vec{lr}$ le vecteur $lightRay$. Nous pouvons alors obtenir l'angle $\theta$ entre ces deux veteurs suivant la formule suivante :
 
