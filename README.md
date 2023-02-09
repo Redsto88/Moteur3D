@@ -19,11 +19,7 @@ Le projet consistait en la création d'un moteur 3D en c++ avec la bibliothèque
 Ainsi, nous avons dû créer un ensemble d'objets en 3 dimensions tels que des points, des triangles, des quadrilatères, des cubes et des sphères. 
 Le projet devait aussi contenir une caméra depuis laquelle afficher les différents objets.
 
-<figure>
-    <center><img src="/Images/UML.png"
-         alt="UML Project Overview"></center>
-    <center><figcaption>Figure 1 : Diagramme UML du projet (sans le fichier main)</figcaption></center>>
-</figure>
+![UML Project Overview] (/Images/UML.png "Figure 1 : Diagramme UML du projet (sans le fichier main)")
 
 
 ## Manuel d'utilisation
@@ -114,7 +110,7 @@ Les Triangles sont la base des figures 3D. Ils sont composés de trois points 3D
 <figure>
     <center><img src="Images/triangle.png"
          alt="Triangle orientation"></center>
-    <center><figcaption>Figure 3 : Triangle orienté dans le sens trigonométrique. La flèche représente la normale</figcaption></center>>
+    <center><figcaption>Figure 3 : Triangle orienté dans le sens trigonométrique. La flèche représente la normale</figcaption></center>
 </figure>
 
 Enfin à cela s'ajoutent les getters et setters de chaque point et de la couleur ainsi qu'une méthode retournant le milieu du côté AC. Celle-ci est utile afin de déterminer la couleur à afficher en mode Lit (voir La scene).
@@ -125,7 +121,7 @@ Les quadrilatères sont composés de deux triangles et d'une couleur ainsi que t
 <figure>
     <center><img src="Images/quad.png"
          alt="Quad orientation"></center>
-    <center><figcaption>Figure 4 : Quadrilatère contenant deux triangles</figcaption></center>>
+    <center><figcaption>Figure 4 : Quadrilatère contenant deux triangles</figcaption></center>
 </figure>
 
 
@@ -143,7 +139,7 @@ Les sphères sont un assemblage de quadrilatères. Chaque quadrilatère étant c
 <figure>
     <center><img src="Images/icosphereetsphere.png"
          alt="Difference between icosphere and sphere"></center>
-    <center><figcaption>Figure 5 : Différentes manières de faire un maillage de sphere. L'icosphere est à droite.</figcaption></center>>
+    <center><figcaption>Figure 5 : Différentes manières de faire un maillage de sphere. L'icosphere est à droite.</figcaption></center>
 </figure>
 
 
@@ -154,7 +150,7 @@ Le constructeur de la sphère est alors simplement composé d'un point pour le c
 <figure>
     <center><img src="Images/sphere.png"
          alt="Sphere orientation"></center>
-    <center><figcaption>Figure 6 : Représentation choisie de la sphere.</figcaption></center>>
+    <center><figcaption>Figure 6 : Représentation choisie de la sphere.</figcaption></center>
 </figure>
 
 ## La scene
@@ -176,7 +172,7 @@ Pour expliquer plus précisément le fonctionnement de la méthode **render**, c
 <figure>
     <center><img src="Images/pipeline.png"
          alt="Pipeline for draw a triangle"></center>
-    <center><figcaption>Figure 7 : Pipeline d'affichage d'un triangle.</figcaption></center>>
+    <center><figcaption>Figure 7 : Pipeline d'affichage d'un triangle.</figcaption></center>
 </figure>
 
 
@@ -203,7 +199,7 @@ La projection est le coeur du fonctionnement de l'affichage, elle permet de tran
 <figure>
     <center><img src="Images/oeil.png"
          alt="eye projection"></center>
-    <center><figcaption>Figure 8 : Schéma de la projection.</figcaption></center>>
+    <center><figcaption>Figure 8 : Schéma de la projection.</figcaption></center>
 </figure>
 
 Cette image est un schéma en deux dimensions, l'axe horizontal est l'axe X. La figure de projection est alors un prisme.
@@ -281,13 +277,8 @@ En effet, cet indice d'éclairement et ensuite multiplié par les composantes R,
 \newline
 Il est à noter que les objets ne génèrent pas d'ombre avec cette méthode. Il faudrait pour cela vérifier qu'aucun obstacle n'est présent entre la face et la source et dans le cas contraire assigner un éclairement de 0.1 à la face. De plus la source ne possède pas de couleur, c'est une source de lumière blanche. Pour faire une source de couleur il faudrait multiplier les couleurs pour obtenir un rendu un peu plus réaliste (un objet blanc éclairé par une lumière rouge apparaît rouge).
 
-
-\begin{figure}[htp]
-\centering\includegraphics[width=1\textwidth]{end.png}
-\end{figure}
-
 <figure>
     <center><img src="Images/end.png"
          alt="final result"></center>
-    <center><figcaption>Figure 9 : Rendu final.</figcaption></center>>
+    <center><figcaption>Figure 9 : Rendu final.</figcaption></center>
 </figure>
