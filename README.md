@@ -1,5 +1,7 @@
-# Projet de Programmation avancée et Projets : **Moteur 3D**
-Benjamin FARIGOUL & Hugo PIERRON, December 2022
+<h4 align="center">Projet de Programmation avancée et Projets :</h4>
+<h1 align="center">Moteur 3D</h1>
+<h4 align="center">Benjamin FARIGOUL & Hugo PIERRON, Décembre 2022</h4>
+
 
 ## Introduction
 
