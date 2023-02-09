@@ -36,21 +36,29 @@ Enfin, le mode animation permet d'animer ou non la scène.
     <p align="center">
         <img src="/Images/Lit.png"
             alt="Mode Lit">
+    </p>
+    <p align="center">
         Figure 2.1 : Mode Lit
     </p>
     <p align="center">
         <img src="/Images/LitWireframe.png"
             alt="Mode Lit et Wireframe">
+    </p>
+    <p align="center">
         Figure 2.2 : Mode Lit et Wireframe
     </p>
     <p align="center">
         <img src="/Images/Unlit.png"
             alt="Mode Unlit">
+    </p>
+    <p align="center">
         Figure 2.3 : Mode Unlit
     </p>
     <p align="center">
         <img src="/Images/UnlitWireframe.png"
             alt="Mode Unlit et Wireframe">
+    </p>
+    <p align="center">
         Figure 2.4 : Mode Unlit et Wireframe
     </p>
     <p align="center">
