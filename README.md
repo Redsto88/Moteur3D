@@ -314,6 +314,10 @@ En effet, cet indice d'éclairement et ensuite multiplié par les composantes R,
 \newline
 Il est à noter que les objets ne génèrent pas d'ombre avec cette méthode. Il faudrait pour cela vérifier qu'aucun obstacle n'est présent entre la face et la source et dans le cas contraire assigner un éclairement de 0.1 à la face. De plus la source ne possède pas de couleur, c'est une source de lumière blanche. Pour faire une source de couleur il faudrait multiplier les couleurs pour obtenir un rendu un peu plus réaliste (un objet blanc éclairé par une lumière rouge apparaît rouge).
 
+<video width="320*2" height="240*2" controls>
+  <source src="Images/video.mp4" type="video/mp4">
+</video>
+
 <figure>
     <p align="center">
         <img src="Images/end.png"
