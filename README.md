@@ -24,13 +24,13 @@ Le projet devait aussi contenir une caméra depuis laquelle afficher les différ
 Il existe plusieurs modes de rendu de notre projet. 
 Le mode Lit, le mode Unlit, le mode Wireframe et le mode Animation. Certains de ces modes sont indépendants des autres (il est par exemple possible d'être en mode Lit et Wireframe tout en ayant l'animation).
 
-Le mode Lit correspond à un rendu comprenant une source lumineuse qui va ainsi créer des ombrages sur les objets.
+Le mode **Lit** correspond à un rendu comprenant une source lumineuse qui va ainsi créer des ombrages sur les objets.
 
-Le mode Unlit lui va au contraire appliquer une seule couleur sans nuance sur l'objet.
+Le mode **Unlit** lui va au contraire appliquer une seule couleur sans nuance sur l'objet.
 
-Le mode Wireframe peut être activé ou non. S'il l'est, les arrêtes des quadrilatères seront apparentes.
+Le mode **Wireframe** peut être activé ou non. S'il l'est, les arrêtes des quadrilatères seront apparentes.
 
-Enfin, le mode animation permet d'animer ou non la scène.
+Enfin, le mode **Animation** permet d'animer ou non la scène.
 
 <figure>
     <p align="center">
@@ -79,8 +79,7 @@ Le premier argument correspond au mode de rendu visuel :
 - **anim :** Cas par défaut avec l'animation.
 
 Il est possible d'ajouter **anim** en second argument afin de voir l'animation avec le mode de rendu choisi.
-\newline
-\newline
+
 Il est égalemement possible de modifier rapidement et facilement les paramètres suivants depuis la fonction **main** :
 - Epaisseur des lignes du mode Wireframe
 - Couleur des lignes du mode Wireframe
@@ -310,8 +309,7 @@ Enfin, en notant $I$ l'intensité de la source lumineuse obtenue avec **scene.ge
 
 Les paramètres par défaut de l'intensité, égal à 20.0, et de la positon de la source nous donnent des valeurs entre 0 et 1.2, c'est pourquoi nous contraignons les valeurs au dessus de 1 à être égales à 1 et les valeurs inférieures à 0.1 à être égale à 0.1. De cette façon, aucune face n'est jamais invisible et reste dans la couleur choisie.
 En effet, cet indice d'éclairement et ensuite multiplié par les composantes R, G et B de la couleur du triangle. Ainsi plus l'éclairement est grand, plus la face sera de la couleur réelle de l'objet, plus l'éclairement est petit, plus la face est dans l'ombre. Cela se remarque particulièrement sur la sphère.
-\newline
-\newline
+
 Il est à noter que les objets ne génèrent pas d'ombre avec cette méthode. Il faudrait pour cela vérifier qu'aucun obstacle n'est présent entre la face et la source et dans le cas contraire assigner un éclairement de 0.1 à la face. De plus la source ne possède pas de couleur, c'est une source de lumière blanche. Pour faire une source de couleur il faudrait multiplier les couleurs pour obtenir un rendu un peu plus réaliste (un objet blanc éclairé par une lumière rouge apparaît rouge).
 
 <figure>
