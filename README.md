@@ -314,7 +314,7 @@ Il est à noter que les objets ne génèrent pas d'ombre avec cette méthode. Il
 
 <figure>
     <p align="center">
-        <img src="Images/end.png"
+        <img src="Images/RenduFinal.gif"
             alt="final result">
     </p>
     <p align="center">
